@@ -1,0 +1,19 @@
+[{
+    "id": 1,
+    "url": "/contracts",
+    "method": "GET",
+    "status": 200,
+    "data": [{
+        "id": "test1",
+        "amount": 123
+    }, {
+        "id": "test2",
+        "amount": 456
+    }]
+}, {
+    "id": 2,
+    "url": "/contracts",
+    "method": "POST",
+    "status": 201,
+    "data": {}
+}]

@@ -1,0 +1,23 @@
+{
+  "name": "hello-next",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "next": "next",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "next": "^4.2.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "express": "^4.16.3",
+    "micro": "^9.3.2",
+    "node-fetch": "^2.1.2",
+    "nodemon": "^1.17.5"
+  }
+}
