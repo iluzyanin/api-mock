@@ -1,53 +1,58 @@
-const micro = require('micro')
 const express = require('express')
 const next = require('next')
-const fs = require('fs');
-const { promisify } = require('util');
 
-const readFile = promisify(fs.readFile);
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
 app.prepare()
-    .then(() => {
-        //   const server = micro(async (req, res) => {
-        //     console.dir(req.url);
+  .then(() => {
+    const server = express()
 
-        //     return handle(req, res);
-        //   });
+    server.get('/', (req, res) => {
+      return handle(req, res)
+    });
 
-        const server = express()
+    server.get('/_next*', (req, res) => {
+      return handle(req, res)
+    });
 
-        server.get('/', (req, res) => {
-            return handle(req, res)
-        });
+    server.get('/mocks', async (req, res) => {
+      try {
+        const mocks = require('./mocks');
+        res.json(mocks);
+      } catch (err) {
+        console.error(err);
+        res.json([]);
+      }
+    });
 
-        server.get('/_next*', (req, res) => {
-            return handle(req, res)
-        });
+    server.get('*', (req, res) => {
+      const mocks = require('./mocks');
+      const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === 'GET')[0];
+      if (foundMock) {
+        res.status(foundMock.status).json(foundMock.data);
+        return;
+      }
+      res.json({ foo: 'bar' });
+    });
 
-        server.get('/mocks', async (req, res) => {
-            try {
-                const mocks = require('./mocks');
-                console.log(mocks)
-                res.json(mocks);
-            } catch(err) {
-                console.error(err);
-                res.json([]);
-            }
-        });
+    server.post('*', (req, res) => {
+      const mocks = require('./mocks');
+      const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === 'POST')[0];
+      if (foundMock) {
+        res.status(foundMock.status).json(foundMock.data);
+        return;
+      }
+      res.json({ foo: 'bar' });
+    });
 
-        server.get('*', (req, res) => {
-            res.json({ foo: 'bar ' });
-        });
-
-        server.listen(3000, (err) => {
-            if (err) throw err
-            console.log('> Ready on http://localhost:3000')
-        })
+    server.listen(3000, (err) => {
+      if (err) throw err
+      console.log('> Ready on http://localhost:3000')
     })
-    .catch((ex) => {
-        console.error(ex.stack)
-        process.exit(1)
-    })
+  })
+  .catch((ex) => {
+    console.error(ex.stack)
+    process.exit(1)
+  })

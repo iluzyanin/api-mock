@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "express": "^4.16.3",
-    "micro": "^9.3.2",
     "node-fetch": "^2.1.2",
     "nodemon": "^1.17.5"
   }
