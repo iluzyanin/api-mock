@@ -1,13 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const next = require('next');
-const fs = require('fs');
-const { promisify } = require('util');
-
-const readFile = promisify(fs.readFile);
+const mockService = require('./service/mock');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+var jsonParser = bodyParser.json()
 
 app.prepare()
   .then(() => {
@@ -23,7 +23,7 @@ app.prepare()
 
     server.get('/mocks', async (req, res) => {
       try {
-        const mocks = require('./mocks');
+        const mocks = await mockService.getMocks();
         res.json(mocks);
       } catch (err) {
         console.error(err);
@@ -31,8 +31,18 @@ app.prepare()
       }
     });
 
+    server.post('/mocks', jsonParser, async (req, res) => {
+      try {
+        await mockService.addMock(req.body);
+        res.status(201).json({});
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({});
+      }
+    });
+
     server.use('*', async (req, res) => {
-      const mocks = JSON.parse(await readFile('mocks.json'));
+      const mocks = await mockService.getMocks();
       const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === req.method)[0];
       if (foundMock) {
         res.status(foundMock.status).json(foundMock.data);

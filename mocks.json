@@ -1,19 +1,41 @@
-[{
+[
+  {
     "id": 1,
     "url": "/contracts",
     "method": "GET",
     "status": 200,
-    "data": [{
+    "data": [
+      {
         "id": "test1",
         "amount": 123
-    }, {
+      },
+      {
         "id": "test2",
         "amount": 456
-    }]
-}, {
+      }
+    ]
+  },
+  {
     "id": 2,
     "url": "/contracts",
     "method": "POST",
     "status": 201,
     "data": {}
-}]
+  },
+  {
+    "url": "/fruits",
+    "method": "GET",
+    "status": 201,
+    "data": [
+      {
+        "id": 1,
+        "name": "apple"
+      },
+      {
+        "id": 2,
+        "name": "banana"
+      }
+    ],
+    "id": "880f3d10-71a6-11e8-b33c-7506d347890b"
+  }
+]
