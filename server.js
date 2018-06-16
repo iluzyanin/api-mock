@@ -1,9 +1,13 @@
-const express = require('express')
-const next = require('next')
+const express = require('express');
+const next = require('next');
+const fs = require('fs');
+const { promisify } = require('util');
 
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+const readFile = promisify(fs.readFile);
+
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
 app.prepare()
   .then(() => {
@@ -27,19 +31,9 @@ app.prepare()
       }
     });
 
-    server.get('*', (req, res) => {
-      const mocks = require('./mocks');
-      const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === 'GET')[0];
-      if (foundMock) {
-        res.status(foundMock.status).json(foundMock.data);
-        return;
-      }
-      res.json({ foo: 'bar' });
-    });
-
-    server.post('*', (req, res) => {
-      const mocks = require('./mocks');
-      const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === 'POST')[0];
+    server.use('*', async (req, res) => {
+      const mocks = JSON.parse(await readFile('mocks.json'));
+      const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === req.method)[0];
       if (foundMock) {
         res.status(foundMock.status).json(foundMock.data);
         return;
