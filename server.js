@@ -13,8 +13,8 @@ app.prepare()
   .then(() => {
     const server = express()
 
-    server.get('/', (req, res) => {
-      return handle(req, res)
+    server.get('/ui*', (req, res) => {
+      app.render(req, res, '/');
     });
 
     server.get('/_next*', (req, res) => {
