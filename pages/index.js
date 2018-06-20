@@ -5,8 +5,9 @@ import MockForm from '../components/MockForm';
 
 const Index = (props) => (
   <Layout>
-    <h1>Mocked requests</h1>
+    <h2>Mocked requests</h2>
     <MockList mocks={props.mocks}></MockList>
+    <h2>New request mock</h2>
     <MockForm></MockForm>
   </Layout>
 );

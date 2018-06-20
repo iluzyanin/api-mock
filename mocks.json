@@ -25,7 +25,7 @@
   {
     "url": "/fruits",
     "method": "GET",
-    "status": 201,
+    "status": 200,
     "data": [
       {
         "id": 1,
