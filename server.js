@@ -11,10 +11,15 @@ var jsonParser = bodyParser.json()
 
 app.prepare()
   .then(() => {
-    const server = express()
+    const server = express();
 
-    server.get('/ui*', (req, res) => {
+    server.get('/ui', (req, res) => {
       app.render(req, res, '/');
+    });
+
+    server.get('/ui/:pageName', (req, res) => {
+      const actualPage = `/${req.params.pageName}`;
+      app.render(req, res, actualPage, req.query);
     });
 
     server.get('/_next*', (req, res) => {
@@ -28,6 +33,21 @@ app.prepare()
       } catch (err) {
         console.error(err);
         res.json([]);
+      }
+    });
+
+    server.get('/mocks/:mockId', async (req, res) => {
+      try {
+        const mocks = await mockService.getMocks();
+        const mock = mocks.find(m => m.id === req.params.mockId);
+        if (typeof mock !== 'undefined') {
+          res.json(mock);
+          return;
+        }
+        res.status(404).json({});
+      } catch (err) {
+        console.error(err);
+        res.json({});
       }
     });
 

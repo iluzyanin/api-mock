@@ -1,12 +1,13 @@
 import fetch from 'isomorphic-unfetch';
 import Layout from '../components/MyLayout';
 import MockList from '../components/MockList';
-import MockForm from '../components/MockForm';
+import Link from 'next/link'
 
 const Index = (props) => (
   <Layout>
-    <h2>New request mock</h2>
-    <MockForm></MockForm>
+    <Link as="ui/edit-mock" href="edit-mock">
+      <button className="btn btn-default">New mock</button>
+    </Link>
     <h2>Mocked requests</h2>
     <MockList mocks={props.mocks}></MockList>
   </Layout>

@@ -1,18 +1,21 @@
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
+import Router from 'next/router';
 
 class MockForm extends React.PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {
-      mock: {
-        url: '',
-        method: 'GET',
-        data: '',
-        status: 200
-      }
+    const defaultMock = {
+      url: '',
+      method: 'GET',
+      data: '',
+      status: 200
+    };
+    let state = { mock: defaultMock };
+    if (typeof props.mock !== 'undefined') {
+      state = Object.assign(state, { mock: props.mock });
     }
+    this.state = state;
     this.handleUrlChange = this.handleUrlChange.bind(this);
     this.handleMethodChange = this.handleMethodChange.bind(this);
     this.handleJsonChange = this.handleJsonChange.bind(this);
@@ -69,6 +72,7 @@ class MockForm extends React.PureComponent {
       },
       method: 'POST'
     });
+    Router.push('/', '/ui');
   }
 
   render() {
