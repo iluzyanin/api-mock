@@ -1,46 +1,32 @@
 import Router from 'next/router';
+import Mock from './Mock';
 
-const Mock = (props) => (
-  <li>
-    <p>
-      <span className={`method--${props.mock.method.toLowerCase()}`}>{props.mock.method}</span>{' '}
-      <b>{props.mock.url}</b>, status: {props.mock.status}
-      <button className="btn btn-default btn-xs edit-btn" onClick={() => Router.push(`/edit-mock?id=${props.mock.id}`, `/ui/edit-mock?id=${props.mock.id}`)}>
-        <span className="glyphicon glyphicon-pencil"></span>
-      </button>
-    </p>
-    <pre className="pre-scrollable">
-      {JSON.stringify(props.mock.data, null, 2)}
-    </pre>
-    <hr />
-  </li>
-);
+class MockList extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
 
-const MockList = (props) => (
-  <ul className="list-unstyled">
-    {props.mocks.map((mock) => (
-      <Mock mock={mock} key={mock.id} />
-    ))}
-    <style jsx global>{`
-      .method--get {
-        background-color: #3D9970;
-        color: white;
-        padding: 5px;
-        font-weight: bold;
-        border-radius: 3px;
-      }
-      .method--post {
-        background-color: #001f3f;
-        color: white;
-        padding: 5px;
-        font-weight: bold;
-        border-radius: 3px;
-      }
-      .edit-btn {
-        margin-left: 10px;
-      }
-    `}</style>
-  </ul>
-);
+  editMock(mockId) {
+    Router.push(`/edit-mock?id=${mockId}`, `/ui/edit-mock?id=${mockId}`);
+  }
+
+  deleteMock(mockId) {
+    Router.push(`/edit-mock?id=${mockId}`, `/ui/edit-mock?id=${mockId}`);
+  }
+
+  render() {
+    return (
+      <ul className="list-unstyled">
+        {this.props.mocks.map((mock) => (
+          <Mock
+            mock={mock}
+            key={mock.id}
+            onEdit={() => this.editMock(mock.id)}
+            onDelete={() => this.deleteMock(mock.id)} />
+        ))}
+      </ul>
+    );
+  }
+}
 
 export default MockList;
