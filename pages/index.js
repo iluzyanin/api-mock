@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
+import Link from 'next/link'
 import Layout from '../components/MyLayout';
 import MockList from '../components/MockList';
-import Link from 'next/link'
 
 const Index = (props) => (
   <Layout>

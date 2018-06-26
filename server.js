@@ -32,22 +32,37 @@ app.prepare()
         res.json(mocks);
       } catch (err) {
         console.error(err);
-        res.json([]);
+        res.json(err);
       }
     });
 
     server.get('/mocks/:mockId', async (req, res) => {
       try {
-        const mocks = await mockService.getMocks();
-        const mock = mocks.find(m => m.id === req.params.mockId);
+        const mockId = req.params.mockId;
+        const mock = await mockService.getMockById(mockId);
         if (typeof mock !== 'undefined') {
           res.json(mock);
           return;
         }
-        res.status(404).json({});
+        res.status(404).json({ message: `Mock with id ${mockId} was not found`});
       } catch (err) {
         console.error(err);
-        res.json({});
+        res.json(err);
+      }
+    });
+
+    server.delete('/mocks/:mockId', async (req, res) => {
+      try {
+        const mockId = req.params.mockId;
+        const wasDeleted = mockService.deleteMock(mockId);
+        if (wasDeleted) {
+          res.status(204).end();
+          return;
+        }
+        res.status(404).json({ message: `Mock with id ${mockId} was not found`});
+      } catch (err) {
+        console.error(err);
+        res.json(err);
       }
     });
 

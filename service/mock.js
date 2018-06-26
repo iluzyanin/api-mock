@@ -7,6 +7,11 @@ const writeFile = promisify(fs.writeFile);
 
 const getMocks = async () => JSON.parse(await readFile('mocks.json'));
 
+const getMockById = async (mockId) => {
+  const mocks = await getMocks();
+  return mocks.find(m => m.id === mockId);
+};
+
 const addMock = async (newMock) => {
   const mocks = await getMocks();
   newMock.id = uuidv1();
@@ -14,7 +19,17 @@ const addMock = async (newMock) => {
   await writeFile('mocks.json', JSON.stringify(mocks, null, 2));
 };
 
+const deleteMock = async (mockId) => {
+  let mocks = await getMocks();
+  const originalLength = mocks.length;
+  const newMocks = mocks.filter((mock) => mock.id !== mockId);
+  await writeFile('mocks.json', JSON.stringify(newMocks, null, 2));
+  return mocks.length < originalLength;
+}
+
 module.exports = {
   getMocks,
-  addMock
+  getMockById,
+  addMock,
+  deleteMock
 };

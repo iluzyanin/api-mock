@@ -1,4 +1,5 @@
 import Router from 'next/router';
+import fetch from 'isomorphic-unfetch';
 import Mock from './Mock';
 
 class MockList extends React.PureComponent {
@@ -11,7 +12,7 @@ class MockList extends React.PureComponent {
   }
 
   deleteMock(mockId) {
-    Router.push(`/edit-mock?id=${mockId}`, `/ui/edit-mock?id=${mockId}`);
+    fetch(`http://localhost:3000/mocks/${mockId}`, { method: 'DELETE' });
   }
 
   render() {
