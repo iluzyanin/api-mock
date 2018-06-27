@@ -1,79 +1,25 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const next = require('next');
 const mockService = require('./service/mock');
+
+const uiRoute = require('./routes/ui');
+const mocksConfigurationRoute = require('./routes/mocksConfiguration');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-var jsonParser = bodyParser.json()
 
 app.prepare()
   .then(() => {
     const server = express();
 
-    server.get('/ui', (req, res) => {
-      app.render(req, res, '/');
-    });
+    server.use('/ui', uiRoute(app));
 
-    server.get('/ui/:pageName', (req, res) => {
-      const actualPage = `/${req.params.pageName}`;
-      app.render(req, res, actualPage, req.query);
-    });
+    server.use('/mocks', mocksConfigurationRoute(app));
 
     server.get('/_next*', (req, res) => {
       return handle(req, res)
-    });
-
-    server.get('/mocks', async (req, res) => {
-      try {
-        const mocks = await mockService.getMocks();
-        res.json(mocks);
-      } catch (err) {
-        console.error(err);
-        res.json(err);
-      }
-    });
-
-    server.get('/mocks/:mockId', async (req, res) => {
-      try {
-        const mockId = req.params.mockId;
-        const mock = await mockService.getMockById(mockId);
-        if (typeof mock !== 'undefined') {
-          res.json(mock);
-          return;
-        }
-        res.status(404).json({ message: `Mock with id ${mockId} was not found`});
-      } catch (err) {
-        console.error(err);
-        res.json(err);
-      }
-    });
-
-    server.delete('/mocks/:mockId', async (req, res) => {
-      try {
-        const mockId = req.params.mockId;
-        const wasDeleted = mockService.deleteMock(mockId);
-        if (wasDeleted) {
-          res.status(204).end();
-          return;
-        }
-        res.status(404).json({ message: `Mock with id ${mockId} was not found`});
-      } catch (err) {
-        console.error(err);
-        res.json(err);
-      }
-    });
-
-    server.post('/mocks', jsonParser, async (req, res) => {
-      try {
-        await mockService.addMock(req.body);
-        res.status(201).json({});
-      } catch (err) {
-        console.error(err);
-        res.status(500).json({});
-      }
     });
 
     server.use('*', async (req, res) => {
