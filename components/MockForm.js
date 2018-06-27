@@ -65,12 +65,14 @@ class MockForm extends React.PureComponent {
 
   handleSubmit(event) {
     event.preventDefault();
-    fetch('/mocks', {
-      body: JSON.stringify({ ...this.state.mock, data: JSON.parse(this.state.mock.data) }),
+    const mock = this.state.mock;
+    const hasId = typeof mock.id !== 'undefined';
+    fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
+      body: JSON.stringify({ ...mock, data: JSON.parse(mock.data) }),
       headers: {
         'content-type': 'application/json'
       },
-      method: 'POST'
+      method: hasId ? 'PUT' : 'POST'
     });
     Router.push('/', '/ui');
   }

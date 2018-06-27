@@ -20,16 +20,36 @@ const addMock = async (newMock) => {
 };
 
 const deleteMock = async (mockId) => {
-  let mocks = await getMocks();
-  const originalLength = mocks.length;
+  const mocks = await getMocks();
   const newMocks = mocks.filter((mock) => mock.id !== mockId);
-  await writeFile('mocks.json', JSON.stringify(newMocks, null, 2));
-  return mocks.length < originalLength;
+  const wasDeleted = newMocks.length < mocks.length;
+  if (wasDeleted) {
+    await writeFile('mocks.json', JSON.stringify(newMocks, null, 2));
+  }
+  return wasDeleted;
+}
+
+const updateMock = async (updatedMock) => {
+  const mocks = await getMocks();
+  let wasUpdated = false;
+
+  const newMocks = mocks.map((mock) => {
+    if (mock.id === updatedMock.id) {
+      wasUpdated = true;
+      return updatedMock;
+    }
+    return mock;
+  });
+  if (wasUpdated) {
+    await writeFile('mocks.json', JSON.stringify(newMocks, null, 2));
+  }
+  return wasUpdated;
 }
 
 module.exports = {
   getMocks,
   getMockById,
   addMock,
-  deleteMock
+  deleteMock,
+  updateMock,
 };

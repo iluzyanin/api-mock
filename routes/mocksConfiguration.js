@@ -18,10 +18,10 @@ module.exports = (app) => {
   router.post('/', jsonParser, async (req, res) => {
     try {
       await mockService.addMock(req.body);
-      res.status(201).json({});
+      res.status(201).end();
     } catch (err) {
       console.error(err);
-      res.status(500).json({});
+      res.status(500).end();
     }
   });
 
@@ -37,6 +37,21 @@ module.exports = (app) => {
     } catch (err) {
       console.error(err);
       res.json(err);
+    }
+  });
+
+  router.put('/:mockId', jsonParser, async (req, res) => {
+    try {
+      const wasUpdated = mockService.updateMock(req.body);
+      if (wasUpdated) {
+        res.status(204).end();
+        return;
+      }
+      res.status(404).json({ message: `Mock with id ${mockId} was not found` });
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).end();
     }
   });
 
