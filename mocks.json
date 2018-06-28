@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "id": "5bbca820-7b0a-11e8-93f9-9d1550ef9b51",
     "url": "/contracts",
     "method": "GET",
     "status": 200,
@@ -13,19 +13,21 @@
         "id": "test2",
         "amount": 456
       }
-    ]
+    ],
+    "delay": 0
   },
   {
-    "id": "2",
+    "id": "5918b140-7b0a-11e8-93f9-9d1550ef9b51",
     "url": "/contracts",
     "method": "POST",
     "status": 201,
-    "data": {}
+    "data": {},
+    "delay": 0
   },
   {
     "url": "/fruits",
     "method": "GET",
-    "status": 200,
+    "status": "204",
     "data": [
       {
         "id": 1,
@@ -36,6 +38,7 @@
         "name": "banana"
       }
     ],
-    "id": "880f3d10-71a6-11e8-b33c-7506d347890b"
+    "id": "880f3d10-71a6-11e8-b33c-7506d347890b",
+    "delay": 0
   }
 ]

@@ -9,6 +9,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 app.prepare()
   .then(() => {
@@ -26,6 +27,9 @@ app.prepare()
       const mocks = await mockService.getMocks();
       const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === req.method)[0];
       if (foundMock) {
+        if (foundMock.delay > 0) {
+          await delay(foundMock.delay);
+        }
         res.status(foundMock.status).json(foundMock.data);
         return;
       }

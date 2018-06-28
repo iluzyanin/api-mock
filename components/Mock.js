@@ -5,7 +5,7 @@ const Mock = (props) => (
   <li>
     <p>
       <HttpMethod name={props.mock.method}></HttpMethod>{' '}
-      <b>{props.mock.url}</b>, status: {props.mock.status}
+      <b>{props.mock.url}</b>, status: {props.mock.status}, delay: {props.mock.delay} ms
       <GlyphButton onClick={props.onEdit} icon="pencil"></GlyphButton>
       <GlyphButton onClick={props.onDelete} icon="trash"></GlyphButton>
     </p>

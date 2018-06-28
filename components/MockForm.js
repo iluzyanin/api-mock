@@ -9,7 +9,8 @@ class MockForm extends React.PureComponent {
       url: '',
       method: 'GET',
       data: undefined,
-      status: 200
+      status: 200,
+      delay: 0
     };
     let state = { mock: defaultMock };
     if (typeof props.mock !== 'undefined') {
@@ -20,6 +21,7 @@ class MockForm extends React.PureComponent {
     this.handleMethodChange = this.handleMethodChange.bind(this);
     this.handleJsonChange = this.handleJsonChange.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
+    this.handleDelayChange = this.handleDelayChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -58,7 +60,18 @@ class MockForm extends React.PureComponent {
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
-        status: parseInt(status)
+        status
+      }
+    }));
+  }
+
+  handleDelayChange(event) {
+    const delay = event.target.value;
+    console.log(delay)
+    this.setState(prevState => ({
+      mock: {
+        ...prevState.mock,
+        delay
       }
     }));
   }
@@ -68,8 +81,9 @@ class MockForm extends React.PureComponent {
     const mock = this.state.mock;
     const hasId = typeof mock.id !== 'undefined';
     const data = mock.data ? JSON.parse(mock.data) : mock.data;
+    const delay = mock.delay ? parseInt(mock.delay) : 0;
     fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
-      body: JSON.stringify({ ...mock, data }),
+      body: JSON.stringify({ ...mock, data, delay }),
       headers: {
         'content-type': 'application/json'
       },
@@ -122,6 +136,12 @@ class MockForm extends React.PureComponent {
               <option value="500">500 Internal Server Error</option>
               <option value="504">504 Gateway Timeout</option>
             </select>
+          </div>
+        </div>
+        <div className="form-group">
+          <label className="col-sm-2" htmlFor="delay">Delay, ms</label>
+          <div className="col-sm-10">
+            <input id="delay" className="form-control" type="text" value={this.state.mock.delay} onChange={this.handleDelayChange} />
           </div>
         </div>
         <button className="btn btn-primary" type="submit">Submit</button>
