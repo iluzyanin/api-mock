@@ -5,14 +5,17 @@ import Mock from './Mock';
 class MockList extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    this.deleteMock = this.deleteMock.bind(this);
   }
 
   editMock(mockId) {
     Router.push(`/edit-mock?id=${mockId}`, `/ui/edit-mock?id=${mockId}`);
   }
 
-  deleteMock(mockId) {
-    fetch(`http://localhost:3000/mocks/${mockId}`, { method: 'DELETE' });
+  async deleteMock(mockId) {
+    await fetch(`http://localhost:3000/mocks/${mockId}`, { method: 'DELETE' });
+    await this.props.onMocksChange();
   }
 
   render() {
@@ -22,7 +25,7 @@ class MockList extends React.PureComponent {
           <Mock
             mock={mock}
             key={mock.id}
-            onEdit={() => this.editMock(mock.id)}
+            onEdit={() => this.editMock(mock.id) }
             onDelete={() => this.deleteMock(mock.id)} />
         ))}
       </ul>
