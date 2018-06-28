@@ -8,7 +8,7 @@ class MockForm extends React.PureComponent {
     const defaultMock = {
       url: '',
       method: 'GET',
-      data: '',
+      data: undefined,
       status: 200
     };
     let state = { mock: defaultMock };
@@ -67,8 +67,9 @@ class MockForm extends React.PureComponent {
     event.preventDefault();
     const mock = this.state.mock;
     const hasId = typeof mock.id !== 'undefined';
+    const data = mock.data ? JSON.parse(mock.data) : mock.data;
     fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
-      body: JSON.stringify({ ...mock, data: JSON.parse(mock.data) }),
+      body: JSON.stringify({ ...mock, data }),
       headers: {
         'content-type': 'application/json'
       },
@@ -113,6 +114,7 @@ class MockForm extends React.PureComponent {
             <select id="status" className="form-control" value={this.state.mock.status} onChange={this.handleStatusChange}>
               <option value="200">200 OK</option>
               <option value="201">201 Created</option>
+              <option value="204">204 No content</option>
               <option value="400">400 Bad Request</option>
               <option value="401">401 Unauthorized</option>
               <option value="403">403 Forbidden</option>
