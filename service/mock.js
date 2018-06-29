@@ -5,22 +5,22 @@ const uuidv1 = require('uuid/v1');
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-const getMocks = async () => JSON.parse(await readFile('mocks.json'));
+const getAll = async () => JSON.parse(await readFile('mocks.json'));
 
-const getMockById = async (mockId) => {
-  const mocks = await getMocks();
+const getById = async (mockId) => {
+  const mocks = await getAll();
   return mocks.find(m => m.id === mockId);
 };
 
-const addMock = async (newMock) => {
-  const mocks = await getMocks();
+const add = async (newMock) => {
+  const mocks = await getAll();
   newMock.id = uuidv1();
   mocks.push(newMock);
   await writeFile('mocks.json', JSON.stringify(mocks, null, 2));
 };
 
-const deleteMock = async (mockId) => {
-  const mocks = await getMocks();
+const remove = async (mockId) => {
+  const mocks = await getAll();
   const newMocks = mocks.filter((mock) => mock.id !== mockId);
   const wasDeleted = newMocks.length < mocks.length;
   if (wasDeleted) {
@@ -29,8 +29,8 @@ const deleteMock = async (mockId) => {
   return wasDeleted;
 }
 
-const updateMock = async (updatedMock) => {
-  const mocks = await getMocks();
+const update = async (updatedMock) => {
+  const mocks = await getAll();
   let wasUpdated = false;
 
   const newMocks = mocks.map((mock) => {
@@ -47,9 +47,9 @@ const updateMock = async (updatedMock) => {
 }
 
 module.exports = {
-  getMocks,
-  getMockById,
-  addMock,
-  deleteMock,
-  updateMock,
+  getAll,
+  getById,
+  add,
+  remove,
+  update,
 };

@@ -7,7 +7,7 @@ const jsonParser = bodyParser.json()
 module.exports = (app) => {
   router.get('/', async (req, res) => {
     try {
-      const mocks = await mockService.getMocks();
+      const mocks = await mockService.getAll();
       res.json(mocks);
     } catch (err) {
       console.error(err);
@@ -17,7 +17,7 @@ module.exports = (app) => {
 
   router.post('/', jsonParser, async (req, res) => {
     try {
-      await mockService.addMock(req.body);
+      await mockService.add(req.body);
       res.status(201).end();
     } catch (err) {
       console.error(err);
@@ -28,7 +28,7 @@ module.exports = (app) => {
   router.get('/:mockId', async (req, res) => {
     try {
       const mockId = req.params.mockId;
-      const mock = await mockService.getMockById(mockId);
+      const mock = await mockService.getById(mockId);
       if (typeof mock !== 'undefined') {
         res.json(mock);
         return;
@@ -42,7 +42,7 @@ module.exports = (app) => {
 
   router.put('/:mockId', jsonParser, async (req, res) => {
     try {
-      const wasUpdated = mockService.updateMock(req.body);
+      const wasUpdated = mockService.update(req.body);
       if (wasUpdated) {
         res.status(204).end();
         return;
@@ -58,7 +58,7 @@ module.exports = (app) => {
   router.delete('/:mockId', async (req, res) => {
     try {
       const mockId = req.params.mockId;
-      const wasDeleted = mockService.deleteMock(mockId);
+      const wasDeleted = mockService.remove(mockId);
       if (wasDeleted) {
         res.status(204).end();
         return;
