@@ -12,9 +12,22 @@
       {
         "id": "test2",
         "amount": 456
+      },
+      {
+        "id": "test3",
+        "amount": 321
+      },
+      {
+        "id": "test4",
+        "amount": 654
+      },
+      {
+        "id": "test5",
+        "amount": 789
       }
     ],
-    "delay": 0
+    "delay": 0,
+    "enabled": true
   },
   {
     "id": "5918b140-7b0a-11e8-93f9-9d1550ef9b51",
@@ -22,12 +35,13 @@
     "method": "POST",
     "status": 201,
     "data": {},
-    "delay": 0
+    "delay": 0,
+    "enabled": true
   },
   {
     "url": "/fruits",
     "method": "GET",
-    "status": "204",
+    "status": 200,
     "data": [
       {
         "id": 1,
@@ -39,6 +53,7 @@
       }
     ],
     "id": "880f3d10-71a6-11e8-b33c-7506d347890b",
-    "delay": 0
+    "delay": 0,
+    "enabled": true
   }
 ]

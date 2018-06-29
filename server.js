@@ -33,7 +33,7 @@ app.prepare()
         res.status(foundMock.status).json(foundMock.data);
         return;
       }
-      res.json({ foo: 'bar' });
+      res.status(404).end();
     });
 
     server.listen(3000, (err) => {

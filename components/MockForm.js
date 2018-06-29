@@ -10,7 +10,8 @@ class MockForm extends React.PureComponent {
       method: 'GET',
       data: undefined,
       status: 200,
-      delay: 0
+      delay: 0,
+      enabled: true
     };
     let state = { mock: defaultMock };
     if (typeof props.mock !== 'undefined') {
@@ -22,6 +23,7 @@ class MockForm extends React.PureComponent {
     this.handleJsonChange = this.handleJsonChange.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
     this.handleDelayChange = this.handleDelayChange.bind(this);
+    this.handleEnabledChange = this.handleEnabledChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -60,18 +62,27 @@ class MockForm extends React.PureComponent {
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
-        status
+        status: status
       }
     }));
   }
 
   handleDelayChange(event) {
     const delay = event.target.value;
-    console.log(delay)
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
         delay
+      }
+    }));
+  }
+
+  handleEnabledChange(event) {
+    const enabled = event.target.checked;
+    this.setState(prevState => ({
+      mock: {
+        ...prevState.mock,
+        enabled
       }
     }));
   }
@@ -82,8 +93,9 @@ class MockForm extends React.PureComponent {
     const hasId = typeof mock.id !== 'undefined';
     const data = mock.data ? JSON.parse(mock.data) : mock.data;
     const delay = mock.delay ? parseInt(mock.delay) : 0;
+    const status = parseInt(mock.status);
     fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
-      body: JSON.stringify({ ...mock, data, delay }),
+      body: JSON.stringify({ ...mock, data, delay, status }),
       headers: {
         'content-type': 'application/json'
       },
@@ -143,6 +155,12 @@ class MockForm extends React.PureComponent {
           <div className="col-sm-10">
             <input id="delay" className="form-control" type="text" value={this.state.mock.delay} onChange={this.handleDelayChange} />
           </div>
+        </div>
+        <div className="form-group">
+          <label className="col-sm-2" htmlFor="enabled">Enabled</label>
+            <div className="col-sm-10">
+              <input id="enabled" type="checkbox" value="" checked={this.state.mock.enabled} onChange={this.handleEnabledChange}/>
+            </div>
         </div>
         <button className="btn btn-primary" type="submit">Submit</button>
       </form>
