@@ -1,19 +1,39 @@
 import HttpMethod from "./HttpMethod";
 import GlyphButton from './GlyphButton';
+import Expand from './Expand';
 
-const Mock = (props) => (
-  <li>
-    <p>
-      <HttpMethod name={props.mock.method}></HttpMethod>{' '}
-      <b>{props.mock.url}</b>, status: {props.mock.status}, delay: {props.mock.delay} ms
-      <GlyphButton onClick={props.onEdit} icon="pencil"></GlyphButton>
-      <GlyphButton onClick={props.onDelete} icon="trash"></GlyphButton>
-    </p>
-    <pre className="pre-scrollable">
-      {JSON.stringify(props.mock.data, null, 2)}
-    </pre>
-    <hr />
-  </li>
-);
+class Mock extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = { isResponseOpen: false };
+
+    this.toggleOpen = this.toggleOpen.bind(this);
+  }
+
+  toggleOpen() {
+    this.setState((prevState) => ({ isResponseOpen: !prevState.isResponseOpen }));
+  }
+
+  render() {
+    const mock = this.props.mock;
+    return (
+      <li>
+        <p>
+          <HttpMethod name={mock.method}></HttpMethod>{' '}
+          <b>{mock.url}</b>, status: {mock.status}, delay: {mock.delay} ms
+          <GlyphButton onClick={this.toggleOpen} icon={this.state.isResponseOpen ? 'menu-up' : 'menu-down'} title="Show/Hide response"></GlyphButton>
+          <GlyphButton onClick={this.props.onEdit} icon="pencil" title="Edit mock"></GlyphButton>
+          <GlyphButton onClick={this.props.onDelete} icon="trash" title="Delete mock"></GlyphButton>
+        </p>
+        <Expand isOpen={this.state.isResponseOpen}>
+          <pre>
+            {JSON.stringify(mock.data, null, 2)}
+          </pre>
+        </Expand>
+        <hr />
+      </li>
+    );
+  }
+}
 
 export default Mock;
