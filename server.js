@@ -26,7 +26,7 @@ app.prepare()
     server.use('*', async (req, res) => {
       const mocks = await mockService.getMocks();
       const foundMock = mocks.filter(mock => mock.url === req.originalUrl && mock.method === req.method)[0];
-      if (foundMock) {
+      if (foundMock && foundMock.enabled) {
         if (foundMock.delay > 0) {
           await delay(foundMock.delay);
         }
