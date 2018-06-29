@@ -34,6 +34,12 @@ class Index extends React.PureComponent {
         </Link>
         <h2>Mocked requests</h2>
         <MockList mocks={this.state.mocks} onMocksChange={this.onMocksChange}></MockList>
+        <style jsx>{`
+          h2 {
+            margin: 20px 0;
+          }
+        `}
+        </style>
       </Layout>
     );
   }
