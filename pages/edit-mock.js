@@ -11,7 +11,7 @@ const EditMock = (props) => (
 EditMock.getInitialProps = async (context) => {
   const mockId = context.query.id;
   if (typeof mockId !== 'undefined') {
-    const res = await fetch(`http://localhost:3000/mocks/${mockId}`);
+    const res = await fetch(`/mocks/${mockId}`);
     const mock = await res.json();
     mock.data = JSON.stringify(mock.data, null, 2);
     return {

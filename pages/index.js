@@ -16,7 +16,7 @@ class Index extends React.PureComponent {
   }
 
   async fetchMocks() {
-    const res = await fetch('http://localhost:3000/mocks');
+    const res = await fetch('/mocks');
     const data = await res.json();
   
     this.setState({ mocks: data });

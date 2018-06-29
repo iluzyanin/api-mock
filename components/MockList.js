@@ -14,7 +14,7 @@ class MockList extends React.PureComponent {
   }
 
   async deleteMock(mockId) {
-    await fetch(`http://localhost:3000/mocks/${mockId}`, { method: 'DELETE' });
+    await fetch(`/mocks/${mockId}`, { method: 'DELETE' });
     await this.props.onMocksChange();
   }
 
