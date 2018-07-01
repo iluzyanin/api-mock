@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "next": "next",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
   },
   "keywords": [],
   "author": "",
