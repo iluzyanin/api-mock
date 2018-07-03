@@ -2,6 +2,7 @@ import Link from 'next/link'
 import HttpMethod from "./HttpMethod";
 import GlyphButton from './GlyphButton';
 import Expand from './Expand';
+import StyledJSON from './StyledJSON';
 
 class Mock extends React.PureComponent {
   constructor(props) {
@@ -29,9 +30,7 @@ class Mock extends React.PureComponent {
           <GlyphButton onClick={this.props.onDelete} icon="trash" title="Delete mock"></GlyphButton>
         </p>
         <Expand isOpen={this.state.isResponseOpen}>
-          <pre>
-            {JSON.stringify(mock.data, null, 2)}
-          </pre>
+          <StyledJSON json={mock.data}></StyledJSON>
         </Expand>
         <hr />
       </li>

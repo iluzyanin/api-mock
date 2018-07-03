@@ -17,6 +17,7 @@
     "next": "^4.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-json-pretty": "^1.7.6",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
