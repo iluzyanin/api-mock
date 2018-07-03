@@ -22,7 +22,7 @@ class Mock extends React.PureComponent {
       <li>
         <p>
           <HttpMethod name={mock.method}></HttpMethod>{' '}
-          <b>{mock.url}</b>, status: {mock.status}, delay: {mock.delay} ms, {mock.enabled ? 'active' : 'disabled'}
+          <code>{mock.url}</code> | status: {mock.status} | delay: {mock.delay} ms | {mock.enabled ? 'active' : 'disabled'}
           <GlyphButton onClick={this.toggleOpen} icon={this.state.isResponseOpen ? 'menu-up' : 'menu-down'} title="Show/Hide response"></GlyphButton>
           <Link as={`ui/edit-mock?id=${mock.id}`} href={`/edit-mock?id=${mock.id}`}>
             <GlyphButton icon="pencil" title="Edit mock"></GlyphButton>
