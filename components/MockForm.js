@@ -1,6 +1,7 @@
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
+import config from '../config';
 
 class MockForm extends React.PureComponent {
   constructor(props) {
@@ -94,7 +95,7 @@ class MockForm extends React.PureComponent {
     const data = mock.data ? JSON.parse(mock.data) : mock.data;
     const delay = mock.delay ? parseInt(mock.delay) : 0;
     const status = parseInt(mock.status);
-    fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
+    fetch(`http://localhost:${config.port}/mocks${hasId ? `/${mock.id}` : ''}`, {
       body: JSON.stringify({ ...mock, data, delay, status }),
       headers: {
         'content-type': 'application/json'

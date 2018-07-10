@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
+import config from '../config';
 import Mock from './Mock';
 
 class MockList extends React.PureComponent {
@@ -14,7 +15,7 @@ class MockList extends React.PureComponent {
   }
 
   async deleteMock(mockId) {
-    await fetch(`/mocks/${mockId}`, { method: 'DELETE' });
+    await fetch(`http://localhost:${config.port}/mocks/${mockId}`, { method: 'DELETE' });
     await this.props.onMocksChange();
   }
 
