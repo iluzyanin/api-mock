@@ -5,9 +5,8 @@ const mockService = require('./service/mock');
 const uiRoute = require('./routes/ui');
 const mocksConfigurationRoute = require('./routes/mocksConfiguration');
 
-const config = require('./config');
-
 const dev = process.env.NODE_ENV !== 'production';
+const port = process.env.PORT || '3030';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -38,9 +37,9 @@ app.prepare()
       res.status(404).end();
     });
 
-    server.listen(config.port, (err) => {
+    server.listen(port, (err) => {
       if (err) throw err
-      console.log(`> Ready on http://localhost:${config.port}/ui`)
+      console.log(`> Ready on http://localhost:${port}/ui`)
     })
   })
   .catch((ex) => {

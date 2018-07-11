@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "build": "next build",
-    "start": "npm run build && cross-env NODE_ENV=production PORT=3030 node server.js"
+    "start": "npm run build && cross-env NODE_ENV=production node server.js"
   },
   "keywords": [],
   "author": "",
