@@ -1,6 +1,5 @@
 import Layout from '../components/MyLayout';
 import MockForm from '../components/MockForm';
-import config from '../config';
 
 const EditMock = (props) => (
   <Layout>
@@ -9,10 +8,11 @@ const EditMock = (props) => (
   </Layout>
 );
 
-EditMock.getInitialProps = async (context) => {
-  const mockId = context.query.id;
+EditMock.getInitialProps = async ({ req, query }) => {
+  const mockId = query.id;
+  const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
   if (typeof mockId !== 'undefined') {
-    const res = await fetch(`http://localhost:${config.port}/mocks/${mockId}`);
+    const res = await fetch(`${baseUrl}/mocks/${mockId}`);
     const mock = await res.json();
     mock.data = JSON.stringify(mock.data, null, 2);
     return {

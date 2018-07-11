@@ -2,7 +2,6 @@ import fetch from 'isomorphic-unfetch';
 import Link from 'next/link'
 import Layout from '../components/MyLayout';
 import MockList from '../components/MockList';
-import config from '../config';
 
 class Index extends React.PureComponent {
   constructor(props) {
@@ -17,7 +16,7 @@ class Index extends React.PureComponent {
   }
 
   async fetchMocks() {
-    const res = await fetch(`http://localhost:${config.port}/mocks`);
+    const res = await fetch(`/mocks`);
     const data = await res.json();
   
     this.setState({ mocks: data });
