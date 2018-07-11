@@ -8,10 +8,10 @@ const Expand = (props) => (
     <style jsx>{`
       .text {
         margin-top: 10px
-        overflow: hidden;
       }
       .text--closed {
         height: 0;
+        overflow: hidden;
       }
   `}</style>
   </React.Fragment>
