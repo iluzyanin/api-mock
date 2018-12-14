@@ -1,6 +1,12 @@
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
+import dynamic from 'next/dynamic';
+
+const ReactJson = dynamic(
+  import('react-json-view'),
+  { ssr: false }
+);
 
 class MockForm extends React.PureComponent {
   constructor(props) {
@@ -28,7 +34,7 @@ class MockForm extends React.PureComponent {
   }
 
   handleUrlChange(event) {
-    const url = event.target.value;
+    const url = event.target.value.trim();
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
@@ -47,12 +53,12 @@ class MockForm extends React.PureComponent {
     }));
   }
 
-  handleJsonChange(event) {
-    const data = event.target.value;
+  handleJsonChange({updated_src}) {
+    console.log(updated_src);
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
-        data
+        data: JSON.stringify(updated_src)
       }
     }));
   }
@@ -68,7 +74,7 @@ class MockForm extends React.PureComponent {
   }
 
   handleDelayChange(event) {
-    const delay = event.target.value;
+    const delay = event.target.value.trim();
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
@@ -87,14 +93,18 @@ class MockForm extends React.PureComponent {
     }));
   }
 
-  handleSubmit(event) {
+  handleGoToMain() {
+    Router.push('/', '/ui');
+  }
+
+  async handleSubmit(event) {
     event.preventDefault();
     const mock = this.state.mock;
     const hasId = typeof mock.id !== 'undefined';
     const data = mock.data ? JSON.parse(mock.data) : mock.data;
     const delay = mock.delay ? parseInt(mock.delay) : 0;
     const status = parseInt(mock.status);
-    fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
+    await fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
       body: JSON.stringify({ ...mock, data, delay, status }),
       headers: {
         'content-type': 'application/json'
@@ -105,9 +115,6 @@ class MockForm extends React.PureComponent {
   }
 
   render() {
-    const jsonStyle = {
-      height: 200
-    };
     return (
       <form onSubmit={this.handleSubmit} className="form-horizontal">
         <div className="form-group">
@@ -131,7 +138,7 @@ class MockForm extends React.PureComponent {
         <div className="form-group">
           <label className="col-sm-2" htmlFor="json">Return Json</label>
           <div className="col-sm-10">
-            <textarea id="json" className="form-control" style={ jsonStyle } value={this.state.mock.data} onChange={this.handleJsonChange} />
+            <ReactJson src={JSON.parse(this.state.mock.data)} onEdit={this.handleJsonChange} />
           </div>
         </div>
         <div className="form-group">
@@ -158,11 +165,18 @@ class MockForm extends React.PureComponent {
         </div>
         <div className="form-group">
           <label className="col-sm-2" htmlFor="enabled">Enabled</label>
-            <div className="col-sm-10">
-              <input id="enabled" type="checkbox" value="" checked={this.state.mock.enabled} onChange={this.handleEnabledChange}/>
-            </div>
+          <div className="col-sm-10">
+            <input id="enabled" type="checkbox" value="" checked={this.state.mock.enabled} onChange={this.handleEnabledChange}/>
+          </div>
         </div>
-        <button className="btn btn-primary" type="submit">Submit</button>
+        <div className="row">
+          <div className="col-sm-2 justify-content-start">
+            <button className="btn btn-default" type="button" onClick={this.handleGoToMain}>To Main Page</button>
+          </div>
+          <div className="col-sm-2">
+            <button className="btn btn-primary" type="submit">Submit</button>
+          </div>
+        </div>
       </form>
     );
   }

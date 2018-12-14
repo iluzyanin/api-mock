@@ -1,8 +1,13 @@
 import Link from 'next/link'
+import dynamic from 'next/dynamic';
 import HttpMethod from "./HttpMethod";
 import GlyphButton from './GlyphButton';
 import Expand from './Expand';
-import StyledJSON from './StyledJSON';
+
+const ReactJson = dynamic(
+  import('react-json-view'),
+  { ssr: false }
+);
 
 class Mock extends React.PureComponent {
   constructor(props) {
@@ -30,7 +35,7 @@ class Mock extends React.PureComponent {
           <GlyphButton onClick={this.props.onDelete} icon="trash" title="Delete mock"></GlyphButton>
         </p>
         <Expand isOpen={this.state.isResponseOpen}>
-          <StyledJSON json={mock.data}></StyledJSON>
+          <ReactJson src={mock.data} />
         </Expand>
         <hr />
       </li>

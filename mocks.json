@@ -1,59 +1,630 @@
 [
   {
-    "id": "5bbca820-7b0a-11e8-93f9-9d1550ef9b51",
-    "url": "/contracts",
+    "url": "/activities/33765581",
     "method": "GET",
-    "status": 200,
     "data": [
       {
-        "id": "test1",
-        "amount": 123
-      },
-      {
-        "id": "test2",
-        "amount": 456
-      },
-      {
-        "id": "test3",
-        "amount": 321
-      },
-      {
-        "id": "test4",
-        "amount": 654
-      },
-      {
-        "id": "test5",
-        "amount": 789
+        "id": "8c2c8ae40e3cffd7bbe4a5c7e97000a3",
+        "publicId": "1472-0428-4130-79",
+        "uniqueId": "PKW-1472-0428-4130-79",
+        "type": {
+          "key": "contract",
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": false
+        },
+        "mandate": {
+          "type": "broker",
+          "text": "betreut von CHECK24"
+        },
+        "status": {
+          "text": "Testabschluss",
+          "color": "yellow",
+          "isGrayed": false,
+          "managedByText": "betreut von CHECK24"
+        },
+        "date": "2018-06-21T13:38:39.000Z",
+        "dateFormatted": "21.06.2018",
+        "product": {
+          "key": "pkw",
+          "name": "Kfz-Versicherung"
+        },
+        "productSpecificData": {
+          "hsn": "1349",
+          "tsn": "ADI",
+          "kfzMarke": "Hyundai",
+          "kfzModell": "ix35",
+          "kfzVerkaufsbezeichnung": "ix35 2.0 GDI",
+          "zahlweise": "jährlich",
+          "anzahl": 90,
+          "kfzLeistung": 166,
+          "preis": 100576,
+          "hauptfaelligkeitUnterjaehrig": false,
+          "versicherungsbeginn": "2018-06-20T22:00:00.000Z",
+          "versicherungsende": "2018-12-30T23:00:00.000Z"
+        },
+        "insurance": {
+          "key": "cosmosdirekt",
+          "name": "CosmosDirekt",
+          "logoUrl": "https://www.check24-test.de:443/einsurance/media/logos/h40/cosmos.png"
+        },
+        "tariffName": "Basis mit Werkstattbindung",
+        "additionalText": "Hyundai ix35",
+        "payment": {
+          "amount": "1.005,76 €",
+          "paymentPrefix": "jährlich"
+        },
+        "labels": [],
+        "policyHolder": {
+          "gender": "male",
+          "firstname": "Max",
+          "lastname": "Pecu",
+          "birthday": "1980-12-31T23:00:00.000Z",
+          "birthdayFormatted": "01.01.1981"
+        },
+        "policyHolderCaption": "von Max",
+        "insuredPeople": [],
+        "insuredItemsCaption": "Versichert: Hyundai ix35",
+        "primaryLink": {
+          "app": {
+            "url": "",
+            "caption": "Details anzeigen",
+            "displaymode": "mainwebview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          },
+          "mobile": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          }
+        },
+        "secondaryLink": {
+          "desktop": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          },
+          "tabletapp": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          },
+          "tablet": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": "",
+          "activateLink": ""
+        },
+        "actionMark": {
+          "isActive": false
+        }
       }
     ],
-    "delay": 0,
-    "enabled": true
-  },
-  {
-    "id": "5918b140-7b0a-11e8-93f9-9d1550ef9b51",
-    "url": "/contracts",
-    "method": "POST",
-    "status": 201,
-    "data": {},
-    "delay": 0,
-    "enabled": true
-  },
-  {
-    "url": "/fruits",
-    "method": "GET",
     "status": 200,
+    "delay": 1000,
+    "enabled": true,
+    "id": "bdc6ee90-feef-11e8-a3d4-11162ab5bfad"
+  },
+  {
+    "url": "/activities/by-user-id/33765581",
+    "method": "GET",
     "data": [
       {
-        "id": 1,
-        "name": "apple"
+        "id": "36a0da2812ffd307723e01e68c0981ab",
+        "type": {
+          "key": "contract",
+          "order": 2,
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": true
+        },
+        "status": {
+          "text": "Details unbekannt",
+          "color": "red",
+          "isGrayed": false
+        },
+        "date": "2018-12-07T14:42:53.315Z",
+        "dateFormatted": "07.12.2018",
+        "product": {
+          "key": "rkv",
+          "name": "Auslandsreisekrankenversicherung"
+        },
+        "productSpecificData": {
+          "isIncompleteContract": true
+        },
+        "insurance": {
+          "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/rkv/logo.svg"
+        },
+        "additionalText": "Jetzt Vertragsdetails anfordern.",
+        "payment": {},
+        "primaryLink": {
+          "desktop": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tablet": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "mobile": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "app": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tabletapp": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": ""
+        }
       },
       {
-        "id": 2,
-        "name": "banana"
+        "id": "3da9b1a84c4cd6ee1493a5bc1ee7e04a",
+        "type": {
+          "key": "contract",
+          "order": 1,
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": true
+        },
+        "status": {
+          "text": "Details unbekannt",
+          "color": "red",
+          "isGrayed": false
+        },
+        "date": "2018-12-12T15:05:21.658Z",
+        "dateFormatted": "12.12.2018",
+        "product": {
+          "key": "phv",
+          "name": "Privathaftpflichtversicherung"
+        },
+        "productSpecificData": {
+          "phv_coinsured": "familyWithKids"
+        },
+        "insurance": {
+          "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/phv/logo.svg"
+        },
+        "additionalText": "Krankenkasse auswählen und sofort Vertragsdetails sehen.",
+        "payment": {},
+        "primaryLink": {
+          "desktop": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "tablet": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "mobile": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "app": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "tabletapp": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": ""
+        }
+      },
+      {
+        "id": "1c1ad335034a1802f94f8707e49be101",
+        "type": {
+          "key": "contract",
+          "order": 1,
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": true
+        },
+        "status": {
+          "text": "Details unbekannt",
+          "color": "red",
+          "isGrayed": false
+        },
+        "date": "2018-09-27T14:12:50.527Z",
+        "dateFormatted": "27.09.2018",
+        "product": {
+          "key": "hkv",
+          "name": "Hundekrankenversicherung"
+        },
+        "productSpecificData": {
+          "isIncompleteContract": true
+        },
+        "insurance": {
+          "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/hkv/logo.svg"
+        },
+        "additionalText": "Jetzt Vertragsdetails anfordern.",
+        "payment": {},
+        "primaryLink": {
+          "desktop": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tablet": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "mobile": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "app": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tabletapp": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": ""
+        }
       }
     ],
-    "id": "880f3d10-71a6-11e8-b33c-7506d347890b",
+    "status": 200,
     "delay": 0,
-    "enabled": true
+    "enabled": true,
+    "id": "b7d024f0-ff78-11e8-a60c-ed3ffd0a217c"
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "delay": 1000,
+    "enabled": true,
+    "id": "768925f0-ffa0-11e8-a60c-ed3ffd0a217c",
+    "url": "/activities/39822095",
+    "data": [
+      {
+        "id": "8c2c8ae40e3cffd7bbe4a5c7e97000a3",
+        "publicId": "1472-0428-4130-79",
+        "uniqueId": "PKW-1472-0428-4130-79",
+        "type": {
+          "key": "contract",
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": false
+        },
+        "mandate": {
+          "type": "broker",
+          "text": "betreut von CHECK24"
+        },
+        "status": {
+          "text": "Testabschluss",
+          "color": "yellow",
+          "isGrayed": false,
+          "managedByText": "betreut von CHECK24"
+        },
+        "date": "2018-06-21T13:38:39.000Z",
+        "dateFormatted": "21.06.2018",
+        "product": {
+          "key": "pkw",
+          "name": "Kfz-Versicherung"
+        },
+        "productSpecificData": {
+          "hsn": "1349",
+          "tsn": "ADI",
+          "kfzMarke": "Hyundai",
+          "kfzModell": "ix35",
+          "kfzVerkaufsbezeichnung": "ix35 2.0 GDI",
+          "zahlweise": "jährlich",
+          "anzahl": 90,
+          "kfzLeistung": 166,
+          "preis": 100576,
+          "hauptfaelligkeitUnterjaehrig": false,
+          "versicherungsbeginn": "2018-06-20T22:00:00.000Z",
+          "versicherungsende": "2018-12-30T23:00:00.000Z"
+        },
+        "insurance": {
+          "key": "cosmosdirekt",
+          "name": "CosmosDirekt",
+          "logoUrl": "https://www.check24-test.de:443/einsurance/media/logos/h40/cosmos.png"
+        },
+        "tariffName": "Basis mit Werkstattbindung",
+        "additionalText": "Hyundai ix35",
+        "payment": {
+          "amount": "1.005,76 €",
+          "paymentPrefix": "jährlich"
+        },
+        "labels": [],
+        "policyHolder": {
+          "gender": "male",
+          "firstname": "Max",
+          "lastname": "Pecu",
+          "birthday": "1980-12-31T23:00:00.000Z",
+          "birthdayFormatted": "01.01.1981"
+        },
+        "policyHolderCaption": "von Max",
+        "insuredPeople": [],
+        "insuredItemsCaption": "Versichert: Hyundai ix35",
+        "primaryLink": {
+          "app": {
+            "url": "",
+            "caption": "Details anzeigen",
+            "displaymode": "mainwebview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          },
+          "mobile": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          }
+        },
+        "secondaryLink": {
+          "desktop": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          },
+          "tabletapp": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          },
+          "tablet": {
+            "url": "",
+            "iframeUrl": "",
+            "caption": "Details anzeigen",
+            "displaymode": "detailview",
+            "buttonstyle": "gray",
+            "isDetailLink": true
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": "",
+          "activateLink": ""
+        },
+        "actionMark": {
+          "isActive": false
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "status": 200,
+    "delay": 0,
+    "enabled": true,
+    "id": "b760ba20-ffa0-11e8-a60c-ed3ffd0a217c",
+    "url": "/activities/by-user-id/39822095",
+    "data": [
+      {
+        "id": "36a0da2812ffd307723e01e68c0981ab",
+        "type": {
+          "key": "contract",
+          "order": 1,
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": true
+        },
+        "status": {
+          "text": "Details unbekannt",
+          "color": "red",
+          "isGrayed": false
+        },
+        "date": "2018-12-07T14:42:53.315Z",
+        "dateFormatted": "07.12.2018",
+        "product": {
+          "key": "who",
+          "name": "Wohngebäudeversicherung"
+        },
+        "productSpecificData": {
+          "isIncompleteContract": true
+        },
+        "insurance": {
+          "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/rkv/logo.svg"
+        },
+        "additionalText": "Jetzt Vertragsdetails anfordern.",
+        "payment": {},
+        "primaryLink": {
+          "desktop": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tablet": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "mobile": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "app": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tabletapp": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": ""
+        }
+      },
+      {
+        "id": "3da9b1a84c4cd6ee1493a5bc1ee7e04a",
+        "type": {
+          "key": "contract",
+          "order": 1,
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": true
+        },
+        "status": {
+          "text": "Details unbekannt",
+          "color": "red",
+          "isGrayed": false
+        },
+        "date": "2018-12-12T15:05:21.658Z",
+        "dateFormatted": "12.12.2018",
+        "product": {
+          "key": "phv",
+          "name": "Privathaftpflichtversicherung"
+        },
+        "productSpecificData": {
+          "phv_coinsured": "familyWithKids"
+        },
+        "insurance": {
+          "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/phv/logo.svg"
+        },
+        "additionalText": "Krankenkasse auswählen und sofort Vertragsdetails sehen.",
+        "payment": {},
+        "primaryLink": {
+          "desktop": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "tablet": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "mobile": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "app": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          },
+          "tabletapp": {
+            "url": "",
+            "caption": "Krankenkasse wählen",
+            "displaymode": "mainwebview"
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": ""
+        }
+      },
+      {
+        "id": "1c1ad335034a1802f94f8707e49be101",
+        "type": {
+          "key": "contract",
+          "order": 1,
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": true
+        },
+        "status": {
+          "text": "Details unbekannt",
+          "color": "red",
+          "isGrayed": false
+        },
+        "date": "2018-09-27T14:12:50.527Z",
+        "dateFormatted": "27.09.2018",
+        "product": {
+          "key": "hkv",
+          "name": "Hundekrankenversicherung"
+        },
+        "productSpecificData": {
+          "isIncompleteContract": true
+        },
+        "insurance": {
+          "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/hkv/logo.svg"
+        },
+        "additionalText": "Jetzt Vertragsdetails anfordern.",
+        "payment": {},
+        "primaryLink": {
+          "desktop": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tablet": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "mobile": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "app": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tabletapp": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": ""
+        }
+      }
+    ]
   }
 ]
