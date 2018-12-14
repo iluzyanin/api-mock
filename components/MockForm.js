@@ -25,6 +25,7 @@ class MockForm extends React.PureComponent {
     }
     this.state = state;
     this.handleUrlChange = this.handleUrlChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleMethodChange = this.handleMethodChange.bind(this);
     this.handleJsonChange = this.handleJsonChange.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
@@ -39,6 +40,16 @@ class MockForm extends React.PureComponent {
       mock: {
         ...prevState.mock,
         url
+      }
+    }));
+  }
+
+  handleDescriptionChange(event) {
+    const description = event.target.value.trim();
+    this.setState(prevState => ({
+      mock: {
+        ...prevState.mock,
+        description
       }
     }));
   }
@@ -136,9 +147,15 @@ class MockForm extends React.PureComponent {
           </div>
         </div>
         <div className="form-group">
+          <label className="col-sm-2" htmlFor="description">Description</label>
+          <div className="col-sm-10">
+            <input id="description" className="form-control" type="text" value={this.state.mock.description} onChange={this.handleDescriptionChange} />
+          </div>
+        </div>
+        <div className="form-group">
           <label className="col-sm-2" htmlFor="json">Return Json</label>
           <div className="col-sm-10">
-            <ReactJson src={JSON.parse(this.state.mock.data)} onEdit={this.handleJsonChange} />
+            <ReactJson src={JSON.parse(this.state.mock.data)} theme="flat" onEdit={this.handleJsonChange} />
           </div>
         </div>
         <div className="form-group">

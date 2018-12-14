@@ -2,6 +2,7 @@
   {
     "url": "/activities/33765581",
     "method": "GET",
+    "description": "Unified activities for Ilya",
     "data": [
       {
         "id": "8c2c8ae40e3cffd7bbe4a5c7e97000a3",
@@ -126,6 +127,7 @@
   {
     "url": "/activities/by-user-id/33765581",
     "method": "GET",
+    "description": "Incomplete contracts for Ilya",
     "data": [
       {
         "id": "36a0da2812ffd307723e01e68c0981ab",
@@ -315,6 +317,7 @@
   },
   {
     "method": "GET",
+    "description": "Unified activities for Alina",
     "status": 200,
     "delay": 1000,
     "enabled": true,
@@ -439,6 +442,7 @@
   },
   {
     "method": "GET",
+    "description": "Incomplete contracts for Alina",
     "status": 200,
     "delay": 0,
     "enabled": true,

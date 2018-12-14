@@ -2,7 +2,7 @@ const Expand = (props) => (
   <React.Fragment>
     <div className="expand">
       <div className={`text text${props.isOpen ? '' : '--closed' }`}>
-        {props.children}
+        { props.isOpen && props.children}
       </div>
     </div>
     <style jsx>{`

@@ -24,7 +24,7 @@ class Mock extends React.PureComponent {
   render() {
     const mock = this.props.mock;
     return (
-      <li>
+      [<li>
         <p>
           <HttpMethod name={mock.method}></HttpMethod>{' '}
           <code>{mock.url}</code> | status: {mock.status} | delay: {mock.delay} ms | {mock.enabled ? 'active' : 'disabled'}
@@ -33,12 +33,21 @@ class Mock extends React.PureComponent {
             <GlyphButton icon="pencil" title="Edit mock"></GlyphButton>
           </Link>
           <GlyphButton onClick={this.props.onDelete} icon="trash" title="Delete mock"></GlyphButton>
+          <div className="description">{mock.description}</div>
         </p>
         <Expand isOpen={this.state.isResponseOpen}>
-          <ReactJson src={mock.data} />
+          <ReactJson src={mock.data} theme="flat" />
         </Expand>
         <hr />
-      </li>
+      </li>,
+      <style jsx>{`
+        .description {
+          margin-top: 4px;
+          font-family: monospace;
+          font-size: 12px;
+          color: light-grey;
+        }
+    ` }</style>]
     );
   }
 }
