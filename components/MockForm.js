@@ -31,7 +31,18 @@ class MockForm extends React.PureComponent {
     this.handleStatusChange = this.handleStatusChange.bind(this);
     this.handleDelayChange = this.handleDelayChange.bind(this);
     this.handleEnabledChange = this.handleEnabledChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.saveChanges.bind(this);
+    this.debounceTimeout = null;
+  }
+
+  debouncedUpdate() {
+    if (this.debounceTimeout) {
+      clearTimeout(this.debounceTimeout);
+    }
+
+    this.debounceTimeout = setTimeout(() => {
+      this.saveChanges();
+    }, 500);
   }
 
   handleUrlChange(event) {
@@ -41,7 +52,7 @@ class MockForm extends React.PureComponent {
         ...prevState.mock,
         url
       }
-    }));
+    }), this.debouncedUpdate);
   }
 
   handleDescriptionChange(event) {
@@ -51,7 +62,7 @@ class MockForm extends React.PureComponent {
         ...prevState.mock,
         description
       }
-    }));
+    }), this.debouncedUpdate);
   }
 
   handleMethodChange(event) {
@@ -61,7 +72,7 @@ class MockForm extends React.PureComponent {
         ...prevState.mock,
         method
       }
-    }));
+    }), this.saveChanges);
   }
 
   handleJsonChange({updated_src}) {
@@ -71,7 +82,7 @@ class MockForm extends React.PureComponent {
         ...prevState.mock,
         data: JSON.stringify(updated_src)
       }
-    }));
+    }), this.saveChanges);
   }
 
   handleStatusChange(event) {
@@ -81,7 +92,7 @@ class MockForm extends React.PureComponent {
         ...prevState.mock,
         status: status
       }
-    }));
+    }), this.saveChanges);
   }
 
   handleDelayChange(event) {
@@ -91,7 +102,7 @@ class MockForm extends React.PureComponent {
         ...prevState.mock,
         delay
       }
-    }));
+    }), this.debouncedUpdate);
   }
 
   handleEnabledChange(event) {
@@ -118,14 +129,13 @@ class MockForm extends React.PureComponent {
     Router.push('/', '/ui');
   }
 
-  async handleSubmit(event) {
-    event.preventDefault();
+  saveChanges() {
     const mock = this.state.mock;
     const hasId = typeof mock.id !== 'undefined';
     const data = mock.data ? JSON.parse(mock.data) : mock.data;
     const delay = mock.delay ? parseInt(mock.delay) : 0;
     const status = parseInt(mock.status);
-    await fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
+    return fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
       body: JSON.stringify({ ...mock, data, delay, status }),
       headers: {
         'content-type': 'application/json'
@@ -136,7 +146,7 @@ class MockForm extends React.PureComponent {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} className="form-horizontal">
+      <form className="form-horizontal">
         <div className="form-group">
           <label className="col-sm-2" htmlFor="method">Method</label>
           <div className="col-sm-10">
@@ -208,11 +218,8 @@ class MockForm extends React.PureComponent {
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-1 justify-content-start">
-            <button className="btn btn-default" type="button" onClick={this.handleGoToMain}>Back</button>
-          </div>
           <div className="col-sm-1">
-            <button className="btn btn-primary" type="submit">Save</button>
+            <button className="btn btn-default" type="button" onClick={this.handleGoToMain}>Back</button>
           </div>
         </div>
       </form>

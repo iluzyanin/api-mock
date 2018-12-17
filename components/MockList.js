@@ -9,10 +9,6 @@ class MockList extends React.PureComponent {
     this.deleteMock = this.deleteMock.bind(this);
   }
 
-  editMock(mockId) {
-    Router.push(`/edit-mock?id=${mockId}`, `/ui/edit-mock?id=${mockId}`);
-  }
-
   async cloneMock(mock) {
     const clonedMock = {
       ...mock,
@@ -45,7 +41,6 @@ class MockList extends React.PureComponent {
           <Mock
             mock={mock}
             key={mock.id}
-            onEdit={() => this.editMock(mock.id) }
             onDelete={() => this.deleteMock(mock.id)}
             onClone={() => this.cloneMock(mock)} />
         ))}
