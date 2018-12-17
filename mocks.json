@@ -2,7 +2,8 @@
   {
     "url": "/activities/33765581",
     "method": "GET",
-    "description": "Unified activities for Ilya",
+    "description": "Ilya - Unified activities",
+    "proxyUrl": "https://veve:u7WYsKEk5YMehg6q@www.check24-test.de/versicherungsordner/api/unified-activity-service/v1/activities/33765581",
     "data": [
       {
         "id": "8c2c8ae40e3cffd7bbe4a5c7e97000a3",
@@ -127,7 +128,8 @@
   {
     "url": "/activities/by-user-id/33765581",
     "method": "GET",
-    "description": "Incomplete contracts for Ilya",
+    "description": "Ilya - Incomplete contracts",
+    "proxyUrl": "http://veve.intern.v.check24-test.de:8080/versicherungsordner/api/incomplete-contract-service/activities/by-user-id/33765581",
     "data": [
       {
         "id": "36a0da2812ffd307723e01e68c0981ab",
@@ -317,7 +319,7 @@
   },
   {
     "method": "GET",
-    "description": "Unified activities for Alina",
+    "description": "Alina - Unified activities",
     "status": 200,
     "delay": 1000,
     "enabled": true,
@@ -442,7 +444,7 @@
   },
   {
     "method": "GET",
-    "description": "Incomplete contracts for Alina",
+    "description": "Alina - Incomplete contracts",
     "status": 200,
     "delay": 0,
     "enabled": true,
@@ -466,8 +468,8 @@
         "date": "2018-12-07T14:42:53.315Z",
         "dateFormatted": "07.12.2018",
         "product": {
-          "key": "who",
-          "name": "Wohngebäudeversicherung"
+          "key": "boat",
+          "name": "Bootshaftpflicht"
         },
         "productSpecificData": {
           "isIncompleteContract": true
@@ -520,17 +522,17 @@
         },
         "status": {
           "text": "Details unbekannt",
-          "color": "red",
+          "color": "green",
           "isGrayed": false
         },
         "date": "2018-12-12T15:05:21.658Z",
         "dateFormatted": "12.12.2018",
         "product": {
           "key": "phv",
-          "name": "Privathaftpflichtversicherung"
+          "name": "Privathaftpflichtversicherung\n"
         },
         "productSpecificData": {
-          "phv_coinsured": "familyWithKids"
+          "phv_coinsured": "couple"
         },
         "insurance": {
           "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/phv/logo.svg"
@@ -571,6 +573,66 @@
       },
       {
         "id": "1c1ad335034a1802f94f8707e49be101",
+        "type": {
+          "key": "contract",
+          "order": 1,
+          "name": "Vertrag",
+          "isContract": true,
+          "isForeignContract": true
+        },
+        "status": {
+          "text": "Details unbekannt",
+          "color": "red",
+          "isGrayed": false
+        },
+        "date": "2018-09-27T14:12:50.527Z",
+        "dateFormatted": "27.09.2018",
+        "product": {
+          "key": "hkv",
+          "name": "Hundekrankenversicherung"
+        },
+        "productSpecificData": {
+          "isIncompleteContract": true
+        },
+        "insurance": {
+          "logoUrl": "https://www.check24-test.de/versicherungsordner/api/insurance-service/v3/products/hkv/logo.svg"
+        },
+        "additionalText": "Jetzt Vertragsdetails anfordern.",
+        "payment": {},
+        "primaryLink": {
+          "desktop": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tablet": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "mobile": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "app": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          },
+          "tabletapp": {
+            "url": "",
+            "caption": "Details anfordern",
+            "displaymode": "mainwebview"
+          }
+        },
+        "visibility": {
+          "currentState": "active",
+          "archiveLink": ""
+        }
+      },
+      {
+        "id": "1c1ad335034a1802f94f8707e49be105",
         "type": {
           "key": "contract",
           "order": 1,

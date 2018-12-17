@@ -1,4 +1,5 @@
 const express = require('express');
+const proxy = require('express-http-proxy');
 const next = require('next');
 const mockService = require('./service/mock');
 
@@ -24,15 +25,20 @@ app.prepare()
       return handle(req, res)
     });
 
-    server.use('*', async (req, res) => {
+    server.use('*', async (req, res, next) => {
       const mocks = await mockService.getAll();
       const foundMock = mocks.filter(mock => mock.url === req.baseUrl && mock.method === req.method)[0];
-      if (foundMock && foundMock.enabled) {
-        if (foundMock.delay > 0) {
-          await delay(foundMock.delay);
+      if (foundMock) {
+        if (foundMock.enabled) {
+          if (foundMock.delay > 0) {
+            await delay(foundMock.delay);
+          }
+          res.status(foundMock.status).json(foundMock.data);
+          return;
         }
-        res.status(foundMock.status).json(foundMock.data);
-        return;
+        if (foundMock.proxyUrl) {
+          return proxy(foundMock.proxyUrl)(req, res, next);
+        }
       }
       res.status(404).end();
     });

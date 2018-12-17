@@ -45,7 +45,7 @@ class MockForm extends React.PureComponent {
   }
 
   handleDescriptionChange(event) {
-    const description = event.target.value.trim();
+    const description = event.target.value;
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
@@ -104,6 +104,16 @@ class MockForm extends React.PureComponent {
     }));
   }
 
+  handleProxyUrlChange(event) {
+    const proxyUrl = event.target.value.trim();
+    this.setState(prevState => ({
+      mock: {
+        ...prevState.mock,
+        proxyUrl
+      }
+    }));
+  }
+
   handleGoToMain() {
     Router.push('/', '/ui');
   }
@@ -122,7 +132,6 @@ class MockForm extends React.PureComponent {
       },
       method: hasId ? 'PUT' : 'POST'
     });
-    Router.push('/', '/ui');
   }
 
   render() {
@@ -153,12 +162,6 @@ class MockForm extends React.PureComponent {
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="json">Return Json</label>
-          <div className="col-sm-10">
-            <ReactJson src={JSON.parse(this.state.mock.data)} theme="flat" onEdit={this.handleJsonChange} />
-          </div>
-        </div>
-        <div className="form-group">
           <label className="col-sm-2" htmlFor="status">Status</label>
           <div className="col-sm-10">
             <select id="status" className="form-control" value={this.state.mock.status} onChange={this.handleStatusChange}>
@@ -186,12 +189,30 @@ class MockForm extends React.PureComponent {
             <input id="enabled" type="checkbox" value="" checked={this.state.mock.enabled} onChange={this.handleEnabledChange}/>
           </div>
         </div>
-        <div className="row">
-          <div className="col-sm-2 justify-content-start">
-            <button className="btn btn-default" type="button" onClick={this.handleGoToMain}>To Main Page</button>
+        <div className="form-group">
+          <label className="col-sm-2" htmlFor="proxy">Proxy url</label>
+          <div className="col-sm-10">
+            <input id="proxy" className="form-control" type="text" value={this.state.mock.proxyUrl} onChange={this.handleProxyUrlChange} />
           </div>
-          <div className="col-sm-2">
-            <button className="btn btn-primary" type="submit">Submit</button>
+        </div>
+        <div className="form-group">
+          <label className="col-sm-2" htmlFor="json">Return Json</label>
+          <div className="col-sm-10">
+            <ReactJson
+              src={JSON.parse(this.state.mock.data)}
+              collapsed={true}
+              onAdd={this.handleJsonChange}
+              onDelete={this.handleJsonChange}
+              onEdit={this.handleJsonChange}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-1 justify-content-start">
+            <button className="btn btn-default" type="button" onClick={this.handleGoToMain}>Back</button>
+          </div>
+          <div className="col-sm-1">
+            <button className="btn btn-primary" type="submit">Save</button>
           </div>
         </div>
       </form>
