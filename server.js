@@ -14,6 +14,7 @@ const handle = app.getRequestHandler();
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 app.prepare()
+  .then(mockService.initializeMocks)
   .then(() => {
     const server = express();
 
