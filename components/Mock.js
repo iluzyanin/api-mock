@@ -41,7 +41,7 @@ class Mock extends React.PureComponent {
             <ReactJson src={mock.data} theme="flat" />
           </Expand>
           <hr />
-        </li>,
+        </li>
         <style jsx>{`
           .description {
             margin-top: 4px;
@@ -51,7 +51,7 @@ class Mock extends React.PureComponent {
             display: block;
           }
           hr {
-            margin: 5px 0;
+            margin: 5px 0 15px 0;
           }
       ` }</style>
       </React.Fragment>

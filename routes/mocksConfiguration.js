@@ -17,8 +17,8 @@ module.exports = (app) => {
 
   router.post('/', jsonParser, async (req, res) => {
     try {
-      await mockService.add(req.body);
-      res.status(201).end();
+      const id = await mockService.add(req.body);
+      res.status(201).set('Location', id).end();
     } catch (err) {
       console.error(err);
       res.status(500).end();

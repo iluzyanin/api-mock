@@ -31,6 +31,9 @@ class MockList extends React.PureComponent {
   }
 
   descriptionSorter(mockA, mockB) {
+    if (!mockA.description) {
+      return 1;
+    }
     return mockA.description.localeCompare(mockB.description);
   }
 

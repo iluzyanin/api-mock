@@ -1,7 +1,8 @@
 import fetch from 'isomorphic-unfetch';
 import Link from 'next/link'
-import Layout from '../components/MyLayout';
+import GlyphButton from '../components/GlyphButton';
 import MockList from '../components/MockList';
+import Layout from '../components/MyLayout';
 
 class Index extends React.PureComponent {
   constructor(props) {
@@ -29,10 +30,12 @@ class Index extends React.PureComponent {
   render() {
     return (
       <Layout>
-        <Link as="ui/edit-mock" href="edit-mock">
-          <button className="btn btn-default">New mock</button>
-        </Link>
-        <h2>Mocked requests</h2>
+        <h2>
+          Mocked requests
+          <Link as="ui/edit-mock" href="edit-mock">
+            <GlyphButton icon="plus" title="Create new mock"></GlyphButton>
+          </Link>
+        </h2>
         <MockList mocks={this.state.mocks} onMocksChange={this.onMocksChange}></MockList>
         <style jsx>{`
           h2 {

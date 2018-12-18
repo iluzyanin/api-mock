@@ -14,14 +14,15 @@ class MockForm extends React.PureComponent {
     const defaultMock = {
       url: '',
       method: 'GET',
-      data: undefined,
+      description: '',
+      data: '{}',
       status: 200,
       delay: 0,
       enabled: true
     };
     let state = { mock: defaultMock };
     if (typeof props.mock !== 'undefined') {
-      state = Object.assign(state, { mock: props.mock });
+      Object.assign(state, { mock: props.mock });
     }
     this.state = state;
     this.handleUrlChange = this.handleUrlChange.bind(this);
@@ -75,7 +76,7 @@ class MockForm extends React.PureComponent {
     }), this.saveChanges);
   }
 
-  handleJsonChange({updated_src}) {
+  handleJsonChange({ updated_src }) {
     console.log(updated_src);
     this.setState(prevState => ({
       mock: {
@@ -141,6 +142,17 @@ class MockForm extends React.PureComponent {
         'content-type': 'application/json'
       },
       method: hasId ? 'PUT' : 'POST'
+    }).then((response) => {
+      if (hasId) {
+        return;
+      }
+
+      this.setState((state) => ({
+        mock: {
+          ...state.mock,
+          id: response.headers.get('Location'),
+        }
+      }));
     });
   }
 
@@ -196,7 +208,7 @@ class MockForm extends React.PureComponent {
         <div className="form-group">
           <label className="col-sm-2" htmlFor="enabled">Enabled</label>
           <div className="col-sm-10">
-            <input id="enabled" type="checkbox" value="" checked={this.state.mock.enabled} onChange={this.handleEnabledChange}/>
+            <input id="enabled" type="checkbox" value="" checked={this.state.mock.enabled} onChange={this.handleEnabledChange} />
           </div>
         </div>
         <div className="form-group">
