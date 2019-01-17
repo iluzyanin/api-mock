@@ -19,7 +19,7 @@
     "next": "^7.0.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-json-view": "^1.19.1",
+    "react-json-editor-ajrm": "^2.5.9",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

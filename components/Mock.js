@@ -1,13 +1,8 @@
 import Link from 'next/link'
-import dynamic from 'next/dynamic';
 import HttpMethod from "./HttpMethod";
 import GlyphButton from './GlyphButton';
 import Expand from './Expand';
-
-const ReactJson = dynamic(
-  import('react-json-view'),
-  { ssr: false }
-);
+import JSONInput from 'react-json-editor-ajrm';
 
 class Mock extends React.PureComponent {
   constructor(props) {
@@ -38,7 +33,15 @@ class Mock extends React.PureComponent {
             <span className="description">{mock.description}</span>
           </p>
           <Expand isOpen={this.state.isResponseOpen}>
-            <ReactJson src={mock.data} theme="flat" />
+            <JSONInput
+              locale="en"
+              placeholder={mock.data}
+              theme="light_mitsuketa_tribute"
+              width="100%"
+              height="auto"
+              confirmGood={false}
+              viewOnly={true}
+            />
           </Expand>
           <hr />
         </li>

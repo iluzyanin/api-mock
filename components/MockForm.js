@@ -1,12 +1,7 @@
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
-import dynamic from 'next/dynamic';
-
-const ReactJson = dynamic(
-  import('react-json-view'),
-  { ssr: false }
-);
+import JSONInput from 'react-json-editor-ajrm';
 
 class MockForm extends React.PureComponent {
   constructor(props) {
@@ -25,14 +20,7 @@ class MockForm extends React.PureComponent {
       Object.assign(state, { mock: props.mock });
     }
     this.state = state;
-    this.handleUrlChange = this.handleUrlChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleMethodChange = this.handleMethodChange.bind(this);
-    this.handleJsonChange = this.handleJsonChange.bind(this);
-    this.handleStatusChange = this.handleStatusChange.bind(this);
-    this.handleDelayChange = this.handleDelayChange.bind(this);
-    this.handleEnabledChange = this.handleEnabledChange.bind(this);
-    this.handleSubmit = this.saveChanges.bind(this);
+    this.dataJs = JSON.parse(this.state.mock.data);
     this.debounceTimeout = null;
   }
 
@@ -46,7 +34,7 @@ class MockForm extends React.PureComponent {
     }, 500);
   }
 
-  handleUrlChange(event) {
+  handleUrlChange = (event) => {
     const url = event.target.value.trim();
     this.setState(prevState => ({
       mock: {
@@ -56,7 +44,7 @@ class MockForm extends React.PureComponent {
     }), this.debouncedUpdate);
   }
 
-  handleDescriptionChange(event) {
+  handleDescriptionChange = (event) => {
     const description = event.target.value;
     this.setState(prevState => ({
       mock: {
@@ -66,7 +54,7 @@ class MockForm extends React.PureComponent {
     }), this.debouncedUpdate);
   }
 
-  handleMethodChange(event) {
+  handleMethodChange = (event) => {
     const method = event.target.value;
     this.setState(prevState => ({
       mock: {
@@ -76,17 +64,18 @@ class MockForm extends React.PureComponent {
     }), this.saveChanges);
   }
 
-  handleJsonChange({ updated_src }) {
-    console.log(updated_src);
-    this.setState(prevState => ({
-      mock: {
-        ...prevState.mock,
-        data: JSON.stringify(updated_src)
-      }
-    }), this.saveChanges);
+  handleJsonChange = ({ jsObject, error }) => {
+    if (!error) {
+      this.setState(prevState => ({
+        mock: {
+          ...prevState.mock,
+          data: JSON.stringify(jsObject)
+        }
+      }), this.saveChanges);
+    }
   }
 
-  handleStatusChange(event) {
+  handleStatusChange = (event) => {
     const status = event.target.value;
     this.setState(prevState => ({
       mock: {
@@ -96,7 +85,7 @@ class MockForm extends React.PureComponent {
     }), this.saveChanges);
   }
 
-  handleDelayChange(event) {
+  handleDelayChange = (event) => {
     const delay = event.target.value.trim();
     this.setState(prevState => ({
       mock: {
@@ -106,7 +95,7 @@ class MockForm extends React.PureComponent {
     }), this.debouncedUpdate);
   }
 
-  handleEnabledChange(event) {
+  handleEnabledChange = (event) => {
     const enabled = event.target.checked;
     this.setState(prevState => ({
       mock: {
@@ -116,7 +105,7 @@ class MockForm extends React.PureComponent {
     }));
   }
 
-  handleProxyUrlChange(event) {
+  handleProxyUrlChange = (event) => {
     const proxyUrl = event.target.value.trim();
     this.setState(prevState => ({
       mock: {
@@ -220,12 +209,14 @@ class MockForm extends React.PureComponent {
         <div className="form-group">
           <label className="col-sm-2" htmlFor="json">Return Json</label>
           <div className="col-sm-10">
-            <ReactJson
-              src={JSON.parse(this.state.mock.data)}
-              collapsed={true}
-              onAdd={this.handleJsonChange}
-              onDelete={this.handleJsonChange}
-              onEdit={this.handleJsonChange}
+            <JSONInput
+              locale="en"
+              placeholder={this.dataJs}
+              theme="light_mitsuketa_tribute"
+              width="100%"
+              reset={false}
+              confirmGood={false}
+              onChange={this.handleJsonChange}
             />
           </div>
         </div>
