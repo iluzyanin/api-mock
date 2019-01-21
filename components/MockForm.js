@@ -1,12 +1,12 @@
-import React from 'react';
-import fetch from 'isomorphic-unfetch';
-import Router from 'next/router';
-import JSONInput from 'react-json-editor-ajrm';
-import locale from 'react-json-editor-ajrm/locale/en';
+import React from 'react'
+import fetch from 'isomorphic-unfetch'
+import Router from 'next/router'
+import JSONInput from 'react-json-editor-ajrm'
+import locale from 'react-json-editor-ajrm/locale/en'
 
 class MockForm extends React.PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
     const defaultMock = {
       url: '',
       method: 'GET',
@@ -14,145 +14,170 @@ class MockForm extends React.PureComponent {
       data: '{}',
       status: 200,
       delay: 0,
-      enabled: true
-    };
-    let state = { mock: defaultMock };
-    if (typeof props.mock !== 'undefined') {
-      Object.assign(state, { mock: props.mock });
+      enabled: true,
     }
-    this.state = state;
-    this.dataJs = JSON.parse(this.state.mock.data);
-    this.debounceTimeout = null;
+    let state = { mock: defaultMock }
+    if (typeof props.mock !== 'undefined') {
+      Object.assign(state, { mock: props.mock })
+    }
+    this.state = state
+    this.dataJs = JSON.parse(this.state.mock.data)
+    this.debounceTimeout = null
   }
 
   debouncedUpdate() {
     if (this.debounceTimeout) {
-      clearTimeout(this.debounceTimeout);
+      clearTimeout(this.debounceTimeout)
     }
 
     this.debounceTimeout = setTimeout(() => {
-      this.saveChanges();
-    }, 500);
+      this.saveChanges()
+    }, 500)
   }
 
-  handleUrlChange = (event) => {
-    const url = event.target.value.trim();
-    this.setState(prevState => ({
-      mock: {
-        ...prevState.mock,
-        url
-      }
-    }), this.debouncedUpdate);
+  handleUrlChange = event => {
+    const url = event.target.value.trim()
+    this.setState(
+      prevState => ({
+        mock: {
+          ...prevState.mock,
+          url,
+        },
+      }),
+      this.debouncedUpdate
+    )
   }
 
-  handleDescriptionChange = (event) => {
-    const description = event.target.value;
-    this.setState(prevState => ({
-      mock: {
-        ...prevState.mock,
-        description
-      }
-    }), this.debouncedUpdate);
+  handleDescriptionChange = event => {
+    const description = event.target.value
+    this.setState(
+      prevState => ({
+        mock: {
+          ...prevState.mock,
+          description,
+        },
+      }),
+      this.debouncedUpdate
+    )
   }
 
-  handleMethodChange = (event) => {
-    const method = event.target.value;
-    this.setState(prevState => ({
-      mock: {
-        ...prevState.mock,
-        method
-      }
-    }), this.saveChanges);
+  handleMethodChange = event => {
+    const method = event.target.value
+    this.setState(
+      prevState => ({
+        mock: {
+          ...prevState.mock,
+          method,
+        },
+      }),
+      this.saveChanges
+    )
   }
 
   handleJsonChange = ({ jsObject, error }) => {
     if (!error) {
-      this.setState(prevState => ({
-        mock: {
-          ...prevState.mock,
-          data: JSON.stringify(jsObject)
-        }
-      }), this.saveChanges);
+      this.setState(
+        prevState => ({
+          mock: {
+            ...prevState.mock,
+            data: JSON.stringify(jsObject),
+          },
+        }),
+        this.saveChanges
+      )
     }
   }
 
-  handleStatusChange = (event) => {
-    const status = event.target.value;
-    this.setState(prevState => ({
-      mock: {
-        ...prevState.mock,
-        status: status
-      }
-    }), this.saveChanges);
+  handleStatusChange = event => {
+    const status = event.target.value
+    this.setState(
+      prevState => ({
+        mock: {
+          ...prevState.mock,
+          status: status,
+        },
+      }),
+      this.saveChanges
+    )
   }
 
-  handleDelayChange = (event) => {
-    const delay = event.target.value.trim();
-    this.setState(prevState => ({
-      mock: {
-        ...prevState.mock,
-        delay
-      }
-    }), this.debouncedUpdate);
+  handleDelayChange = event => {
+    const delay = event.target.value.trim()
+    this.setState(
+      prevState => ({
+        mock: {
+          ...prevState.mock,
+          delay,
+        },
+      }),
+      this.debouncedUpdate
+    )
   }
 
-  handleEnabledChange = (event) => {
-    const enabled = event.target.checked;
+  handleEnabledChange = event => {
+    const enabled = event.target.checked
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
-        enabled
-      }
-    }));
+        enabled,
+      },
+    }))
   }
 
-  handleProxyUrlChange = (event) => {
-    const proxyUrl = event.target.value.trim();
+  handleProxyUrlChange = event => {
+    const proxyUrl = event.target.value.trim()
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
-        proxyUrl
-      }
-    }));
+        proxyUrl,
+      },
+    }))
   }
 
   handleGoToMain() {
-    Router.push('/', '/ui');
+    Router.push('/', '/ui')
   }
 
   saveChanges() {
-    const mock = this.state.mock;
-    const hasId = typeof mock.id !== 'undefined';
-    const data = mock.data ? JSON.parse(mock.data) : mock.data;
-    const delay = mock.delay ? parseInt(mock.delay) : 0;
-    const status = parseInt(mock.status);
+    const mock = this.state.mock
+    const hasId = typeof mock.id !== 'undefined'
+    const data = mock.data ? JSON.parse(mock.data) : mock.data
+    const delay = mock.delay ? parseInt(mock.delay) : 0
+    const status = parseInt(mock.status)
     return fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
       body: JSON.stringify({ ...mock, data, delay, status }),
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
       },
-      method: hasId ? 'PUT' : 'POST'
-    }).then((response) => {
+      method: hasId ? 'PUT' : 'POST',
+    }).then(response => {
       if (hasId) {
-        return;
+        return
       }
 
-      this.setState((state) => ({
+      this.setState(state => ({
         mock: {
           ...state.mock,
           id: response.headers.get('Location'),
-        }
-      }));
-    });
+        },
+      }))
+    })
   }
 
   render() {
     return (
       <form className="form-horizontal">
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="method">Method</label>
+          <label className="col-sm-2" htmlFor="method">
+            Method
+          </label>
           <div className="col-sm-10">
-            <select id="method" className="form-control" value={this.state.mock.method} onChange={this.handleMethodChange}>
+            <select
+              id="method"
+              className="form-control"
+              value={this.state.mock.method}
+              onChange={this.handleMethodChange}
+            >
               <option value="GET">GET</option>
               <option value="POST">POST</option>
               <option value="PUT">PUT</option>
@@ -162,21 +187,44 @@ class MockForm extends React.PureComponent {
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="url">Url</label>
+          <label className="col-sm-2" htmlFor="url">
+            Url
+          </label>
           <div className="col-sm-10">
-            <input id="url" className="form-control" type="text" value={this.state.mock.url} onChange={this.handleUrlChange} />
+            <input
+              id="url"
+              className="form-control"
+              type="text"
+              value={this.state.mock.url}
+              onChange={this.handleUrlChange}
+            />
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="description">Description</label>
+          <label className="col-sm-2" htmlFor="description">
+            Description
+          </label>
           <div className="col-sm-10">
-            <input id="description" className="form-control" type="text" value={this.state.mock.description} onChange={this.handleDescriptionChange} />
+            <input
+              id="description"
+              className="form-control"
+              type="text"
+              value={this.state.mock.description}
+              onChange={this.handleDescriptionChange}
+            />
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="status">Status</label>
+          <label className="col-sm-2" htmlFor="status">
+            Status
+          </label>
           <div className="col-sm-10">
-            <select id="status" className="form-control" value={this.state.mock.status} onChange={this.handleStatusChange}>
+            <select
+              id="status"
+              className="form-control"
+              value={this.state.mock.status}
+              onChange={this.handleStatusChange}
+            >
               <option value="200">200 OK</option>
               <option value="201">201 Created</option>
               <option value="204">204 No content</option>
@@ -190,25 +238,51 @@ class MockForm extends React.PureComponent {
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="delay">Delay, ms</label>
+          <label className="col-sm-2" htmlFor="delay">
+            Delay, ms
+          </label>
           <div className="col-sm-10">
-            <input id="delay" className="form-control" type="text" value={this.state.mock.delay} onChange={this.handleDelayChange} />
+            <input
+              id="delay"
+              className="form-control"
+              type="text"
+              value={this.state.mock.delay}
+              onChange={this.handleDelayChange}
+            />
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="enabled">Enabled</label>
+          <label className="col-sm-2" htmlFor="enabled">
+            Enabled
+          </label>
           <div className="col-sm-10">
-            <input id="enabled" type="checkbox" value="" checked={this.state.mock.enabled} onChange={this.handleEnabledChange} />
+            <input
+              id="enabled"
+              type="checkbox"
+              value=""
+              checked={this.state.mock.enabled}
+              onChange={this.handleEnabledChange}
+            />
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="proxy">Proxy url</label>
+          <label className="col-sm-2" htmlFor="proxy">
+            Proxy url
+          </label>
           <div className="col-sm-10">
-            <input id="proxy" className="form-control" type="text" value={this.state.mock.proxyUrl} onChange={this.handleProxyUrlChange} />
+            <input
+              id="proxy"
+              className="form-control"
+              type="text"
+              value={this.state.mock.proxyUrl}
+              onChange={this.handleProxyUrlChange}
+            />
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2" htmlFor="json">Return Json</label>
+          <label className="col-sm-2" htmlFor="json">
+            Return Json
+          </label>
           <div className="col-sm-10">
             <JSONInput
               locale={locale}
@@ -223,12 +297,18 @@ class MockForm extends React.PureComponent {
         </div>
         <div className="row">
           <div className="col-sm-1">
-            <button className="btn btn-default" type="button" onClick={this.handleGoToMain}>Back</button>
+            <button
+              className="btn btn-default"
+              type="button"
+              onClick={this.handleGoToMain}
+            >
+              Back
+            </button>
           </div>
         </div>
       </form>
-    );
+    )
   }
 }
 
-export default MockForm;
+export default MockForm

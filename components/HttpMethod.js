@@ -1,7 +1,10 @@
-const HttpMethod = ({name, isDisabled}) => (
+const HttpMethod = ({ name, isDisabled }) => (
   <React.Fragment>
     <span
-      className={`http-method http-method--${name.toLowerCase()}${isDisabled ? ' http-method--disabled' : ''}`}>
+      className={`http-method http-method--${name.toLowerCase()}${
+        isDisabled ? ' http-method--disabled' : ''
+      }`}
+    >
       {name}
     </span>
     <style jsx>{`
@@ -31,6 +34,6 @@ const HttpMethod = ({name, isDisabled}) => (
       }
     `}</style>
   </React.Fragment>
-);
+)
 
-export default HttpMethod;
+export default HttpMethod

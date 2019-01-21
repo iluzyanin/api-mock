@@ -1,20 +1,20 @@
-const Expand = (props) => (
+const Expand = ({ isOpen, children }) => (
   <React.Fragment>
     <div className="expand">
-      <div className={`text text${props.isOpen ? '' : '--closed' }`}>
-        { props.isOpen && props.children}
+      <div className={`text text${isOpen ? '' : '--closed'}`}>
+        {isOpen && children}
       </div>
     </div>
     <style jsx>{`
       .text {
-        margin-top: 10px
+        margin-top: 10px;
       }
       .text--closed {
         height: 0;
         overflow: hidden;
       }
-  `}</style>
+    `}</style>
   </React.Fragment>
-);
+)
 
-export default Expand;
+export default Expand
