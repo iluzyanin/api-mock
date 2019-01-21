@@ -2,6 +2,7 @@ import React from 'react';
 import fetch from 'isomorphic-unfetch';
 import Router from 'next/router';
 import JSONInput from 'react-json-editor-ajrm';
+import locale from 'react-json-editor-ajrm/locale/en';
 
 class MockForm extends React.PureComponent {
   constructor(props) {
@@ -210,7 +211,7 @@ class MockForm extends React.PureComponent {
           <label className="col-sm-2" htmlFor="json">Return Json</label>
           <div className="col-sm-10">
             <JSONInput
-              locale="en"
+              locale={locale}
               placeholder={this.dataJs}
               theme="light_mitsuketa_tribute"
               width="100%"

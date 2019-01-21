@@ -3,6 +3,7 @@ import HttpMethod from "./HttpMethod";
 import GlyphButton from './GlyphButton';
 import Expand from './Expand';
 import JSONInput from 'react-json-editor-ajrm';
+import locale from 'react-json-editor-ajrm/locale/en';
 
 class Mock extends React.PureComponent {
   constructor(props) {
@@ -34,7 +35,7 @@ class Mock extends React.PureComponent {
           </p>
           <Expand isOpen={this.state.isResponseOpen}>
             <JSONInput
-              locale="en"
+              locale={locale}
               placeholder={mock.data}
               theme="light_mitsuketa_tribute"
               width="100%"
