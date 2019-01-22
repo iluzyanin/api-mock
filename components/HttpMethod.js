@@ -9,28 +9,26 @@ const HttpMethod = ({ name, isDisabled }) => (
     </span>
     <style jsx>{`
       .http-method {
-        color: white;
-        padding: 5px;
         font-weight: bold;
-        border-radius: 3px;
+        font-family: monospace;
       }
       .http-method.http-method--disabled {
-        background-color: lightgray;
+        color: lightgray;
       }
       .http-method--get {
-        background-color: forestgreen;
+        color: forestgreen;
       }
       .http-method--post {
-        background-color: midnightblue;
+        color: orange;
       }
       .http-method--put {
-        background-color: goldenrod;
+        color: steelblue;
       }
       .http-method--delete {
-        background-color: rebeccapurple;
+        color: firebrick;
       }
       .http-method--patch {
-        background-color: saddlebrown;
+        color: midnightblue;
       }
     `}</style>
   </React.Fragment>
