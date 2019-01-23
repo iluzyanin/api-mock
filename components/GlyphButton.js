@@ -5,7 +5,7 @@ const GlyphButton = ({ onClick, title, icon, text }) => (
       onClick={onClick}
       title={title}
     >
-      <span className={`glyphicon glyphicon-${icon}`} /> {text}
+      <i className={`far fa-${icon}`} /> {text}
     </button>
     <style jsx>{`
       .edit-btn {

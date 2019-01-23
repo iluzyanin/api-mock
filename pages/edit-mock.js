@@ -1,25 +1,25 @@
-import Layout from '../components/MyLayout';
-import MockForm from '../components/MockForm';
+import Layout from '../components/MyLayout'
+import MockForm from '../components/MockForm'
 
-const EditMock = (props) => (
+const EditMock = props => (
   <Layout>
     <h2>Edit request mock</h2>
-    <MockForm mock={props.mock}></MockForm>
+    <MockForm mock={props.mock} />
   </Layout>
-);
+)
 
 EditMock.getInitialProps = async ({ req, query }) => {
-  const mockId = query.id;
-  const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
+  const mockId = query.id
+  const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : ''
   if (typeof mockId !== 'undefined') {
-    const res = await fetch(`${baseUrl}/mocks/${mockId}`);
-    const mock = await res.json();
-    mock.data = JSON.stringify(mock.data, null, 2);
+    const res = await fetch(`${baseUrl}/mocks/${mockId}`)
+    const mock = await res.json()
+    mock.data = JSON.stringify(mock.data, null, 2)
     return {
-      mock
-    };
+      mock,
+    }
   }
-  return {};
+  return {}
 }
 
-export default EditMock;
+export default EditMock

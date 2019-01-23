@@ -16,14 +16,11 @@ class MockForm extends React.PureComponent {
       delay: 0,
       enabled: true,
     }
-    // let state = { mock: defaultMock }
-    // if (typeof props.mock !== 'undefined') {
-    //   Object.assign(state, { mock: props.mock })
-    // }
+
     this.state = {
-      mock: typeof props.mock !== 'undefined' ? props.mock : defaultMock,
+      mock: props.mock || defaultMock,
     }
-    this.dataJs = JSON.parse(JSON.stringify(this.state.mock.data)) // TODO: deep clone
+    this.dataJs = JSON.parse(JSON.stringify(this.state.mock.data || {})) // TODO: deep clone
     this.debounceTimeout = null
   }
 
@@ -270,32 +267,17 @@ class MockForm extends React.PureComponent {
               />
             </div>
           </div>
-          <div className="form-group">
-            <label className="col-sm-2" htmlFor="json">
-              Return Json
-            </label>
-            <div className="col-sm-10">
-              <JSONInput
-                locale={locale}
-                placeholder={this.dataJs}
-                theme="light_mitsuketa_tribute"
-                width="100%"
-                reset={false}
-                confirmGood={false}
-                onChange={this.handleJsonChange}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-1">
-              <button
-                className="btn btn-default"
-                type="button"
-                onClick={this.handleGoToMain}
-              >
-                Back
-              </button>
-            </div>
+          <div className="input-group mb-3">
+            <JSONInput
+              locale={locale}
+              placeholder={this.dataJs}
+              theme="light_mitsuketa_tribute"
+              width="100%"
+              reset={false}
+              confirmGood={false}
+              onChange={this.handleJsonChange}
+              style={{ body: { fontSize: '14px' } }}
+            />
           </div>
         </form>
         <style jsx>{`

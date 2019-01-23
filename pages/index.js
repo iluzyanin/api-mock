@@ -1,51 +1,66 @@
-import fetch from 'isomorphic-unfetch';
-import Link from 'next/link'
-import GlyphButton from '../components/GlyphButton';
-import MockList from '../components/MockList';
-import Layout from '../components/MyLayout';
+import fetch from 'isomorphic-unfetch'
+import SplitPane from 'react-split-pane'
+import Pane from 'react-split-pane/lib/Pane'
+
+import Layout from '../components/MyLayout'
+import MockList from '../components/MockList'
+import MockForm from '../components/MockForm'
 
 class Index extends React.PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = { mocks: [] };
-    this.onMocksChange = this.onMocksChange.bind(this);
+    this.state = {
+      mocks: [],
+      selectedMock: null,
+    }
   }
 
   async componentDidMount() {
-    await this.fetchMocks();
+    await this.fetchMocks()
   }
 
   async fetchMocks() {
-    const res = await fetch(`/mocks`);
-    const data = await res.json();
-  
-    this.setState({ mocks: data });
+    const res = await fetch(`/mocks`)
+    const data = await res.json()
+
+    this.setState({ mocks: data })
   }
 
-  async onMocksChange() {
-    await this.fetchMocks();
+  onMocksChange = async () => {
+    await this.fetchMocks()
+  }
+
+  handleOnMockClick = selectedMock => {
+    this.setState(state => ({
+      ...state,
+      selectedMock,
+    }))
   }
 
   render() {
     return (
       <Layout>
-        <h2>
-          Mocked requests
-          <Link as="ui/edit-mock" href="edit-mock">
-            <GlyphButton icon="plus" title="Create new mock"></GlyphButton>
-          </Link>
-        </h2>
-        <MockList mocks={this.state.mocks} onMocksChange={this.onMocksChange}></MockList>
-        <style jsx>{`
-          h2 {
-            margin: 20px 0;
-          }
-        `}
-        </style>
+        <SplitPane split="vertical">
+          <Pane minSize="150px" maxSize="300px">
+            <MockList
+              mocks={this.state.mocks}
+              onMocksChange={this.onMocksChange}
+              onMockClick={this.handleOnMockClick}
+            />
+          </Pane>
+          <Pane>
+            {this.state.selectedMock && (
+              <MockForm
+                key={this.state.selectedMock.id}
+                mock={this.state.selectedMock}
+              />
+            )}
+          </Pane>
+        </SplitPane>
       </Layout>
-    );
+    )
   }
 }
 
-export default Index;
+export default Index

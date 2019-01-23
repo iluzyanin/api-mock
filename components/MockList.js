@@ -1,8 +1,5 @@
 import fetch from 'isomorphic-unfetch'
-import SplitPane from 'react-split-pane'
-import Pane from 'react-split-pane/lib/Pane'
-
-import MockForm from './MockForm'
+import classnames from 'classnames'
 import HttpMethod from './HttpMethod'
 
 class MockList extends React.PureComponent {
@@ -12,15 +9,7 @@ class MockList extends React.PureComponent {
     this.deleteMock = this.deleteMock.bind(this)
     this.state = {
       selectedMockId: null,
-      selectedMock: null,
     }
-  }
-
-  handleOnMockClick = selectedMock => {
-    this.setState(state => ({
-      ...state,
-      selectedMock,
-    }))
   }
 
   async cloneMock(mock) {
@@ -44,58 +33,69 @@ class MockList extends React.PureComponent {
     await this.props.onMocksChange()
   }
 
+  selectMock = mock => {
+    this.setState(state => ({ selectedMockId: mock.id }))
+    this.props.onMockClick(mock)
+  }
+
   descriptionSorter(mockA, mockB) {
     if (!mockA.description) {
       return 1
     }
+
     return mockA.description.localeCompare(mockB.description)
   }
 
   render() {
     return (
       <React.Fragment>
-        <SplitPane split="vertical">
-          <Pane minSize="150px" maxSize="300px">
-            <table className="mockTable">
-              <tbody>
-                {this.props.mocks.sort(this.descriptionSorter).map(mock => (
-                  <tr
-                    key={mock.id}
-                    className="mockRow"
-                    onClick={() => this.handleOnMockClick(mock)}
-                  >
-                    <td width="70">
-                      <HttpMethod
-                        name={mock.method}
-                        isDisabled={!mock.enabled}
-                      />
-                    </td>
-                    <td>
-                      <span className="description">{mock.description}</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Pane>
-          <Pane className="pane">
-            {this.state.selectedMock && (
-              <MockForm
-                key={this.state.selectedMock.id}
-                mock={this.state.selectedMock}
-              />
-            )}
-          </Pane>
-        </SplitPane>
+        <ul className="mockList">
+          {this.props.mocks.sort(this.descriptionSorter).map(mock => (
+            <li
+              key={mock.id}
+              className={classnames('mockItem', {
+                'mockItem--selected': mock.id === this.state.selectedMockId,
+              })}
+              onClick={() => this.selectMock(mock)}
+            >
+              <span className="method">
+                <HttpMethod name={mock.method} isDisabled={!mock.enabled} />
+              </span>
+              <span className="description" title={mock.description}>
+                {mock.description}
+              </span>
+            </li>
+          ))}
+        </ul>
         <style jsx>{`
-          .mockTable {
+          .mockList {
             margin: 10px;
+            list-style-type: none;
           }
-          .mockRow {
+          .mockItem {
             height: 30px;
+            display: flex;
+            align-items: center;
+          }
+          .mockItem:hover {
+            background-color: whitesmoke;
+            cursor: pointer;
+          }
+          .mockItem--selected {
+            background-color: gainsboro;
+          }
+          .mockItem--selected:hover {
+            background-color: gainsboro;
+          }
+          .method {
+            min-width: 50px;
           }
           .description {
-            font-family: Geneva, Verdana, sans-serif;
+            font-size: 13px;
+            width: 200px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
           }
         `}</style>
       </React.Fragment>

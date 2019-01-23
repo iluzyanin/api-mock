@@ -35,7 +35,7 @@ class Mock extends React.PureComponent {
               as={`ui/edit-mock?id=${mock.id}`}
               href={`/edit-mock?id=${mock.id}`}
             >
-              <GlyphButton icon="pencil" title="Edit mock" />
+              <GlyphButton icon="edit" title="Edit mock" />
             </Link>
             <GlyphButton
               onClick={this.props.onClone}
