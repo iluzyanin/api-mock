@@ -2,8 +2,6 @@ import React from 'react'
 import fetch from 'isomorphic-unfetch'
 import Router from 'next/router'
 import dynamic from 'next/dynamic'
-import JSONInput from 'react-json-editor-ajrm'
-import locale from 'react-json-editor-ajrm/locale/en'
 
 const JSONEditor = dynamic(import('./JSONEditor'), {
   ssr: false,
@@ -170,8 +168,19 @@ class MockForm extends React.PureComponent {
         <form className="form-horizontal mockForm">
           <div className="input-group">
             <div className="input-group-prepend">
+              <span className="input-group-text">Description</span>
+            </div>
+            <input
+              className="form-control"
+              type="text"
+              value={this.state.mock.description}
+              onChange={this.handleDescriptionChange}
+            />
+          </div>
+          <div className="input-group">
+            <div className="input-group-prepend">
               <select
-                className="form-control"
+                className="form-control httpMethod"
                 value={this.state.mock.method}
                 onChange={this.handleMethodChange}
               >
@@ -181,27 +190,18 @@ class MockForm extends React.PureComponent {
                 <option value="DELETE">DELETE</option>
                 <option value="PATCH">PATCH</option>
               </select>
-              <span className="input-group-text">http://localhost:3030</span>
+              <span className="input-group-text fixedInput">
+                http://localhost:3030
+              </span>
             </div>
             <input
-              className="form-control"
+              className="form-control urlInput"
               type="text"
               value={this.state.mock.url}
               onChange={this.handleUrlChange}
             />
           </div>
-          <div className="input-group-group">
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">Description</span>
-              </div>
-              <input
-                className="form-control"
-                type="text"
-                value={this.state.mock.description}
-                onChange={this.handleDescriptionChange}
-              />
-            </div>
+          <div className="input-group-container">
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text">Status</span>
@@ -222,14 +222,11 @@ class MockForm extends React.PureComponent {
                 <option value="504">504 Gateway Timeout</option>
               </select>
             </div>
-          </div>
-          <div className="form-group">
-            <label className="col-sm-2" htmlFor="delay">
-              Delay, ms
-            </label>
-            <div className="col-sm-10">
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Delay, ms</span>
+              </div>
               <input
-                id="delay"
                 className="form-control"
                 type="text"
                 value={this.state.mock.delay}
@@ -237,45 +234,27 @@ class MockForm extends React.PureComponent {
               />
             </div>
           </div>
-          <div className="form-group">
-            <label className="col-sm-2" htmlFor="enabled">
-              Enabled
-            </label>
-            <div className="col-sm-10">
-              <input
-                id="enabled"
-                type="checkbox"
-                value=""
-                checked={this.state.mock.enabled}
-                onChange={this.handleEnabledChange}
-              />
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text">Proxy url</span>
+              <div className="input-group-text" title="Enabled">
+                <input
+                  id="enabled"
+                  type="checkbox"
+                  value=""
+                  checked={this.state.mock.enabled}
+                  onChange={this.handleEnabledChange}
+                />
+              </div>
             </div>
+            <input
+              className="form-control urlInput"
+              type="text"
+              value={this.state.mock.proxyUrl}
+              onChange={this.handleProxyUrlChange}
+            />
           </div>
-          <div className="form-group">
-            <label className="col-sm-2" htmlFor="proxy">
-              Proxy url
-            </label>
-            <div className="col-sm-10">
-              <input
-                id="proxy"
-                className="form-control"
-                type="text"
-                value={this.state.mock.proxyUrl}
-                onChange={this.handleProxyUrlChange}
-              />
-            </div>
-          </div>
-          <div className="input-group mb-3">
-            {/* <JSONInput
-              locale={locale}
-              placeholder={this.dataJs}
-              theme="light_mitsuketa_tribute"
-              width="100%"
-              reset={false}
-              confirmGood={false}
-              onChange={this.handleJsonChange}
-              style={{ body: { fontSize: '14px' } }}
-            /> */}
+          <div className="input-group">
             <JSONEditor
               id="jsonEditor"
               value={this.state.dataJson}
@@ -291,10 +270,22 @@ class MockForm extends React.PureComponent {
           .input-group {
             margin-bottom: 10px;
           }
-          .input-group-group .input-group {
-            width: 48%;
+          .urlInput {
+            text-overflow: ellipsis;
           }
-          .input-group-group {
+          .httpMethod {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+          .fixedInput {
+            background-color: ghostwhite;
+            cursor: default;
+            border-left: none;
+          }
+          .input-group-container .input-group {
+            width: 49%;
+          }
+          .input-group-container {
             display: flex;
             justify-content: space-between;
           }

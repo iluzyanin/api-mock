@@ -23,7 +23,6 @@
     "react": "^16.6.3",
     "react-ace": "^6.3.2",
     "react-dom": "^16.6.3",
-    "react-json-editor-ajrm": "^2.5.9",
     "react-split-pane": "^2.0.2",
     "uuid": "^3.3.2"
   },

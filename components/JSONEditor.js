@@ -1,12 +1,12 @@
 import brace from 'brace'
 import 'brace/mode/json'
-import 'brace/theme/textmate'
+import 'brace/theme/eclipse'
 import AceEditor from 'react-ace'
 
 const JSONEditor = props => (
   <AceEditor
     mode="json"
-    theme="textmate"
+    theme="eclipse"
     name={props.id}
     onChange={props.onChange}
     onValidate={props.onValidate}
@@ -22,8 +22,8 @@ const JSONEditor = props => (
       tabSize: 2,
     }}
     value={props.value}
-    height="80vh"
-    height="40vh"
+    minLines={20}
+    maxLines={60}
     width="100%"
   />
 )
