@@ -1,8 +1,13 @@
 import React from 'react'
 import fetch from 'isomorphic-unfetch'
 import Router from 'next/router'
+import dynamic from 'next/dynamic'
 import JSONInput from 'react-json-editor-ajrm'
 import locale from 'react-json-editor-ajrm/locale/en'
+
+const JSONEditor = dynamic(import('./JSONEditor'), {
+  ssr: false,
+})
 
 class MockForm extends React.PureComponent {
   constructor(props) {
@@ -19,8 +24,9 @@ class MockForm extends React.PureComponent {
 
     this.state = {
       mock: props.mock || defaultMock,
+      isJsonValid: true,
     }
-    this.dataJs = JSON.parse(JSON.stringify(this.state.mock.data || {})) // TODO: deep clone
+    this.state.dataJson = JSON.stringify(this.state.mock.data, null, 2)
     this.debounceTimeout = null
   }
 
@@ -73,18 +79,14 @@ class MockForm extends React.PureComponent {
     )
   }
 
-  handleJsonChange = ({ jsObject, error }) => {
-    if (!error) {
-      this.setState(
-        prevState => ({
-          mock: {
-            ...prevState.mock,
-            data: jsObject,
-          },
-        }),
-        this.saveChanges
-      )
-    }
+  handleJsonChange = dataJson => {
+    this.setState({
+      dataJson,
+    })
+  }
+
+  handleJsonValidate = annotations => {
+    this.setState({ isJsonValid: annotations.length === 0 })
   }
 
   handleStatusChange = event => {
@@ -166,7 +168,7 @@ class MockForm extends React.PureComponent {
     return (
       <React.Fragment>
         <form className="form-horizontal mockForm">
-          <div className="input-group mb-3">
+          <div className="input-group">
             <div className="input-group-prepend">
               <select
                 className="form-control"
@@ -188,27 +190,23 @@ class MockForm extends React.PureComponent {
               onChange={this.handleUrlChange}
             />
           </div>
-          <div className="form-group">
-            <label className="col-sm-2" htmlFor="description">
-              Description
-            </label>
-            <div className="col-sm-10">
+          <div className="input-group-group">
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Description</span>
+              </div>
               <input
-                id="description"
                 className="form-control"
                 type="text"
                 value={this.state.mock.description}
                 onChange={this.handleDescriptionChange}
               />
             </div>
-          </div>
-          <div className="form-group">
-            <label className="col-sm-2" htmlFor="status">
-              Status
-            </label>
-            <div className="col-sm-10">
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Status</span>
+              </div>
               <select
-                id="status"
                 className="form-control"
                 value={this.state.mock.status}
                 onChange={this.handleStatusChange}
@@ -268,7 +266,7 @@ class MockForm extends React.PureComponent {
             </div>
           </div>
           <div className="input-group mb-3">
-            <JSONInput
+            {/* <JSONInput
               locale={locale}
               placeholder={this.dataJs}
               theme="light_mitsuketa_tribute"
@@ -277,12 +275,28 @@ class MockForm extends React.PureComponent {
               confirmGood={false}
               onChange={this.handleJsonChange}
               style={{ body: { fontSize: '14px' } }}
+            /> */}
+            <JSONEditor
+              id="jsonEditor"
+              value={this.state.dataJson}
+              onChange={this.handleJsonChange}
+              onValidate={this.handleJsonValidate}
             />
           </div>
         </form>
         <style jsx>{`
           .mockForm {
             margin: 10px;
+          }
+          .input-group {
+            margin-bottom: 10px;
+          }
+          .input-group-group .input-group {
+            width: 48%;
+          }
+          .input-group-group {
+            display: flex;
+            justify-content: space-between;
           }
         `}</style>
       </React.Fragment>

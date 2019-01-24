@@ -9,6 +9,16 @@ class MockList extends React.PureComponent {
     this.deleteMock = this.deleteMock.bind(this)
     this.state = {
       selectedMockId: null,
+      init: false,
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.mocks.length > 0 && !this.state.init) {
+      this.selectMock(this.props.mocks[0])
+      this.setState({
+        init: true,
+      })
     }
   }
 
@@ -89,6 +99,7 @@ class MockList extends React.PureComponent {
           }
           .method {
             min-width: 50px;
+            line-height: 13px;
           }
           .description {
             font-size: 13px;
