@@ -1,10 +1,6 @@
-const HttpMethod = ({ name, isDisabled }) => (
+const HttpMethod = ({ name }) => (
   <React.Fragment>
-    <span
-      className={`http-method http-method--${name.toLowerCase()}${
-        isDisabled ? ' http-method--disabled' : ''
-      }`}
-    >
+    <span className={`http-method http-method--${name.toLowerCase()}`}>
       {name}
     </span>
     <style jsx>{`
@@ -12,14 +8,11 @@ const HttpMethod = ({ name, isDisabled }) => (
         font-weight: bold;
         font-family: monospace;
       }
-      .http-method.http-method--disabled {
-        color: lightgray;
-      }
       .http-method--get {
         color: forestgreen;
       }
       .http-method--post {
-        color: orange;
+        color: coral;
       }
       .http-method--put {
         color: steelblue;

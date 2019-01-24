@@ -5,6 +5,7 @@ import Pane from 'react-split-pane/lib/Pane'
 import Layout from '../components/MyLayout'
 import MockList from '../components/MockList'
 import MockForm from '../components/MockForm'
+import SaveNotification from '../components/SaveNotification'
 
 class Index extends React.PureComponent {
   constructor(props) {
@@ -13,6 +14,7 @@ class Index extends React.PureComponent {
     this.state = {
       mocks: [],
       selectedMock: null,
+      saveStatusVisible: false,
     }
   }
 
@@ -29,6 +31,14 @@ class Index extends React.PureComponent {
 
   onMocksChange = async () => {
     await this.fetchMocks()
+    this.setState({
+      saveStatusVisible: true,
+    })
+    setTimeout(() => {
+      this.setState({
+        saveStatusVisible: false,
+      })
+    }, 500)
   }
 
   handleOnMockClick = selectedMock => {
@@ -54,10 +64,12 @@ class Index extends React.PureComponent {
               <MockForm
                 key={this.state.selectedMock.id}
                 mock={this.state.selectedMock}
+                onChange={this.onMocksChange}
               />
             )}
           </Pane>
         </SplitPane>
+        <SaveNotification visible={this.state.saveStatusVisible} />
       </Layout>
     )
   }

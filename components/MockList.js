@@ -9,15 +9,15 @@ class MockList extends React.PureComponent {
     this.deleteMock = this.deleteMock.bind(this)
     this.state = {
       selectedMockId: null,
-      init: false,
+      initialized: false,
     }
   }
 
   componentDidUpdate() {
-    if (this.props.mocks.length > 0 && !this.state.init) {
+    if (this.props.mocks.length > 0 && !this.state.initialized) {
       this.selectMock(this.props.mocks[0])
       this.setState({
-        init: true,
+        initialized: true,
       })
     }
   }
@@ -69,7 +69,7 @@ class MockList extends React.PureComponent {
               onClick={() => this.selectMock(mock)}
             >
               <span className="method">
-                <HttpMethod name={mock.method} isDisabled={!mock.enabled} />
+                <HttpMethod name={mock.method} />
               </span>
               <span className="description" title={mock.description}>
                 {mock.description}
@@ -86,6 +86,7 @@ class MockList extends React.PureComponent {
             height: 30px;
             display: flex;
             align-items: center;
+            padding: 5px;
           }
           .mockItem:hover {
             background-color: whitesmoke;
@@ -93,12 +94,13 @@ class MockList extends React.PureComponent {
           }
           .mockItem--selected {
             background-color: gainsboro;
+            border-radius: 3px;
           }
           .mockItem--selected:hover {
             background-color: gainsboro;
           }
           .method {
-            min-width: 50px;
+            min-width: 60px;
             line-height: 13px;
           }
           .description {

@@ -25,7 +25,9 @@ class MockForm extends React.PureComponent {
       mock: props.mock || defaultMock,
       isJsonValid: true,
     }
-    this.state.dataJson = JSON.stringify(this.state.mock.data, null, 2)
+    this.state.dataJson = this.state.mock.data
+      ? JSON.stringify(this.state.mock.data, null, 2)
+      : ''
     this.debounceTimeout = null
   }
 
@@ -74,14 +76,17 @@ class MockForm extends React.PureComponent {
           method,
         },
       }),
-      this.saveChanges
+      this.debouncedUpdate
     )
   }
 
   handleJsonChange = dataJson => {
-    this.setState({
-      dataJson,
-    })
+    this.setState(
+      {
+        dataJson,
+      },
+      this.debouncedUpdate
+    )
   }
 
   handleJsonValidate = annotations => {
@@ -97,7 +102,7 @@ class MockForm extends React.PureComponent {
           status: status,
         },
       }),
-      this.saveChanges
+      this.debouncedUpdate
     )
   }
 
@@ -116,12 +121,15 @@ class MockForm extends React.PureComponent {
 
   handleEnabledChange = event => {
     const proxyEnabled = event.target.checked
-    this.setState(prevState => ({
-      mock: {
-        ...prevState.mock,
-        proxyEnabled,
-      },
-    }))
+    this.setState(
+      prevState => ({
+        mock: {
+          ...prevState.mock,
+          proxyEnabled,
+        },
+      }),
+      this.debouncedUpdate
+    )
   }
 
   handleProxyUrlChange = event => {
@@ -134,40 +142,42 @@ class MockForm extends React.PureComponent {
     }))
   }
 
-  handleGoToMain() {
-    Router.push('/', '/ui')
-  }
-
   saveChanges() {
+    if (!this.state.isJsonValid) {
+      return
+    }
     const mock = this.state.mock
     const hasId = typeof mock.id !== 'undefined'
     const delay = mock.delay ? parseInt(mock.delay) : 0
     const status = parseInt(mock.status)
-    return fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
-      body: JSON.stringify({ ...mock, delay, status }),
+    const data = this.state.dataJson ? JSON.parse(this.state.dataJson) : null
+    fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
+      body: JSON.stringify({ ...mock, delay, status, data }),
       headers: {
         'content-type': 'application/json',
       },
       method: hasId ? 'PUT' : 'POST',
-    }).then(response => {
-      if (hasId) {
-        return
-      }
-
-      this.setState(state => ({
-        mock: {
-          ...state.mock,
-          id: response.headers.get('Location'),
-        },
-      }))
     })
+      .then(response => {
+        if (hasId) {
+          return
+        }
+
+        this.setState(state => ({
+          mock: {
+            ...state.mock,
+            id: response.headers.get('Location'),
+          },
+        }))
+      })
+      .then(() => this.props.onChange())
   }
 
   render() {
     return (
       <React.Fragment>
         <form className="form-horizontal mockForm">
-          <div className="input-group">
+          <div className="input-group input-group-sm">
             <div className="input-group-prepend">
               <span className="input-group-text">Description</span>
             </div>
@@ -178,7 +188,7 @@ class MockForm extends React.PureComponent {
               onChange={this.handleDescriptionChange}
             />
           </div>
-          <div className="input-group">
+          <div className="input-group input-group-sm">
             <div className="input-group-prepend">
               <select
                 className="form-control httpMethod"
@@ -203,7 +213,7 @@ class MockForm extends React.PureComponent {
             />
           </div>
           <div className="input-group-container">
-            <div className="input-group">
+            <div className="input-group input-group-sm">
               <div className="input-group-prepend">
                 <span className="input-group-text">Status</span>
               </div>
@@ -223,7 +233,7 @@ class MockForm extends React.PureComponent {
                 <option value="504">504 Gateway Timeout</option>
               </select>
             </div>
-            <div className="input-group">
+            <div className="input-group input-group-sm">
               <div className="input-group-prepend">
                 <span className="input-group-text">Delay, ms</span>
               </div>
@@ -235,13 +245,12 @@ class MockForm extends React.PureComponent {
               />
             </div>
           </div>
-          <div className="input-group">
+          <div className="input-group input-group-sm">
             <div className="input-group-prepend">
               <span className="input-group-text">Proxy url</span>
               <div className="input-group-text" title="Enabled">
                 <input
                   type="checkbox"
-                  value=""
                   checked={this.state.mock.proxyEnabled}
                   onChange={this.handleEnabledChange}
                 />
@@ -255,7 +264,8 @@ class MockForm extends React.PureComponent {
               disabled={!this.state.mock.proxyEnabled}
             />
           </div>
-          <div className="input-group">
+          <hr />
+          <div className="input-group input-group-sm">
             <JSONEditor
               id="jsonEditor"
               value={this.state.dataJson}
@@ -277,11 +287,13 @@ class MockForm extends React.PureComponent {
           .httpMethod {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
+            height: 31px;
           }
           .fixedInput {
             background-color: ghostwhite;
             cursor: default;
             border-left: none;
+            height: 31px;
           }
           .input-group-container .input-group {
             width: 49%;
