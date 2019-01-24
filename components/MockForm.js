@@ -17,7 +17,8 @@ class MockForm extends React.PureComponent {
       data: {},
       status: 200,
       delay: 0,
-      enabled: true,
+      proxyUrl: '',
+      proxyEnabled: false,
     }
 
     this.state = {
@@ -114,11 +115,11 @@ class MockForm extends React.PureComponent {
   }
 
   handleEnabledChange = event => {
-    const enabled = event.target.checked
+    const proxyEnabled = event.target.checked
     this.setState(prevState => ({
       mock: {
         ...prevState.mock,
-        enabled,
+        proxyEnabled,
       },
     }))
   }
@@ -239,10 +240,9 @@ class MockForm extends React.PureComponent {
               <span className="input-group-text">Proxy url</span>
               <div className="input-group-text" title="Enabled">
                 <input
-                  id="enabled"
                   type="checkbox"
                   value=""
-                  checked={this.state.mock.enabled}
+                  checked={this.state.mock.proxyEnabled}
                   onChange={this.handleEnabledChange}
                 />
               </div>
@@ -252,6 +252,7 @@ class MockForm extends React.PureComponent {
               type="text"
               value={this.state.mock.proxyUrl}
               onChange={this.handleProxyUrlChange}
+              disabled={!this.state.mock.proxyEnabled}
             />
           </div>
           <div className="input-group">
