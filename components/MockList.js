@@ -66,7 +66,7 @@ const MockList = React.memo(props => {
           height: 30px;
           display: flex;
           align-items: center;
-          padding: 5px;
+          padding: 5px 42px 5px 5px;
           position: relative;
         }
         .mockItem:hover {
@@ -103,6 +103,7 @@ const MockList = React.memo(props => {
           font-size: 12px;
           visibility: hidden;
           z-index: 1;
+          background-color: gainsboro;
         }
         .deleteButton {
           color: salmon;

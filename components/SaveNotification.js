@@ -10,12 +10,12 @@ const SaveNotification = React.memo(({ visible }) => (
     <style jsx>{`
       .saveStatus {
         position: fixed;
-        left: calc(50% - 20px);
+        left: calc(50% - 60px);
         top: 10px;
         color: mediumseagreen;
         z-index: 5;
         background-color: white;
-        padding: 10px;
+        padding: 6px 10px;
         border-radius: 3px;
         font-size: 24px;
         line-height: 24px;

@@ -6,7 +6,8 @@ const HttpMethod = React.memo(({ name }) => (
     <style jsx>{`
       .http-method {
         font-weight: bold;
-        font-family: monospace;
+        font-family: 'Lucida console', monospace, 'Courier new';
+        font-size: 12px;
       }
       .http-method--get {
         color: forestgreen;
