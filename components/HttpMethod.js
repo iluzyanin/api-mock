@@ -1,4 +1,4 @@
-const HttpMethod = ({ name }) => (
+const HttpMethod = React.memo(({ name }) => (
   <React.Fragment>
     <span className={`http-method http-method--${name.toLowerCase()}`}>
       {name}
@@ -25,6 +25,6 @@ const HttpMethod = ({ name }) => (
       }
     `}</style>
   </React.Fragment>
-)
+))
 
 export default HttpMethod

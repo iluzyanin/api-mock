@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-const SaveNotification = ({ visible }) => (
+const SaveNotification = React.memo(({ visible }) => (
   <React.Fragment>
     <span
       className={classnames('saveStatus', { 'saveStatus--visible': visible })}
@@ -13,7 +13,7 @@ const SaveNotification = ({ visible }) => (
         left: calc(50% - 20px);
         top: 10px;
         color: mediumseagreen;
-        z-index: 1;
+        z-index: 5;
         background-color: white;
         padding: 10px;
         border-radius: 3px;
@@ -27,6 +27,6 @@ const SaveNotification = ({ visible }) => (
       }
     `}</style>
   </React.Fragment>
-)
+))
 
 export default SaveNotification

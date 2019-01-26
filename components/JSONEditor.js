@@ -3,7 +3,7 @@ import 'brace/mode/json'
 import 'brace/theme/eclipse'
 import AceEditor from 'react-ace'
 
-const JSONEditor = props => (
+const JSONEditor = React.memo(props => (
   <AceEditor
     mode="json"
     theme="eclipse"
@@ -26,6 +26,6 @@ const JSONEditor = props => (
     maxLines={60}
     width="100%"
   />
-)
+))
 
 export default JSONEditor
