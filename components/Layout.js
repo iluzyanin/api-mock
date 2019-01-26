@@ -1,8 +1,10 @@
 import Head from 'next/head'
 
-const Layout = props => (
+const Layout = React.memo(props => (
   <React.Fragment>
     <Head>
+      <title>API Mock</title>
+      <link rel="icon" type="image/x-icon" href="/ui/favicon.ico" />
       <link
         rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
@@ -31,6 +33,6 @@ const Layout = props => (
       }
     `}</style>
   </React.Fragment>
-)
+))
 
 export default Layout
