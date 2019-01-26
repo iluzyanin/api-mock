@@ -10,19 +10,8 @@ const JSONEditor = dynamic(import('./JSONEditor'), {
 class MockForm extends React.PureComponent {
   constructor(props) {
     super(props)
-    const defaultMock = {
-      url: '',
-      method: 'GET',
-      description: '',
-      data: {},
-      status: 200,
-      delay: 0,
-      proxyUrl: '',
-      proxyEnabled: false,
-    }
-
     this.state = {
-      mock: props.mock || defaultMock,
+      mock: props.mock,
       isJsonValid: true,
     }
     this.state.dataJson = this.state.mock.data
@@ -76,7 +65,7 @@ class MockForm extends React.PureComponent {
           method,
         },
       }),
-      this.debouncedUpdate
+      this.saveChanges
     )
   }
 
@@ -102,7 +91,7 @@ class MockForm extends React.PureComponent {
           status: status,
         },
       }),
-      this.debouncedUpdate
+      this.saveChanges
     )
   }
 
@@ -128,7 +117,7 @@ class MockForm extends React.PureComponent {
           proxyEnabled,
         },
       }),
-      this.debouncedUpdate
+      this.saveChanges
     )
   }
 
