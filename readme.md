@@ -1,5 +1,5 @@
 # API Mock
-A small web service based on [Next.js](https://nextjs.org/) with simple UI to mock web services. Might be useful in cases when a web service is still in development, but the desired endpoints schema is already known.
+A small web service based on [Next.js](https://nextjs.org/) with simple UI to mock web services. Might be useful in cases when a web service is still in development, but the desired endpoints schema is already known. Or when the mocked Api is making calls to database/another Apis which takes long time to response or produces undesired side effects.
 
 ## Usage
 To run the app, glone the repository, then run
@@ -8,15 +8,9 @@ To run the app, glone the repository, then run
 
 ### UI
 Navigate to http://localhost:3030/ui.
-The visual part of the app consists of two pages. The first page shows all mocks that are currently set up.
+The visual part of the app consists of one page. On the left pane there is a list of all configured mocks and on the right side the selected mock configuration.
 
-![Mocks list](images/mock-list.png)
-
-This page provides CRUD operations on available mocks.
-
-The second page is accessible when you either click "New mock" button or click edit button on selected mock.
-
-![Mocks list](images/mock-setup.png)
+![Mocks list](images/index.png)
 
 ### Api mock
 Now that you have configured your mocks, you can call them from your application as you would normally do with a real web service. The base url for all the mocks is http://localhost:3030. For example, to list all the contracts from the preconfigured exmaple, just call
@@ -27,9 +21,11 @@ And it will return you the result
 
 ![Get /contracts](images/get-contracts.png)
 
-## Limitations
-For simplicity, following limitations apply
-* Only json responses are supported.
-* Mocks are stored in local json file.
+In case the mock does not exist, service will return 404 status code.
 
-In case the mock does not exist or disabled, service will return 404 status code.
+## TODO
+
+* [ ] Add support for query string parameters
+* [ ] Add support for response headers
+* [ ] Fix exmaple in readme
+* [ ] Add support for other content types (xml?)
