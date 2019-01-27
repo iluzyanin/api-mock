@@ -87,7 +87,7 @@ const MockList = React.memo(props => {
           visibility: visible;
         }
         .method {
-          min-width: 60px;
+          min-width: 40px;
           line-height: 13px;
         }
         .description {

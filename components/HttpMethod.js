@@ -1,7 +1,15 @@
+const nameMap = {
+  GET: 'GET',
+  DELETE: 'DEL',
+  PATCH: 'PATC',
+  POST: 'POST',
+  PUT: 'PUT',
+}
+
 const HttpMethod = React.memo(({ name }) => (
   <React.Fragment>
     <span className={`http-method http-method--${name.toLowerCase()}`}>
-      {name}
+      {nameMap[name]}
     </span>
     <style jsx>{`
       .http-method {
@@ -10,7 +18,7 @@ const HttpMethod = React.memo(({ name }) => (
         font-size: 12px;
       }
       .http-method--get {
-        color: forestgreen;
+        color: mediumseagreen;
       }
       .http-method--post {
         color: coral;
@@ -22,7 +30,7 @@ const HttpMethod = React.memo(({ name }) => (
         color: firebrick;
       }
       .http-method--patch {
-        color: midnightblue;
+        color: gray;
       }
     `}</style>
   </React.Fragment>
