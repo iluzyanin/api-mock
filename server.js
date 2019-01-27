@@ -1,8 +1,10 @@
 const express = require('express')
 const proxy = require('express-http-proxy')
 const next = require('next')
-const mockService = require('./service/mock')
+const url = require('url')
+const _ = require('lodash')
 
+const mockService = require('./service/mock')
 const uiRoute = require('./routes/ui')
 const mocksConfigurationRoute = require('./routes/mocksConfiguration')
 
@@ -21,7 +23,7 @@ app
 
     server.use('/ui', uiRoute(app))
 
-    server.use('/mocks', mocksConfigurationRoute(app))
+    server.use('/mocks', mocksConfigurationRoute())
 
     server.get('/_next*', (req, res) => {
       return handle(req, res)
@@ -29,9 +31,17 @@ app
 
     server.use('*', async (req, res, next) => {
       const mocks = await mockService.getAll()
-      const foundMock = mocks.find(
-        mock => mock.url === req.baseUrl && mock.method === req.method
-      )
+      const foundMock = mocks
+        .map(mock => ({
+          ...mock,
+          urlObj: url.parse(mock.url, true),
+        }))
+        .find(
+          mock =>
+            mock.urlObj.pathname === req.baseUrl &&
+            mock.method === req.method &&
+            _.isMatch(req.query, mock.urlObj.query)
+        )
 
       if (foundMock) {
         if (foundMock.proxyEnabled && foundMock.proxyUrl) {

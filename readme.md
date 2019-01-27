@@ -19,13 +19,16 @@ Now that you have configured your mocks, you can call them from your application
 
 And it will return you the result
 
-![Get /contracts](images/get-contracts.png)
+`[{"id":1,"name":"apple"},{"id":2,"name":"banana"}]`
 
-In case the mock does not exist, service will return 404 status code.
+### Traits
+
+* When mock does not exist, service will return 404 status code.
+* When mock has a query parameter, it must be matched with request to return the mocked response, but all extra query parameters (existing only in request, but not in the mock) are ignored.
 
 ## TODO
 
-* [ ] Add support for query string parameters
+* [x] Add support for query string parameters
+* [x] Fix example in readme
 * [ ] Add support for response headers
-* [ ] Fix exmaple in readme
 * [ ] Add support for other content types (xml?)
