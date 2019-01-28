@@ -1,7 +1,8 @@
 import React from 'react'
 import fetch from 'isomorphic-unfetch'
-import Router from 'next/router'
 import dynamic from 'next/dynamic'
+import Tabs from './Tabs'
+import Tab from './Tab'
 
 const JSONEditor = dynamic(import('./JSONEditor'), {
   ssr: false,
@@ -253,14 +254,18 @@ class MockForm extends React.PureComponent {
               disabled={!this.state.mock.proxyEnabled}
             />
           </div>
-          <hr />
           <div className="input-group input-group-sm">
-            <JSONEditor
-              id="jsonEditor"
-              value={this.state.dataJson}
-              onChange={this.handleJsonChange}
-              onValidate={this.handleJsonValidate}
-            />
+            <Tabs>
+              <Tab name="Body">
+                <JSONEditor
+                  id="jsonEditor"
+                  value={this.state.dataJson}
+                  onChange={this.handleJsonChange}
+                  onValidate={this.handleJsonValidate}
+                />
+              </Tab>
+              <Tab name="Headers">TBD: Headers</Tab>
+            </Tabs>
           </div>
         </form>
         <style jsx>{`
