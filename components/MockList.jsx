@@ -66,25 +66,32 @@ const MockList = React.memo(props => {
           height: 30px;
           display: flex;
           align-items: center;
-          padding: 5px 42px 5px 5px;
+          padding: 5px 5px 5px 5px;
           position: relative;
         }
         .mockItem:hover {
           background-color: whitesmoke;
           cursor: pointer;
+          padding-right: 42px;
         }
         .mockItem:hover .controls {
           visibility: visible;
+          background-color: whitesmoke;
         }
         .mockItem--selected {
           background-color: gainsboro;
           border-radius: 3px;
+          padding-right: 42px;
         }
         .mockItem--selected:hover {
           background-color: gainsboro;
         }
         .mockItem--selected .controls {
           visibility: visible;
+          background-color: gainsboro;
+        }
+        .mockItem--selected:hover .controls {
+          background-color: gainsboro;
         }
         .method {
           min-width: 40px;
@@ -103,7 +110,6 @@ const MockList = React.memo(props => {
           font-size: 12px;
           visibility: hidden;
           z-index: 1;
-          background-color: gainsboro;
         }
         .deleteButton {
           color: salmon;
