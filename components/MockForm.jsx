@@ -1,8 +1,11 @@
 import React from 'react'
 import fetch from 'isomorphic-unfetch'
 import dynamic from 'next/dynamic'
+import ReactTable from 'react-table'
 import Tabs from './Tabs'
 import Tab from './Tab'
+
+import 'react-table/react-table.css'
 
 const JSONEditor = dynamic(import('./JSONEditor'), {
   ssr: false,
@@ -18,6 +21,46 @@ class MockForm extends React.PureComponent {
     this.state.dataJson = this.state.mock.data
       ? JSON.stringify(this.state.mock.data, null, 2)
       : ''
+
+    this.state.headers = Object.keys(this.state.mock.headers).map(key => ({
+      key,
+      value: this.state.mock.headers[key],
+    }))
+
+    this.state.headerColumns = [
+      {
+        Header: 'KEY',
+        accessor: 'key',
+        headerStyle: {
+          fontSize: '12px',
+          fontWeight: 'bold',
+          fontFamily: "'Lucida console', monospace, 'Courier new'",
+          padding: '10px',
+        },
+        style: {
+          fontSize: '13px',
+          color: 'dimgray',
+          display: 'flex',
+          alignItems: 'center',
+        },
+      },
+      {
+        Header: 'VALUE',
+        accessor: 'value',
+        headerStyle: {
+          fontSize: '12px',
+          fontWeight: 'bold',
+          fontFamily: "'Lucida console', monospace, 'Courier new'",
+          padding: '10px',
+        },
+        style: {
+          fontSize: '13px',
+          color: 'dimgray',
+          display: 'flex',
+          alignItems: 'center',
+        },
+      },
+    ]
     this.debounceTimeout = null
   }
 
@@ -256,6 +299,14 @@ class MockForm extends React.PureComponent {
           </div>
           <div className="input-group input-group-sm">
             <Tabs>
+              <Tab name="Headers">
+                <ReactTable
+                  data={this.state.headers}
+                  columns={this.state.headerColumns}
+                  showPagination={false}
+                  defaultPageSize={5}
+                />
+              </Tab>
               <Tab name="Body">
                 <JSONEditor
                   id="jsonEditor"
@@ -264,7 +315,6 @@ class MockForm extends React.PureComponent {
                   onValidate={this.handleJsonValidate}
                 />
               </Tab>
-              <Tab name="Headers">TBD: Headers</Tab>
             </Tabs>
           </div>
         </form>
@@ -291,6 +341,12 @@ class MockForm extends React.PureComponent {
           }
           .input-group-container .input-group {
             width: 49%;
+          }
+          .ReactTable .rt-th {
+            font-weight: bold;
+            font-family: 'Lucida console', monospace, 'Courier new';
+            font-size: 12px;
+            color: dimgray;
           }
           .input-group-container {
             display: flex;
