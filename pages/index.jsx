@@ -42,6 +42,7 @@ class Index extends React.PureComponent {
       delay: 0,
       proxyUrl: '',
       proxyEnabled: false,
+      headers: {},
     }
 
     const response = await fetch('/mocks', {
