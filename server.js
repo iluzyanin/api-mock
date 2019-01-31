@@ -51,7 +51,11 @@ app
         if (foundMock.delay > 0) {
           await delay(foundMock.delay)
         }
-        res.status(foundMock.status).json(foundMock.data)
+
+        res
+          .status(foundMock.status)
+          .set(foundMock.headers)
+          .json(foundMock.data)
         return
       }
       res.status(404).end()

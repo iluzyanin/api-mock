@@ -33,3 +33,4 @@ And it will return you the result
 * [ ] Add support for response headers
 * [ ] Add grouping of mocks
 * [ ] Add support for other content types (xml?)
+* [ ] Fix split pane to not reset on index page re-render
