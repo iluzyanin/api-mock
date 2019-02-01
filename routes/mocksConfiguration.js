@@ -45,7 +45,7 @@ module.exports = () => {
 
   router.put('/:mockId', jsonParser, async (req, res) => {
     try {
-      const wasUpdated = mockService.update(req.body)
+      const wasUpdated = await mockService.update(req.body)
       if (wasUpdated) {
         res.status(204).end()
         return
