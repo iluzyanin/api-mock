@@ -23,6 +23,11 @@ const Layout = React.memo(props => (
         integrity="sha384-jLuaxTTBR42U2qJ/pm4JRouHkEDHkVqH0T1nyQXn1mZ7Snycpf6Rl25VBNthU4z0"
         crossOrigin="anonymous"
       />
+      <style type="text/css">{`
+        html {
+          margin-left: calc(100vw - 100%);
+        }
+      `}</style>
     </Head>
     <div className="layout">{props.children}</div>
     <style jsx>{`

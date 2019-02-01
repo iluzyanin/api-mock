@@ -56,11 +56,12 @@ class HeadersTable extends React.PureComponent {
     )
   }
 
-  handleNewChange = (evt, propName) => {
+  handleDeleteHeader = id => {
     this.setState(
       prevState => {
         const header = prevState.headerKeyValues.find(h => h.id === id)
-        header[propName] = evt.target.value
+        const index = prevState.headerKeyValues.indexOf(header)
+        prevState.headerKeyValues.splice(index, 1)
         return {
           headerKeyValues: prevState.headerKeyValues,
         }
@@ -94,23 +95,12 @@ class HeadersTable extends React.PureComponent {
                     html={header.value}
                     onChange={e => this.handleChange(e, header.id, 'value')}
                   />
+                  <span className="deleteButton" onClick={() => this.handleDeleteHeader(header.id)}>
+                    x
+                  </span>
                 </td>
               </tr>
             ))}
-            {/* <tr className="headerRow">
-              <td>
-                <ContentEditable
-                  html={this.state.newHeader.key}
-                  onChange={() => this.handleNewChange(e, 'key')}
-                />
-              </td>
-              <td>
-                <ContentEditable
-                  html={this.state.newHeader.value}
-                  onChange={() => this.handleNewChange(e, 'value')}
-                />
-              </td>
-            </tr> */}
           </tbody>
         </table>
         {JSON.stringify(this.state.headers, null, 2)}
@@ -147,6 +137,23 @@ class HeadersTable extends React.PureComponent {
             text-overflow: ellipsis;
             white-space: nowrap;
             max-width: 0;
+            position: relative;
+          }
+          .headerValue:hover .deleteButton {
+            visibility: visible;
+          }
+          .deleteButton {
+            position: absolute;
+            font-family: 'Lucida console', monospace, 'Courier new';
+            background-color: whitesmoke;
+            border-radius: 3px;
+            padding: 5px 10px;
+            font-size: 14px;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+            visibility: hidden;
+            z-index: 1;
           }
         `}</style>
       </React.Fragment>

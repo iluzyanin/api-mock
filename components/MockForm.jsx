@@ -298,6 +298,7 @@ class MockForm extends React.PureComponent {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
             height: 31px;
+            font-size: 12px;
           }
           .fixedInput {
             background-color: ghostwhite;
