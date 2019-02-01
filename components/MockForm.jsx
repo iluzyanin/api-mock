@@ -145,6 +145,23 @@ class MockForm extends React.PureComponent {
     }))
   }
 
+  renderHeadersTitle() {
+    const count = Object.keys(this.state.mock.headers).length
+    if (count > 0) {
+      return `Headers <span style="color: mediumseagreen">(${count})</span>`
+    }
+
+    return 'Headers'
+  }
+
+  renderBodyTitle() {
+    if (this.state.mock.data !== null) {
+      return `Body <span style="color: mediumseagreen; font-size: 10px; padding-left: 1px;">●</span>`
+    }
+
+    return 'Body'
+  }
+
   saveChanges() {
     if (!this.state.isJsonValid) {
       return
@@ -267,7 +284,7 @@ class MockForm extends React.PureComponent {
           </div>
           <div className="input-group input-group-sm">
             <Tabs>
-              <Tab name="Body">
+              <Tab name={this.renderBodyTitle()}>
                 <JSONEditor
                   id="jsonEditor"
                   value={this.state.dataJson}
@@ -275,7 +292,7 @@ class MockForm extends React.PureComponent {
                   onValidate={this.handleJsonValidate}
                 />
               </Tab>
-              <Tab name="Headers">
+              <Tab name={this.renderHeadersTitle()}>
                 <HeadersTable
                   headers={this.state.mock.headers}
                   onChange={this.handleHeadersChange}
