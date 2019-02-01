@@ -267,18 +267,18 @@ class MockForm extends React.PureComponent {
           </div>
           <div className="input-group input-group-sm">
             <Tabs>
-              <Tab name="Headers">
-                <HeadersTable
-                  headers={this.state.mock.headers}
-                  onChange={this.handleHeadersChange}
-                />
-              </Tab>
               <Tab name="Body">
                 <JSONEditor
                   id="jsonEditor"
                   value={this.state.dataJson}
                   onChange={this.handleJsonChange}
                   onValidate={this.handleJsonValidate}
+                />
+              </Tab>
+              <Tab name="Headers">
+                <HeadersTable
+                  headers={this.state.mock.headers}
+                  onChange={this.handleHeadersChange}
                 />
               </Tab>
             </Tabs>
