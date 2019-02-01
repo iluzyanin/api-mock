@@ -8,7 +8,7 @@ const Tab = props => (
       })}
       onClick={props.onTabClick}
     >
-      <span dangerouslySetInnerHTML={{ __html: props.name }} />
+      <span dangerouslySetInnerHTML={{ __html: props.title }} />
     </li>
     <style jsx>{`
       .tab {
