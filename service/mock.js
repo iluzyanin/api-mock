@@ -1,11 +1,15 @@
 const fs = require('fs')
 const { promisify } = require('util')
-const uuidv1 = require('uuid/v1')
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
 const MOCKS_FILE_NAME = 'mocks.json'
+
+const newId = () =>
+  Math.random()
+    .toString(36)
+    .substr(2, 10)
 
 const initializeMocks = async () => {
   if (!fs.existsSync(MOCKS_FILE_NAME)) {
@@ -66,7 +70,7 @@ const getById = async mockId => {
 
 const add = async newMock => {
   const mocks = await getAll()
-  newMock.id = uuidv1()
+  newMock.id = newId()
   mocks.push(newMock)
   await writeFile(MOCKS_FILE_NAME, JSON.stringify(mocks, null, 2))
   return newMock.id
