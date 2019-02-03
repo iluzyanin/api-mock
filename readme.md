@@ -30,7 +30,8 @@ And it will return you the result
 
 * [x] Add support for query string parameters
 * [x] Fix example in readme
-* [ ] Add support for response headers
+* [x] Add support for response headers
 * [ ] Add grouping of mocks
 * [ ] Add support for other content types (xml?)
+* [ ] Add import from Postman
 * [ ] Fix split pane to not reset on index page re-render
