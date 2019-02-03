@@ -13,13 +13,12 @@ const newId = () =>
 
 const initializeMocks = async () => {
   if (!fs.existsSync(MOCKS_FILE_NAME)) {
-    return writeFile(
+    await writeFile(
       MOCKS_FILE_NAME,
       JSON.stringify(
         [
           {
             url: '/fruits',
-            method: 'GET',
             data: [
               {
                 id: 1,
@@ -30,12 +29,7 @@ const initializeMocks = async () => {
                 name: 'banana',
               },
             ],
-            status: 200,
-            delay: 0,
-            enabled: true,
-            id: 'b1f61900-029c-11e9-8908-13eee40b1caf',
             description: 'Get fruits',
-            headers: {},
           },
         ],
         null,
@@ -46,6 +40,7 @@ const initializeMocks = async () => {
 
   const mocks = await getAll()
   const newMocks = mocks.map(mock => ({
+    id: newId(),
     url: '',
     method: 'GET',
     description: 'New mock',
@@ -55,6 +50,7 @@ const initializeMocks = async () => {
     proxyUrl: '',
     proxyEnabled: false,
     headers: {},
+    group: '',
     ...mock,
   }))
 
