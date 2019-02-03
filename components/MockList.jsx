@@ -22,37 +22,48 @@ const MockList = React.memo(props => {
     props.onMockClone(mockId)
   }
 
+  let grouped = {}
+
+  if (props.mocks.length > 0) {
+    grouped = props.mocks.reduce((grouped, mock) => {
+      const group = mock.group || 'zzz_ungrouped'
+      grouped[group] = mock
+      return grouped
+    }, {})
+  }
+
   return (
     <React.Fragment>
       <ul className="mockList">
-        {props.mocks.sort(descriptionSorter).map(mock => (
-          <li
-            key={mock.id}
-            className={classnames('mockItem', {
-              'mockItem--selected': mock.id === props.selectedMockId,
-            })}
-            onClick={() => props.onMockClick(mock)}
-          >
-            <span className="method">
-              <HttpMethod name={mock.method} />
-            </span>
-            <span className="description" title={mock.description}>
-              {mock.description}
-            </span>
-            <span className="controls">
-              <span
-                className="cloneButton"
-                onClick={e => onMockClone(e, mock.id)}
-              >
-                <i className="far fa-copy" title="Clone mock" />
-              </span>
-              <span
-                className="deleteButton"
-                onClick={e => onMockDelete(e, mock.id)}
-              >
-                <i className="far fa-trash-alt" title="Delete mock" />
-              </span>
-            </span>
+        {Object.keys(grouped).map(groupName => (
+          <li key={groupName}>
+            {groupName}
+            <ul>
+              {props.mocks.sort(descriptionSorter).map(mock => (
+                <li
+                  key={mock.id}
+                  className={classnames('mockItem', {
+                    'mockItem--selected': mock.id === props.selectedMockId,
+                  })}
+                  onClick={() => props.onMockClick(mock)}
+                >
+                  <span className="method">
+                    <HttpMethod name={mock.method} />
+                  </span>
+                  <span className="description" title={mock.description}>
+                    {mock.description}
+                  </span>
+                  <span className="controls">
+                    <span className="cloneButton" onClick={e => onMockClone(e, mock.id)}>
+                      <i className="far fa-copy" title="Clone mock" />
+                    </span>
+                    <span className="deleteButton" onClick={e => onMockDelete(e, mock.id)}>
+                      <i className="far fa-trash-alt" title="Delete mock" />
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
