@@ -40,7 +40,7 @@ class MockList extends React.PureComponent {
 
   getGroupedMocks = mocks =>
     mocks.reduce((grouped, mock) => {
-      const group = mock.group || 'zzz_ungrouped'
+      const group = mock.group || '!UNGROUPED!'
       grouped[group] = grouped[group] || {
         isOpen: true,
         mocks: [],
@@ -63,14 +63,14 @@ class MockList extends React.PureComponent {
 
   renderMocksCount = count => {
     if (!count) {
-      return 'No requests'
+      return 'No mocks'
     }
 
     if (count === 1) {
-      return '1 Request'
+      return '1 mock'
     }
 
-    return `${count} Requests`
+    return `${count} mocks`
   }
 
   render() {
@@ -91,7 +91,7 @@ class MockList extends React.PureComponent {
                 onClick={() => this.toggleIsOpen(groupName)}
               >
                 <i
-                  className={classnames('far', 'folderIcon', {
+                  className={classnames('fas', 'folderIcon', {
                     'fa-folder-open': this.state.groupedMocks[groupName].isOpen,
                     'fa-folder': !this.state.groupedMocks[groupName].isOpen,
                   })}
@@ -141,15 +141,15 @@ class MockList extends React.PureComponent {
         </ul>
         <style jsx>{`
           .mockGroups {
-            margin: 0 10px;
             list-style-type: none;
             padding-left: 0;
             font-size: 15px;
+            border-left: 1px solid whitesmoke;
           }
           .mockGroupTitle {
             cursor: pointer;
             width: 100%;
-            padding: 10px 0;
+            padding: 10px 0 10px 10px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             border-top: 1px solid rgba(0, 0, 0, 0.1);
             user-select: none;
@@ -158,10 +158,7 @@ class MockList extends React.PureComponent {
           }
           .mockGroupTitle--first {
             border-top: 0;
-          }
-          .mockGroupTitle--isClosed {
-            box-shadow: none;
-            border-bottom: none;
+            border-bottom: 0;
           }
           .groupInfo {
             padding-left: 5px;
@@ -178,14 +175,14 @@ class MockList extends React.PureComponent {
             margin-right: 7px;
           }
           .mockList {
-            padding-left: 10px;
+            padding-left: 0;
             box-shadow: inset 0 20px 10px -20px rgba(0, 0, 0, 0.17);
           }
           .mockItem {
             height: 30px;
             display: flex;
             align-items: center;
-            padding: 5px 5px 5px 5px;
+            padding: 5px 5px 5px 10px;
             position: relative;
           }
           .mockItem:hover {

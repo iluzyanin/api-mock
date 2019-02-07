@@ -106,7 +106,7 @@ class Index extends React.PureComponent {
         <SplitPane split="vertical">
           <Pane maxSize="300px">
             <span className="newMock" onClick={() => this.createMock()}>
-              <i className="far fa-plus-square" /> New mock
+              <i className="fas fa-folder-plus" /> New collection
             </span>
             <hr className="splitLine" />
             <MockList

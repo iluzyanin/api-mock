@@ -58,6 +58,19 @@ class MockForm extends React.PureComponent {
     )
   }
 
+  handleGroupChange = event => {
+    const group = event.target.value
+    this.setState(
+      prevState => ({
+        mock: {
+          ...prevState.mock,
+          group,
+        },
+      }),
+      this.saveChangesDebounced
+    )
+  }
+
   handleMethodChange = event => {
     const method = event.target.value
     this.setState(
@@ -203,17 +216,6 @@ class MockForm extends React.PureComponent {
         <form className="form-horizontal mockForm">
           <div className="input-group input-group-sm">
             <div className="input-group-prepend">
-              <span className="input-group-text">Description</span>
-            </div>
-            <input
-              className="form-control"
-              type="text"
-              value={this.state.mock.description}
-              onChange={this.handleDescriptionChange}
-            />
-          </div>
-          <div className="input-group input-group-sm">
-            <div className="input-group-prepend">
               <select
                 className="form-control httpMethod"
                 value={this.state.mock.method}
@@ -234,6 +236,30 @@ class MockForm extends React.PureComponent {
               onChange={this.handleUrlChange}
             />
             <i className="far fa-clipboard copyUrlButton" title="Copy Url" onClick={this.copyUrl} />
+          </div>
+          <div className="input-group-container">
+            <div className="input-group input-group-sm">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Group</span>
+              </div>
+              <input
+                className="form-control"
+                type="text"
+                value={this.state.mock.group}
+                onChange={this.handleGroupChange}
+              />
+            </div>
+            <div className="input-group input-group-sm">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Description</span>
+              </div>
+              <input
+                className="form-control"
+                type="text"
+                value={this.state.mock.description}
+                onChange={this.handleDescriptionChange}
+              />
+            </div>
           </div>
           <div className="input-group-container">
             <div className="input-group input-group-sm">
