@@ -145,6 +145,10 @@ class MockForm extends React.PureComponent {
     }))
   }
 
+  copyUrl = async () => {
+    await navigator.clipboard.writeText(`http://localhost:3030${this.state.mock.url}`)
+  }
+
   renderHeadersTitle() {
     const count = Object.keys(this.state.mock.headers).length
     if (count > 0) {
@@ -229,6 +233,7 @@ class MockForm extends React.PureComponent {
               value={this.state.mock.url}
               onChange={this.handleUrlChange}
             />
+            <i className="far fa-clipboard copyUrlButton" title="Copy Url" onClick={this.copyUrl} />
           </div>
           <div className="input-group-container">
             <div className="input-group input-group-sm">
@@ -307,6 +312,8 @@ class MockForm extends React.PureComponent {
           }
           .input-group {
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
           }
           .urlInput {
             text-overflow: ellipsis;
@@ -329,6 +336,10 @@ class MockForm extends React.PureComponent {
           .input-group-container {
             display: flex;
             justify-content: space-between;
+          }
+          .copyUrlButton {
+            margin-left: 8px;
+            cursor: pointer;
           }
         `}</style>
       </React.Fragment>
