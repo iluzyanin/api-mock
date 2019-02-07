@@ -61,6 +61,18 @@ class MockList extends React.PureComponent {
     }))
   }
 
+  renderMocksCount = count => {
+    if (!count) {
+      return 'No requests'
+    }
+
+    if (count === 1) {
+      return '1 Request'
+    }
+
+    return `${count} Requests`
+  }
+
   render() {
     if (Object.keys(this.state.groupedMocks).length === 0) {
       return null
@@ -69,17 +81,29 @@ class MockList extends React.PureComponent {
     return (
       <React.Fragment>
         <ul className="mockGroups">
-          {Object.keys(this.state.groupedMocks).map(groupName => (
+          {Object.keys(this.state.groupedMocks).map((groupName, i) => (
             <li key={groupName}>
-              <i
-                className={classnames('far', 'folderIcon', {
-                  'fa-folder-open': this.state.groupedMocks[groupName].isOpen,
-                  'fa-folder': !this.state.groupedMocks[groupName].isOpen,
+              <div
+                className={classnames('mockGroupTitle', {
+                  'mockGroupTitle--isClosed': !this.state.groupedMocks[groupName].isOpen,
+                  'mockGroupTitle--first': i === 0,
                 })}
-                title="Toggle group"
                 onClick={() => this.toggleIsOpen(groupName)}
-              />
-              {groupName}
+              >
+                <i
+                  className={classnames('far', 'folderIcon', {
+                    'fa-folder-open': this.state.groupedMocks[groupName].isOpen,
+                    'fa-folder': !this.state.groupedMocks[groupName].isOpen,
+                  })}
+                  title="Toggle group"
+                />
+                <div className="groupInfo">
+                  {groupName}
+                  <div className="mocksCount">
+                    {this.renderMocksCount(this.state.groupedMocks[groupName].mocks.length)}
+                  </div>
+                </div>
+              </div>
               {this.state.groupedMocks[groupName].isOpen && (
                 <ul className="mockList">
                   {this.state.groupedMocks[groupName].mocks.sort(descriptionSorter).map(mock => (
@@ -117,22 +141,45 @@ class MockList extends React.PureComponent {
         </ul>
         <style jsx>{`
           .mockGroups {
-            margin: 10px;
+            margin: 0 10px;
             list-style-type: none;
             padding-left: 0;
             font-size: 15px;
           }
+          .mockGroupTitle {
+            cursor: pointer;
+            width: 100%;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            user-select: none;
+            display: flex;
+            align-items: center;
+          }
+          .mockGroupTitle--first {
+            border-top: 0;
+          }
+          .mockGroupTitle--isClosed {
+            box-shadow: none;
+            border-bottom: none;
+          }
+          .groupInfo {
+            padding-left: 5px;
+          }
+          .mocksCount {
+            font-size: 12px;
+            color: dimgray;
+          }
           .folderIcon {
             margin-right: 5px;
             color: dimgray;
-            cursor: pointer;
           }
           .folderIcon.fa-folder {
             margin-right: 7px;
           }
           .mockList {
-            margin: 10px;
             padding-left: 10px;
+            box-shadow: inset 0 20px 10px -20px rgba(0, 0, 0, 0.17);
           }
           .mockItem {
             height: 30px;

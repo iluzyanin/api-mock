@@ -98,8 +98,7 @@ class Index extends React.PureComponent {
     })
   }
 
-  getSelectedMock = () =>
-    this.state.mocks.find(mock => mock.id === this.state.selectedMockId)
+  getSelectedMock = () => this.state.mocks.find(mock => mock.id === this.state.selectedMockId)
 
   render() {
     return (
@@ -109,7 +108,7 @@ class Index extends React.PureComponent {
             <span className="newMock" onClick={() => this.createMock()}>
               <i className="far fa-plus-square" /> New mock
             </span>
-            <hr />
+            <hr className="splitLine" />
             <MockList
               mocks={this.state.mocks}
               onMockClick={this.handleOnMockClick}
@@ -130,6 +129,9 @@ class Index extends React.PureComponent {
         </SplitPane>
         <SaveNotification visible={this.state.saveStatusVisible} />
         <style jsx>{`
+          .splitLine {
+            margin-bottom: 0;
+          }
           .newMock {
             color: cornflowerblue;
             margin-left: 10px;
