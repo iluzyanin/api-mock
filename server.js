@@ -44,12 +44,12 @@ app
         )
 
       if (foundMock) {
-        if (foundMock.proxyEnabled && foundMock.proxyUrl) {
-          return proxy(foundMock.proxyUrl)(req, res, next)
-        }
-
         if (foundMock.delay > 0) {
           await delay(foundMock.delay)
+        }
+
+        if (foundMock.proxyEnabled && foundMock.proxyUrl) {
+          return proxy(foundMock.proxyUrl)(req, res, next)
         }
 
         res
