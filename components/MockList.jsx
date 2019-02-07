@@ -14,48 +14,30 @@ class MockList extends React.PureComponent {
     super(props)
 
     this.state = {
-      groupedMocks: {},
+      groupOpenStates: [],
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.mocks !== this.props.mocks) {
-      this.setState({
-        groupedMocks: this.getGroupedMocks(this.props.mocks),
-      })
-    }
-  }
-
-  onMockDelete = (e, mockId) => {
+  onMockDelete = (e, groupId, mockId) => {
     e.preventDefault()
     e.stopPropagation()
-    this.props.onMockDelete(mockId)
+    this.props.onMockDelete(groupId, mockId)
   }
 
-  onMockClone = (e, mockId) => {
+  onMockClone = (e, groupId, mockId) => {
     e.preventDefault()
     e.stopPropagation()
-    this.props.onMockClone(mockId)
+    this.props.onMockClone(groupId, mockId)
   }
 
-  getGroupedMocks = mocks =>
-    mocks.reduce((grouped, mock) => {
-      const group = mock.group || 'zzz_ungrouped'
-      grouped[group] = grouped[group] || {
-        isOpen: true,
-        mocks: [],
-      }
-      grouped[group].mocks.push(mock)
-      return grouped
-    }, {})
-
-  toggleIsOpen = groupName => {
+  toggleIsOpen = groupId => {
     this.setState(prevState => ({
-      groupedMocks: {
-        ...prevState.groupedMocks,
-        [groupName]: {
-          ...prevState.groupedMocks[groupName],
-          isOpen: !prevState.groupedMocks[groupName].isOpen,
+      groupOpenStates: {
+        ...prevState.groupOpenStates,
+        [groupId]: {
+          isOpen: prevState.groupOpenStates[groupId]
+            ? !prevState.groupOpenStates[groupId].isOpen
+            : false,
         },
       },
     }))
@@ -63,50 +45,52 @@ class MockList extends React.PureComponent {
 
   renderMocksCount = count => {
     if (!count) {
-      return 'No requests'
+      return 'No mocks'
     }
 
     if (count === 1) {
-      return '1 Request'
+      return '1 mock'
     }
 
-    return `${count} Requests`
+    return `${count} mocks`
   }
 
   render() {
-    if (Object.keys(this.state.groupedMocks).length === 0) {
+    if (!this.props.groupedMocks || this.props.groupedMocks.length === 0) {
       return null
     }
 
     return (
       <React.Fragment>
         <ul className="mockGroups">
-          {Object.keys(this.state.groupedMocks).map((groupName, i) => (
-            <li key={groupName}>
+          {this.props.groupedMocks.map((group, i) => (
+            <li key={group.id}>
               <div
                 className={classnames('mockGroupTitle', {
-                  'mockGroupTitle--isClosed': !this.state.groupedMocks[groupName].isOpen,
+                  'mockGroupTitle--isClosed':
+                    this.state.groupOpenStates[group.id] &&
+                    !this.state.groupOpenStates[group.id].isOpen,
                   'mockGroupTitle--first': i === 0,
                 })}
-                onClick={() => this.toggleIsOpen(groupName)}
+                onClick={() => this.toggleIsOpen(group.id)}
               >
                 <i
-                  className={classnames('far', 'folderIcon', {
-                    'fa-folder-open': this.state.groupedMocks[groupName].isOpen,
-                    'fa-folder': !this.state.groupedMocks[groupName].isOpen,
+                  className={classnames('fas', 'folderIcon', {
+                    'fa-folder-open':
+                      !this.state.groupOpenStates[group.id] ||
+                      this.state.groupOpenStates[group.id].isOpen,
+                    'fa-folder': !this.state.groupOpenStates[group.id].isOpen,
                   })}
                   title="Toggle group"
                 />
                 <div className="groupInfo">
-                  {groupName}
-                  <div className="mocksCount">
-                    {this.renderMocksCount(this.state.groupedMocks[groupName].mocks.length)}
-                  </div>
+                  {group.name}
+                  <div className="mocksCount">{this.renderMocksCount(group.mocks.length)}</div>
                 </div>
               </div>
-              {this.state.groupedMocks[groupName].isOpen && (
+              {this.state.groupOpenStates[group.id].isOpen && (
                 <ul className="mockList">
-                  {this.state.groupedMocks[groupName].mocks.sort(descriptionSorter).map(mock => (
+                  {group.mocks.sort(descriptionSorter).map(mock => (
                     <li
                       key={mock.id}
                       className={classnames('mockItem', {
@@ -141,15 +125,15 @@ class MockList extends React.PureComponent {
         </ul>
         <style jsx>{`
           .mockGroups {
-            margin: 0 10px;
             list-style-type: none;
             padding-left: 0;
             font-size: 15px;
+            border-left: 1px solid whitesmoke;
           }
           .mockGroupTitle {
             cursor: pointer;
             width: 100%;
-            padding: 10px 0;
+            padding: 10px 0 10px 10px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             border-top: 1px solid rgba(0, 0, 0, 0.1);
             user-select: none;
@@ -158,10 +142,7 @@ class MockList extends React.PureComponent {
           }
           .mockGroupTitle--first {
             border-top: 0;
-          }
-          .mockGroupTitle--isClosed {
-            box-shadow: none;
-            border-bottom: none;
+            border-bottom: 0;
           }
           .groupInfo {
             padding-left: 5px;
@@ -178,14 +159,14 @@ class MockList extends React.PureComponent {
             margin-right: 7px;
           }
           .mockList {
-            padding-left: 10px;
+            padding-left: 0;
             box-shadow: inset 0 20px 10px -20px rgba(0, 0, 0, 0.17);
           }
           .mockItem {
             height: 30px;
             display: flex;
             align-items: center;
-            padding: 5px 5px 5px 5px;
+            padding: 5px 5px 5px 10px;
             position: relative;
           }
           .mockItem:hover {

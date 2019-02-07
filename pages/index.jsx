@@ -12,7 +12,7 @@ class Index extends React.PureComponent {
     super(props)
 
     this.state = {
-      mocks: [],
+      groupedMocks: [],
       saveStatusVisible: false,
       selectedMockId: null,
     }
@@ -21,7 +21,7 @@ class Index extends React.PureComponent {
   async componentDidMount() {
     await this.fetchMocks()
     this.setState({
-      selectedMockId: this.state.mocks[0].id,
+      selectedMockId: this.state.groupedMocks[0].mocks[0].id,
     })
   }
 
@@ -29,7 +29,7 @@ class Index extends React.PureComponent {
     const res = await fetch(`/mocks`)
     const data = await res.json()
 
-    this.setState({ mocks: data })
+    this.setState({ groupedMocks: data })
   }
 
   createMock = async mock => {
@@ -73,7 +73,7 @@ class Index extends React.PureComponent {
   }
 
   handleOnMockClone = async mockId => {
-    const mock = this.state.mocks.find(m => m.id === mockId)
+    const mock = this.state.groupedMocks.find(m => m.id === mockId)
     const clonedMock = {
       ...mock,
       id: undefined,
@@ -87,7 +87,7 @@ class Index extends React.PureComponent {
     await this.fetchMocks()
     if (this.state.selectedMockId === mockId) {
       this.setState({
-        selectedMockId: this.state.mocks[0].id,
+        selectedMockId: this.state.groupedMocks[0].id,
       })
     }
   }
@@ -98,7 +98,8 @@ class Index extends React.PureComponent {
     })
   }
 
-  getSelectedMock = () => this.state.mocks.find(mock => mock.id === this.state.selectedMockId)
+  getSelectedMock = () =>
+    this.state.groupedMocks.find(mock => mock.id === this.state.selectedMockId)
 
   render() {
     return (
@@ -106,11 +107,11 @@ class Index extends React.PureComponent {
         <SplitPane split="vertical">
           <Pane maxSize="300px">
             <span className="newMock" onClick={() => this.createMock()}>
-              <i className="far fa-plus-square" /> New mock
+              <i className="fas fa-folder-plus" /> New collection
             </span>
             <hr className="splitLine" />
             <MockList
-              mocks={this.state.mocks}
+              groupedMocks={this.state.groupedMocks}
               onMockClick={this.handleOnMockClick}
               onMockClone={this.handleOnMockClone}
               onMockDelete={this.handleOnMockDelete}
@@ -118,7 +119,7 @@ class Index extends React.PureComponent {
             />
           </Pane>
           <Pane>
-            {this.state.selectedMockId && (
+            {this.state.selectedMockIdd && (
               <MockForm
                 key={this.state.selectedMockId}
                 mock={this.getSelectedMock()}
