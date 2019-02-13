@@ -1,15 +1,11 @@
 const fs = require('fs')
 const { promisify } = require('util')
+const { newId } = require('./idGenerator')
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
-const MOCKS_FILE_NAME = 'mocks.json'
-
-const newId = () =>
-  Math.random()
-    .toString(36)
-    .substr(2, 10)
+const MOCKS_FILE_NAME = 'newMocks.json'
 
 const initializeMocks = async () => {
   if (!fs.existsSync(MOCKS_FILE_NAME)) {
@@ -18,18 +14,31 @@ const initializeMocks = async () => {
       JSON.stringify(
         [
           {
-            url: '/fruits',
-            data: [
+            name: 'Fruits',
+            id: newId(),
+            mocks: [
               {
-                id: 1,
-                name: 'apple',
-              },
-              {
-                id: 2,
-                name: 'banana',
+                id: newId(),
+                url: '/fruits',
+                method: 'GET',
+                description: 'Get all fruits',
+                status: 200,
+                delay: 0,
+                proxyUrl: '',
+                proxyEnabled: false,
+                headers: {},
+                data: [
+                  {
+                    id: 1,
+                    name: 'apple',
+                  },
+                  {
+                    id: 2,
+                    name: 'banana',
+                  },
+                ],
               },
             ],
-            description: 'Get fruits',
           },
         ],
         null,
@@ -38,23 +47,7 @@ const initializeMocks = async () => {
     )
   }
 
-  const mocks = await getAll()
-  const newMocks = mocks.map(mock => ({
-    id: newId(),
-    url: '',
-    method: 'GET',
-    description: 'New mock',
-    data: {},
-    status: 200,
-    delay: 0,
-    proxyUrl: '',
-    proxyEnabled: false,
-    headers: {},
-    group: '',
-    ...mock,
-  }))
-
-  return writeFile(MOCKS_FILE_NAME, JSON.stringify(newMocks, null, 2))
+  return Promise.resolve()
 }
 
 const getAll = async () => JSON.parse(await readFile(MOCKS_FILE_NAME))
