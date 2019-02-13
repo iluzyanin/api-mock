@@ -6,7 +6,7 @@ const _ = require('lodash')
 
 const mockService = require('./service/mock')
 const uiRoute = require('./routes/ui')
-const mocksConfigurationRoute = require('./routes/mocksConfiguration')
+const collectionsRoute = require('./routes/collections')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || '3030'
@@ -23,7 +23,7 @@ app
 
     server.use('/ui', uiRoute(app))
 
-    server.use('/mocks', mocksConfigurationRoute())
+    server.use('/collections', collectionsRoute())
 
     server.get('/_next*', (req, res) => {
       return handle(req, res)
@@ -31,6 +31,7 @@ app
 
     server.use('*', async (req, res, next) => {
       const mocks = await mockService.getAll()
+      console.log(req.baseUrl)
       const foundMock = mocks
         .map(mock => ({
           ...mock,

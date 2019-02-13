@@ -3,7 +3,7 @@ import SplitPane from 'react-split-pane'
 import Pane from 'react-split-pane/lib/Pane'
 
 import Layout from '../components/Layout'
-import MockList from '../components/MockList'
+import CollectionListItem from '../components/CollectionListItem'
 import MockForm from '../components/MockForm'
 import SaveNotification from '../components/SaveNotification'
 
@@ -12,56 +12,57 @@ class Index extends React.PureComponent {
     super(props)
 
     this.state = {
-      groupedMocks: [],
+      collections: [],
       saveStatusVisible: false,
       selectedMockId: null,
     }
   }
 
   async componentDidMount() {
-    await this.fetchMocks()
-    this.setState({
-      selectedMockId: this.state.groupedMocks[0].mocks[0].id,
-    })
+    await this.fetchCollections()
+    if (this.state.collections.length > 0 && this.state.collections[0].mocks.length > 0) {
+      this.setState({
+        selectedMockId: this.state.collections[0].mocks[0].id,
+      })
+    }
   }
 
-  async fetchMocks() {
-    const res = await fetch(`/mocks`)
-    const data = await res.json()
+  async fetchCollections() {
+    const res = await fetch(`/collections`)
+    const collections = await res.json()
 
-    this.setState({ groupedMocks: data })
+    this.setState({ collections })
   }
 
   createMock = async mock => {
-    const newMock = mock || {
-      url: '',
-      method: 'GET',
-      description: 'New mock',
-      data: {},
-      status: 200,
-      delay: 0,
-      proxyUrl: '',
-      proxyEnabled: false,
-      headers: {},
-    }
-
-    const response = await fetch('/mocks', {
-      body: JSON.stringify(newMock),
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: 'POST',
-    })
-    const newMockId = response.headers.get('Location')
-
-    await this.fetchMocks()
-    this.setState({
-      selectedMockId: newMockId,
-    })
+    // const newMock = mock || {
+    //   url: '',
+    //   method: 'GET',
+    //   description: 'New mock',
+    //   data: {},
+    //   status: 200,
+    //   delay: 0,
+    //   proxyUrl: '',
+    //   proxyEnabled: false,
+    //   headers: {},
+    // }
+    // const response = await fetch('/mocks', {
+    //   body: JSON.stringify(newMock),
+    //   headers: {
+    //     'content-type': 'application/json',
+    //   },
+    //   method: 'POST',
+    // })
+    // const newMockId = response.headers.get('Location')
+    // await this.fetchCollections()
+    // this.setState({
+    //   selectedMockId: newMockId,
+    // })
   }
 
   onMocksChange = async () => {
-    await this.fetchMocks()
+    await this.fetchCollections()
+
     this.setState({
       saveStatusVisible: true,
     })
@@ -73,33 +74,30 @@ class Index extends React.PureComponent {
   }
 
   handleOnMockClone = async mockId => {
-    const mock = this.state.groupedMocks.find(m => m.id === mockId)
-    const clonedMock = {
-      ...mock,
-      id: undefined,
-      description: `${mock.description} COPY`,
-    }
-    await this.createMock(clonedMock)
+    // const mock = this.state.collections.find(m => m.id === mockId)
+    // const clonedMock = {
+    //   ...mock,
+    //   id: undefined,
+    //   description: `${mock.description} COPY`,
+    // }
+    // await this.createMock(clonedMock)
   }
 
   handleOnMockDelete = async mockId => {
-    await fetch(`/mocks/${mockId}`, { method: 'DELETE' })
-    await this.fetchMocks()
+    // await fetch(`/mocks/${mockId}`, { method: 'DELETE' })
+    await this.fetchCollections()
     if (this.state.selectedMockId === mockId) {
       this.setState({
-        selectedMockId: this.state.groupedMocks[0].id,
+        selectedMockId: this.state.collections[0].id,
       })
     }
   }
 
-  handleOnMockClick = selectedMock => {
-    this.setState({
-      selectedMockId: selectedMock.id,
-    })
+  handleOnMockClick = mockId => {
+    this.setState({ selectedMockId: mockId })
   }
 
-  getSelectedMock = () =>
-    this.state.groupedMocks.find(mock => mock.id === this.state.selectedMockId)
+  getSelectedMock = () => this.state.collections.find(mock => mock.id === this.state.selectedMockId)
 
   render() {
     return (
@@ -110,13 +108,21 @@ class Index extends React.PureComponent {
               <i className="fas fa-folder-plus" /> New collection
             </span>
             <hr className="splitLine" />
-            <MockList
-              groupedMocks={this.state.groupedMocks}
-              onMockClick={this.handleOnMockClick}
-              onMockClone={this.handleOnMockClone}
-              onMockDelete={this.handleOnMockDelete}
-              selectedMockId={this.state.selectedMockId}
-            />
+            {this.state.collections && this.state.collections.length > 0 && (
+              <ul className="collections">
+                {this.state.collections.map(collection => (
+                  <CollectionListItem
+                    key={collection.id}
+                    name={collection.name}
+                    mocks={collection.mocks}
+                    selectedMockId={this.state.selectedMockId}
+                    onMockClick={this.handleOnMockClick}
+                    onMockClone={this.handleOnMockClone}
+                    onMockDelete={this.handleOnMockDelete}
+                  />
+                ))}
+              </ul>
+            )}
           </Pane>
           <Pane>
             {this.state.selectedMockIdd && (
@@ -139,6 +145,12 @@ class Index extends React.PureComponent {
           }
           .newMock:hover {
             cursor: pointer;
+          }
+          .collections {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 15px;
+            border-left: 1px solid whitesmoke;
           }
         `}</style>
       </Layout>

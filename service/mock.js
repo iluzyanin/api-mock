@@ -5,12 +5,12 @@ const { newId } = require('./idGenerator')
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
-const MOCKS_FILE_NAME = 'newMocks.json'
+const COLLECTIONS_FILE_NAME = 'collections.json'
 
 const initializeMocks = async () => {
-  if (!fs.existsSync(MOCKS_FILE_NAME)) {
+  if (!fs.existsSync(COLLECTIONS_FILE_NAME)) {
     await writeFile(
-      MOCKS_FILE_NAME,
+      COLLECTIONS_FILE_NAME,
       JSON.stringify(
         [
           {
@@ -50,7 +50,21 @@ const initializeMocks = async () => {
   return Promise.resolve()
 }
 
-const getAll = async () => JSON.parse(await readFile(MOCKS_FILE_NAME))
+const sortBy = propName => (a, b) => {
+  if (!a[propName]) {
+    return 1
+  }
+
+  return a[propName].localeCompare(b[propName])
+}
+
+const getAll = async () => {
+  const collections = JSON.parse(await readFile(COLLECTIONS_FILE_NAME))
+  return collections.sort(sortBy('name')).map(collection => ({
+    ...collection,
+    mocks: collection.mocks.sort(sortBy('description')),
+  }))
+}
 
 const getById = async mockId => {
   const mocks = await getAll()
@@ -61,7 +75,7 @@ const add = async newMock => {
   const mocks = await getAll()
   newMock.id = newId()
   mocks.push(newMock)
-  await writeFile(MOCKS_FILE_NAME, JSON.stringify(mocks, null, 2))
+  await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(mocks, null, 2))
   return newMock.id
 }
 
@@ -70,7 +84,7 @@ const remove = async mockId => {
   const newMocks = mocks.filter(mock => mock.id !== mockId)
   const wasDeleted = newMocks.length < mocks.length
   if (wasDeleted) {
-    await writeFile(MOCKS_FILE_NAME, JSON.stringify(newMocks, null, 2))
+    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(newMocks, null, 2))
   }
   return wasDeleted
 }
@@ -87,7 +101,7 @@ const update = async updatedMock => {
     return mock
   })
   if (wasUpdated) {
-    await writeFile(MOCKS_FILE_NAME, JSON.stringify(newMocks, null, 2))
+    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(newMocks, null, 2))
   }
   return wasUpdated
 }
