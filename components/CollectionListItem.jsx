@@ -32,7 +32,7 @@ const CollectionListItem = React.memo(
             />
             <div className="collectionInfo">
               {name}
-              <div className="mocksCount">{renderMocksCount}</div>
+              <div className="mocksCount">{renderMocksCount()}</div>
             </div>
           </div>
           {isOpen && (

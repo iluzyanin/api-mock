@@ -67,25 +67,51 @@ const getAll = async () => {
 }
 
 const getById = async mockId => {
-  const mocks = await getAll()
-  return mocks.find(m => m.id === mockId)
+  const collections = await getAll()
+  return collections.find(m => m.id === mockId)
 }
 
 const add = async newMock => {
-  const mocks = await getAll()
+  const collections = await getAll()
   newMock.id = newId()
-  mocks.push(newMock)
-  await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(mocks, null, 2))
+  collections.push(newMock)
+  await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
   return newMock.id
 }
 
-const remove = async mockId => {
-  const mocks = await getAll()
-  const newMocks = mocks.filter(mock => mock.id !== mockId)
-  const wasDeleted = newMocks.length < mocks.length
-  if (wasDeleted) {
-    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(newMocks, null, 2))
+const clone = async (collectionId, mockId) => {
+  const collections = await getAll()
+  const collection = collections.find(collection => collection.id === collectionId)
+  if (!collection) {
+    return null
   }
+  const mock = collection.mocks.find(mock => mock.id === mockId)
+  if (!mock) {
+    return null
+  }
+  const newMockId = newId()
+  collection.mocks.push({
+    ...mock,
+    id: newMockId,
+    description: `${mock.description} COPY`,
+  })
+  await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
+  return newMockId
+}
+
+const remove = async (collectionId, mockId) => {
+  const collections = await getAll()
+  const collection = collections.find(collection => collection.id === collectionId)
+  if (!collection) {
+    return false
+  }
+  const remainingMocks = collection.mocks.filter(mock => mock.id !== mockId)
+  const wasDeleted = remainingMocks.length < collection.mocks.length
+  if (wasDeleted) {
+    collection.mocks = remainingMocks
+    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
+  }
+
   return wasDeleted
 }
 
@@ -111,6 +137,7 @@ module.exports = {
   getAll,
   getById,
   add,
+  clone,
   remove,
   update,
 }

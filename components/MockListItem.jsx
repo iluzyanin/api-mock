@@ -14,7 +14,7 @@ const MockListItem = ({ method, description, isSelected, onClick, onClone, onDel
         className={classnames('mockItem', {
           'mockItem--selected': isSelected,
         })}
-        onClick={() => withPreventDefault(onClick)}
+        onClick={onClick}
       >
         <span className="method">
           <HttpMethod name={method} />
@@ -87,10 +87,18 @@ const MockListItem = ({ method, description, isSelected, onClick, onClone, onDel
         }
         .deleteButton {
           color: salmon;
+          opacity: 0.7;
+        }
+        .deleteButton:hover {
+          opacity: 1;
         }
         .cloneButton {
           color: gray;
           margin-right: 8px;
+          opacity: 0.7;
+        }
+        .cloneButton:hover {
+          opacity: 1;
         }
       `}</style>
     </React.Fragment>

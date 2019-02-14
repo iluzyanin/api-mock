@@ -73,23 +73,32 @@ class Index extends React.PureComponent {
     }, 500)
   }
 
-  handleOnMockClone = async mockId => {
-    // const mock = this.state.collections.find(m => m.id === mockId)
-    // const clonedMock = {
-    //   ...mock,
-    //   id: undefined,
-    //   description: `${mock.description} COPY`,
-    // }
-    // await this.createMock(clonedMock)
+  handleOnMockClone = async (collectionId, mockId) => {
+    const response = await fetch(`/collections/${collectionId}/mocks/${mockId}`, {
+      method: 'POST',
+    })
+    const newMockId = response.headers.get('Location')
+    if (newMockId) {
+      await this.fetchCollections()
+      this.setState({
+        selectedMockId: newMockId,
+      })
+    }
   }
 
-  handleOnMockDelete = async mockId => {
-    // await fetch(`/mocks/${mockId}`, { method: 'DELETE' })
+  handleOnMockDelete = async (collectionId, mockId) => {
+    await fetch(`/collections/${collectionId}/mocks/${mockId}`, { method: 'DELETE' })
     await this.fetchCollections()
     if (this.state.selectedMockId === mockId) {
-      this.setState({
-        selectedMockId: this.state.collections[0].id,
-      })
+      if (this.state.collections.length > 0 && this.state.collections[0].mocks.length > 0) {
+        this.setState({
+          selectedMockId: this.state.collections[0].mocks[0].id,
+        })
+      } else {
+        this.setState({
+          selectedMockId: null,
+        })
+      }
     }
   }
 
@@ -97,7 +106,10 @@ class Index extends React.PureComponent {
     this.setState({ selectedMockId: mockId })
   }
 
-  getSelectedMock = () => this.state.collections.find(mock => mock.id === this.state.selectedMockId)
+  getSelectedMock = () =>
+    [].concat
+      .apply([], this.state.collections.map(c => c.mocks))
+      .find(mock => mock.id === this.state.selectedMockId)
 
   render() {
     return (
@@ -117,15 +129,15 @@ class Index extends React.PureComponent {
                     mocks={collection.mocks}
                     selectedMockId={this.state.selectedMockId}
                     onMockClick={this.handleOnMockClick}
-                    onMockClone={this.handleOnMockClone}
-                    onMockDelete={this.handleOnMockDelete}
+                    onMockClone={mockId => this.handleOnMockClone(collection.id, mockId)}
+                    onMockDelete={mockId => this.handleOnMockDelete(collection.id, mockId)}
                   />
                 ))}
               </ul>
             )}
           </Pane>
           <Pane>
-            {this.state.selectedMockIdd && (
+            {this.state.selectedMockId && (
               <MockForm
                 key={this.state.selectedMockId}
                 mock={this.getSelectedMock()}
