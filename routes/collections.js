@@ -15,13 +15,18 @@ module.exports = () => {
     }
   })
 
-  router.post('/', jsonParser, async (req, res) => {
+  router.post('/:collectionId/mocks/', jsonParser, async (req, res) => {
     try {
-      const id = await mockService.add(req.body)
-      res
-        .status(201)
-        .set('Location', id)
-        .end()
+      const collectionId = req.params.collectionId
+      const id = await mockService.add(collectionId)
+      if (id) {
+        res
+          .status(201)
+          .set('Location', id)
+          .end()
+        return
+      }
+      res.status(404).json({ message: `Collection ${collectionId} was not found` })
     } catch (err) {
       console.error(err)
       res.status(500).end()

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import classnames from 'classnames'
+import { withPreventDefault } from '../utils/utils'
 import MockListItem from './MockListItem'
 
 const CollectionListItem = React.memo(
-  ({ name, mocks, selectedMockId, onMockClick, onMockClone, onMockDelete }) => {
+  ({ name, mocks, selectedMockId, onMockClick, onMockCreate, onMockClone, onMockDelete }) => {
     const [isOpen, setIsOpen] = useState(true)
     const toggleOpenState = () => setIsOpen(!isOpen)
     const renderMocksCount = () => {
@@ -34,6 +35,11 @@ const CollectionListItem = React.memo(
               {name}
               <div className="mocksCount">{renderMocksCount()}</div>
             </div>
+            <i
+              className="far fa-file newMock"
+              title="Add mock"
+              onClick={withPreventDefault(onMockCreate)}
+            />
           </div>
           {isOpen && (
             <ul className="mockList">
@@ -68,6 +74,16 @@ const CollectionListItem = React.memo(
           }
           .collectionInfo {
             padding-left: 5px;
+            padding-right: 15px;
+            width: 100%;
+          }
+          .newMock {
+            position: relative;
+            right: 10px;
+            opacity: 0.5;
+          }
+          .newMock:hover {
+            opacity: 1;
           }
           .mocksCount {
             font-size: 12px;

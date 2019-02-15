@@ -1,14 +1,9 @@
 import classnames from 'classnames'
 import HttpMethod from './HttpMethod'
+import { withPreventDefault } from '../utils/utils'
 
-const MockListItem = ({ method, description, isSelected, onClick, onClone, onDelete }) => {
-  const withPreventDefault = handle => e => {
-    e.preventDefault()
-    e.stopPropagation()
-    handle()
-  }
-
-  return (
+const MockListItem = React.memo(
+  ({ method, description, isSelected, onClick, onClone, onDelete }) => (
     <React.Fragment>
       <li
         className={classnames('mockItem', {
@@ -86,16 +81,15 @@ const MockListItem = ({ method, description, isSelected, onClick, onClone, onDel
           z-index: 1;
         }
         .deleteButton {
-          color: salmon;
-          opacity: 0.7;
+          color: tomato;
+          opacity: 0.5;
         }
         .deleteButton:hover {
           opacity: 1;
         }
         .cloneButton {
-          color: gray;
           margin-right: 8px;
-          opacity: 0.7;
+          opacity: 0.5;
         }
         .cloneButton:hover {
           opacity: 1;
@@ -103,6 +97,6 @@ const MockListItem = ({ method, description, isSelected, onClick, onClone, onDel
       `}</style>
     </React.Fragment>
   )
-}
+)
 
 export default MockListItem

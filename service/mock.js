@@ -71,12 +71,28 @@ const getById = async mockId => {
   return collections.find(m => m.id === mockId)
 }
 
-const add = async newMock => {
+const add = async collectionId => {
   const collections = await getAll()
-  newMock.id = newId()
-  collections.push(newMock)
+  const collection = collections.find(collection => collection.id === collectionId)
+  if (!collection) {
+    return null
+  }
+  const newMockId = newId()
+  const newMock = {
+    id: newMockId,
+    url: '',
+    method: 'GET',
+    description: 'New mock',
+    status: 200,
+    delay: 0,
+    proxyUrl: '',
+    proxyEnabled: false,
+    headers: {},
+    data: null,
+  }
+  collection.mocks.push(newMock)
   await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
-  return newMock.id
+  return newMockId
 }
 
 const clone = async (collectionId, mockId) => {

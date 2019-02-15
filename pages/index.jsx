@@ -34,32 +34,6 @@ class Index extends React.PureComponent {
     this.setState({ collections })
   }
 
-  createMock = async mock => {
-    // const newMock = mock || {
-    //   url: '',
-    //   method: 'GET',
-    //   description: 'New mock',
-    //   data: {},
-    //   status: 200,
-    //   delay: 0,
-    //   proxyUrl: '',
-    //   proxyEnabled: false,
-    //   headers: {},
-    // }
-    // const response = await fetch('/mocks', {
-    //   body: JSON.stringify(newMock),
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    //   method: 'POST',
-    // })
-    // const newMockId = response.headers.get('Location')
-    // await this.fetchCollections()
-    // this.setState({
-    //   selectedMockId: newMockId,
-    // })
-  }
-
   onMocksChange = async () => {
     await this.fetchCollections()
 
@@ -71,6 +45,19 @@ class Index extends React.PureComponent {
         saveStatusVisible: false,
       })
     }, 500)
+  }
+
+  handleOnMockCreate = async collectionId => {
+    const response = await fetch(`/collections/${collectionId}/mocks`, {
+      method: 'POST',
+    })
+    const newMockId = response.headers.get('Location')
+    if (newMockId) {
+      await this.fetchCollections()
+      this.setState({
+        selectedMockId: newMockId,
+      })
+    }
   }
 
   handleOnMockClone = async (collectionId, mockId) => {
@@ -116,7 +103,7 @@ class Index extends React.PureComponent {
       <Layout>
         <SplitPane split="vertical">
           <Pane maxSize="300px">
-            <span className="newMock" onClick={() => this.createMock()}>
+            <span className="newMock" onClick={() => {}}>
               <i className="fas fa-folder-plus" /> New collection
             </span>
             <hr className="splitLine" />
@@ -129,6 +116,7 @@ class Index extends React.PureComponent {
                     mocks={collection.mocks}
                     selectedMockId={this.state.selectedMockId}
                     onMockClick={this.handleOnMockClick}
+                    onMockCreate={() => this.handleOnMockCreate(collection.id)}
                     onMockClone={mockId => this.handleOnMockClone(collection.id, mockId)}
                     onMockDelete={mockId => this.handleOnMockDelete(collection.id, mockId)}
                   />
