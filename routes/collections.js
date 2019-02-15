@@ -15,6 +15,34 @@ module.exports = () => {
     }
   })
 
+  router.post('/', jsonParser, async (req, res) => {
+    try {
+      const id = await mockService.addCollection()
+      res
+        .status(201)
+        .set('Location', id)
+        .end()
+    } catch (err) {
+      console.error(err)
+      res.status(500).end()
+    }
+  })
+
+  router.delete('/:collectionId', async (req, res) => {
+    try {
+      const collectionId = req.params.collectionId
+      const wasDeleted = mockService.removeCollection(collectionId)
+      if (wasDeleted) {
+        res.status(204).end()
+        return
+      }
+      res.status(404).json({ message: `Collection with id ${collectionId} was not found` })
+    } catch (err) {
+      console.error(err)
+      res.json(err)
+    }
+  })
+
   router.post('/:collectionId/mocks/', jsonParser, async (req, res) => {
     try {
       const collectionId = req.params.collectionId
@@ -51,21 +79,6 @@ module.exports = () => {
     } catch (err) {
       console.error(err)
       res.status(500).end()
-    }
-  })
-
-  router.get('/:mockId', async (req, res) => {
-    try {
-      const mockId = req.params.mockId
-      const mock = await mockService.getById(mockId)
-      if (typeof mock !== 'undefined') {
-        res.json(mock)
-        return
-      }
-      res.status(404).json({ message: `Mock with id ${mockId} was not found` })
-    } catch (err) {
-      console.error(err)
-      res.json(err)
     }
   })
 

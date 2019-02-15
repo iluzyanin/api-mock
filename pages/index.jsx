@@ -47,6 +47,16 @@ class Index extends React.PureComponent {
     }, 500)
   }
 
+  handleOnCollectionCreate = async () => {
+    await fetch('/collections', { method: 'POST' })
+    await this.fetchCollections()
+  }
+
+  handleOnCollectionDelete = async collectionId => {
+    await fetch(`/collections/${collectionId}`, { method: 'DELETE' })
+    await this.fetchCollections()
+  }
+
   handleOnMockCreate = async collectionId => {
     const response = await fetch(`/collections/${collectionId}/mocks`, {
       method: 'POST',
@@ -103,7 +113,7 @@ class Index extends React.PureComponent {
       <Layout>
         <SplitPane split="vertical">
           <Pane maxSize="300px">
-            <span className="newMock" onClick={() => {}}>
+            <span className="newMock" onClick={this.handleOnCollectionCreate}>
               <i className="fas fa-folder-plus" /> New collection
             </span>
             <hr className="splitLine" />
@@ -119,6 +129,7 @@ class Index extends React.PureComponent {
                     onMockCreate={() => this.handleOnMockCreate(collection.id)}
                     onMockClone={mockId => this.handleOnMockClone(collection.id, mockId)}
                     onMockDelete={mockId => this.handleOnMockDelete(collection.id, mockId)}
+                    onCollectionDelete={() => this.handleOnCollectionDelete(collection.id)}
                   />
                 ))}
               </ul>

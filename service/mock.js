@@ -66,9 +66,27 @@ const getAll = async () => {
   }))
 }
 
-const getById = async mockId => {
+const addCollection = async () => {
   const collections = await getAll()
-  return collections.find(m => m.id === mockId)
+  const newCollectionId = newId()
+  collections.push({
+    id: newCollectionId,
+    name: 'New collection',
+    mocks: [],
+  })
+  await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
+  return newCollectionId
+}
+
+const removeCollection = async collectionId => {
+  const collections = await getAll()
+  const remainingCollections = collections.filter(collection => collection.id !== collectionId)
+  const wasDeleted = remainingCollections.length < collections.length
+  if (wasDeleted) {
+    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(remainingCollections, null, 2))
+  }
+
+  return wasDeleted
 }
 
 const add = async collectionId => {
@@ -151,7 +169,8 @@ const update = async updatedMock => {
 module.exports = {
   initializeMocks,
   getAll,
-  getById,
+  addCollection,
+  removeCollection,
   add,
   clone,
   remove,

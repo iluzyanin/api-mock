@@ -4,7 +4,16 @@ import { withPreventDefault } from '../utils/utils'
 import MockListItem from './MockListItem'
 
 const CollectionListItem = React.memo(
-  ({ name, mocks, selectedMockId, onMockClick, onMockCreate, onMockClone, onMockDelete }) => {
+  ({
+    name,
+    mocks,
+    selectedMockId,
+    onMockClick,
+    onMockCreate,
+    onMockClone,
+    onMockDelete,
+    onCollectionDelete,
+  }) => {
     const [isOpen, setIsOpen] = useState(true)
     const toggleOpenState = () => setIsOpen(!isOpen)
     const renderMocksCount = () => {
@@ -35,11 +44,18 @@ const CollectionListItem = React.memo(
               {name}
               <div className="mocksCount">{renderMocksCount()}</div>
             </div>
-            <i
-              className="far fa-file newMock"
-              title="Add mock"
-              onClick={withPreventDefault(onMockCreate)}
-            />
+            <span className="controls">
+              <i
+                className="far fa-file createButton"
+                title="Add mock"
+                onClick={withPreventDefault(onMockCreate)}
+              />
+              <i
+                className="far fa-trash-alt deleteButton"
+                title="Add mock"
+                onClick={withPreventDefault(onCollectionDelete)}
+              />
+            </span>
           </div>
           {isOpen && (
             <ul className="mockList">
@@ -67,6 +83,7 @@ const CollectionListItem = React.memo(
             user-select: none;
             display: flex;
             align-items: center;
+            position: relative;
           }
           .collectionTitle--first {
             border-top: 0;
@@ -74,15 +91,26 @@ const CollectionListItem = React.memo(
           }
           .collectionInfo {
             padding-left: 5px;
-            padding-right: 15px;
+            padding-right: 45px;
             width: 100%;
           }
-          .newMock {
-            position: relative;
+          .controls {
+            position: absolute;
             right: 10px;
+            display: flex;
+          }
+          .deleteButton {
+            color: tomato;
             opacity: 0.5;
           }
-          .newMock:hover {
+          .deleteButton:hover {
+            opacity: 1;
+          }
+          .createButton {
+            margin-right: 8px;
+            opacity: 0.5;
+          }
+          .createButton:hover {
             opacity: 1;
           }
           .mocksCount {
