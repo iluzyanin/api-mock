@@ -113,10 +113,9 @@ class Index extends React.PureComponent {
       <Layout>
         <SplitPane split="vertical">
           <Pane maxSize="300px">
-            <span className="newMock" onClick={this.handleOnCollectionCreate}>
+            <div className="newMock" onClick={this.handleOnCollectionCreate}>
               <i className="fas fa-folder-plus" /> New collection
-            </span>
-            <hr className="splitLine" />
+            </div>
             {this.state.collections && this.state.collections.length > 0 && (
               <ul className="collections">
                 {this.state.collections.map(collection => (
@@ -147,12 +146,10 @@ class Index extends React.PureComponent {
         </SplitPane>
         <SaveNotification visible={this.state.saveStatusVisible} />
         <style jsx>{`
-          .splitLine {
-            margin-bottom: 0;
-          }
           .newMock {
             color: cornflowerblue;
             margin-left: 10px;
+            margin-bottom: 10px;
           }
           .newMock:hover {
             cursor: pointer;

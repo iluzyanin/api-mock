@@ -31,7 +31,7 @@ const CollectionListItem = React.memo(
 
     return (
       <React.Fragment>
-        <li>
+        <li className="collectionListItem">
           <div className="collectionTitle" onClick={toggleOpenState}>
             <i
               className={classnames('fas', 'folderIcon', {
@@ -74,20 +74,23 @@ const CollectionListItem = React.memo(
           )}
         </li>
         <style jsx>{`
+          .collectionListItem {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+          }
+          .collectionListItem:last-of-type {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          }
           .collectionTitle {
             cursor: pointer;
             width: 100%;
             padding: 10px 0 10px 10px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
             user-select: none;
             display: flex;
             align-items: center;
             position: relative;
           }
-          .collectionTitle--first {
-            border-top: 0;
-            border-bottom: 0;
+          .collectionTitle:hover .controls {
+            visibility: visible;
           }
           .collectionInfo {
             padding-left: 5px;
@@ -98,6 +101,8 @@ const CollectionListItem = React.memo(
             position: absolute;
             right: 10px;
             display: flex;
+            visibility: hidden;
+            z-index: 1;
           }
           .deleteButton {
             color: tomato;
@@ -118,11 +123,8 @@ const CollectionListItem = React.memo(
             color: dimgray;
           }
           .folderIcon {
-            margin-right: 5px;
+            width: 22px;
             color: dimgray;
-          }
-          .folderIcon.fa-folder {
-            margin-right: 7px;
           }
           .mockList {
             padding-left: 0;

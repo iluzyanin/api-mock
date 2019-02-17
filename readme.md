@@ -32,6 +32,9 @@ And it will return you the result
 * [x] Fix example in readme
 * [x] Add support for response headers
 * [ ] Add grouping of mocks
+* [ ] Split MockForm on sub-components
+* [ ] Add drag'n'drop for mocks to move between groups
+* [ ] Add Storybook (just for fun?)
 * [ ] Add support for other content types (xml?)
 * [ ] Add import from Postman
 * [ ] Fix split pane to not reset on index page re-render
