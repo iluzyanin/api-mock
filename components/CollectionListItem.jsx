@@ -2,6 +2,7 @@ import { useState } from 'react'
 import classnames from 'classnames'
 import { withPreventDefault } from '../utils/utils'
 import MockListItem from './MockListItem'
+import ContentEditable from 'react-contenteditable'
 
 const CollectionListItem = React.memo(
   ({
@@ -12,9 +13,12 @@ const CollectionListItem = React.memo(
     onMockCreate,
     onMockClone,
     onMockDelete,
+    onCollectionEdit,
     onCollectionDelete,
   }) => {
     const [isOpen, setIsOpen] = useState(true)
+    const [isEditable, setIsEditable] = useState(false)
+    const [nameRef, setNameRef] = useState(React.createRef())
     const toggleOpenState = () => setIsOpen(!isOpen)
     const renderMocksCount = () => {
       const count = mocks.length
@@ -29,6 +33,26 @@ const CollectionListItem = React.memo(
       return `${count} mocks`
     }
 
+    const onEditCollectionClick = () => {
+      setIsEditable(!isEditable)
+      setTimeout(() => {
+        if (!isEditable) {
+          nameRef.current.focus()
+        }
+      })
+    }
+
+    const handleCollectionNameChange = e => {
+      onCollectionEdit(e.target.innerText)
+      setTimeout(() => setIsEditable(false), 100)
+    }
+
+    const handleKeyDown = e => {
+      if (e.key === 'Enter') {
+        nameRef.current.blur()
+      }
+    }
+
     return (
       <React.Fragment>
         <li className="collectionListItem">
@@ -41,12 +65,27 @@ const CollectionListItem = React.memo(
               title="Toggle group"
             />
             <div className="collectionInfo">
-              {name}
+              {!isEditable && name}
+              {isEditable && (
+                <div onClick={withPreventDefault(() => {})}>
+                  <ContentEditable
+                    innerRef={nameRef}
+                    html={name}
+                    onBlur={handleCollectionNameChange}
+                    onKeyDown={handleKeyDown}
+                  />
+                </div>
+              )}
               <div className="mocksCount">{renderMocksCount()}</div>
             </div>
             <span className="controls">
               <i
-                className="far fa-file createButton"
+                className="far fa-edit controlButton"
+                title="Edit collection name"
+                onClick={withPreventDefault(onEditCollectionClick)}
+              />
+              <i
+                className="far fa-file controlButton"
                 title="Add mock"
                 onClick={withPreventDefault(onMockCreate)}
               />
@@ -94,7 +133,7 @@ const CollectionListItem = React.memo(
           }
           .collectionInfo {
             padding-left: 5px;
-            padding-right: 45px;
+            padding-right: 75px;
             width: 100%;
           }
           .controls {
@@ -111,11 +150,11 @@ const CollectionListItem = React.memo(
           .deleteButton:hover {
             opacity: 1;
           }
-          .createButton {
+          .controlButton {
             margin-right: 8px;
             opacity: 0.5;
           }
-          .createButton:hover {
+          .controlButton:hover {
             opacity: 1;
           }
           .mocksCount {

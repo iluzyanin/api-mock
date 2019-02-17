@@ -15,16 +15,26 @@ class Index extends React.PureComponent {
       collections: [],
       saveStatusVisible: false,
       selectedMockId: null,
+      selectedCollectionId: null,
     }
   }
 
   async componentDidMount() {
     await this.fetchCollections()
-    if (this.state.collections.length > 0 && this.state.collections[0].mocks.length > 0) {
-      this.setState({
-        selectedMockId: this.state.collections[0].mocks[0].id,
-      })
-    }
+    this.setSelectedMock()
+  }
+
+  setSelectedMock() {
+    return this.state.collections.some(collection => {
+      if (collection.mocks.length > 0) {
+        this.setState({
+          selectedCollectionId: collection.id,
+          selectedMockId: collection.mocks[0].id,
+        })
+        return true
+      }
+      return false
+    })
   }
 
   async fetchCollections() {
@@ -52,6 +62,17 @@ class Index extends React.PureComponent {
     await this.fetchCollections()
   }
 
+  handleOnCollectionEdit = async (collectionId, newName) => {
+    await fetch(`/collections/${collectionId}`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ name: newName }),
+    })
+    await this.fetchCollections()
+  }
+
   handleOnCollectionDelete = async collectionId => {
     await fetch(`/collections/${collectionId}`, { method: 'DELETE' })
     await this.fetchCollections()
@@ -65,6 +86,7 @@ class Index extends React.PureComponent {
     if (newMockId) {
       await this.fetchCollections()
       this.setState({
+        selectedCollectionId: collectionId,
         selectedMockId: newMockId,
       })
     }
@@ -78,6 +100,7 @@ class Index extends React.PureComponent {
     if (newMockId) {
       await this.fetchCollections()
       this.setState({
+        selectedCollectionId: collectionId,
         selectedMockId: newMockId,
       })
     }
@@ -87,20 +110,29 @@ class Index extends React.PureComponent {
     await fetch(`/collections/${collectionId}/mocks/${mockId}`, { method: 'DELETE' })
     await this.fetchCollections()
     if (this.state.selectedMockId === mockId) {
-      if (this.state.collections.length > 0 && this.state.collections[0].mocks.length > 0) {
-        this.setState({
-          selectedMockId: this.state.collections[0].mocks[0].id,
-        })
-      } else {
-        this.setState({
-          selectedMockId: null,
-        })
+      if (this.state.collections.length > 0) {
+        const currentCollection = this.state.collections.find(
+          c => c.id === this.state.selectedCollectionId
+        )
+        if (currentCollection.mocks.length > 0) {
+          this.setState({
+            selectedMockId: currentCollection.mocks[0].id,
+          })
+          return
+        }
+        if (this.setSelectedMock()) {
+          return
+        }
       }
+      this.setState({
+        selectedCollectionId: null,
+        selectedMockId: null,
+      })
     }
   }
 
-  handleOnMockClick = mockId => {
-    this.setState({ selectedMockId: mockId })
+  handleOnMockClick = (collectionId, mockId) => {
+    this.setState({ selectedMockId: mockId, selectedCollectionId: collectionId })
   }
 
   getSelectedMock = () =>
@@ -124,10 +156,13 @@ class Index extends React.PureComponent {
                     name={collection.name}
                     mocks={collection.mocks}
                     selectedMockId={this.state.selectedMockId}
-                    onMockClick={this.handleOnMockClick}
+                    onMockClick={mockId => this.handleOnMockClick(collection.id, mockId)}
                     onMockCreate={() => this.handleOnMockCreate(collection.id)}
                     onMockClone={mockId => this.handleOnMockClone(collection.id, mockId)}
                     onMockDelete={mockId => this.handleOnMockDelete(collection.id, mockId)}
+                    onCollectionEdit={newName =>
+                      this.handleOnCollectionEdit(collection.id, newName)
+                    }
                     onCollectionDelete={() => this.handleOnCollectionDelete(collection.id)}
                   />
                 ))}
@@ -138,6 +173,7 @@ class Index extends React.PureComponent {
             {this.state.selectedMockId && (
               <MockForm
                 key={this.state.selectedMockId}
+                collectionId={this.state.selectedCollectionId}
                 mock={this.getSelectedMock()}
                 onChange={this.onMocksChange}
               />

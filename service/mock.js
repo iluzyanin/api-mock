@@ -78,6 +78,18 @@ const addCollection = async () => {
   return newCollectionId
 }
 
+const updateCollection = async (collectionId, newName) => {
+  const collections = await getAll()
+  const updatedCollection = collections.find(collection => collection.id === collectionId)
+  if (updatedCollection) {
+    updatedCollection.name = newName
+    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
+    return true
+  }
+
+  return false
+}
+
 const removeCollection = async collectionId => {
   const collections = await getAll()
   const remainingCollections = collections.filter(collection => collection.id !== collectionId)
@@ -170,6 +182,7 @@ module.exports = {
   initializeMocks,
   getAll,
   addCollection,
+  updateCollection,
   removeCollection,
   add,
   clone,
