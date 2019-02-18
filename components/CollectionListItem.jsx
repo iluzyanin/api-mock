@@ -2,7 +2,6 @@ import { useState } from 'react'
 import classnames from 'classnames'
 import { withPreventDefault } from '../utils/utils'
 import MockListItem from './MockListItem'
-import ContentEditable from 'react-contenteditable'
 
 const CollectionListItem = React.memo(
   ({
@@ -19,6 +18,7 @@ const CollectionListItem = React.memo(
     const [isOpen, setIsOpen] = useState(true)
     const [isEditable, setIsEditable] = useState(false)
     const [nameRef, setNameRef] = useState(React.createRef())
+    const [collectionName, setCollectionName] = useState(name)
     const toggleOpenState = () => setIsOpen(!isOpen)
     const renderMocksCount = () => {
       const count = mocks.length
@@ -43,14 +43,22 @@ const CollectionListItem = React.memo(
     }
 
     const handleCollectionNameChange = e => {
-      onCollectionEdit(e.target.innerText)
-      setTimeout(() => setIsEditable(false), 100)
+      setCollectionName(e.target.value)
     }
 
     const handleKeyDown = e => {
       if (e.key === 'Enter') {
-        nameRef.current.blur()
+        onCollectionEdit(collectionName)
+        setTimeout(() => setIsEditable(false), 100)
       }
+      if (e.key === 'Escape') {
+        setIsEditable(false)
+      }
+    }
+
+    const resetCollectionName = () => {
+      // setIsEditable(false)
+      // setCollectionName(name)
     }
 
     return (
@@ -65,13 +73,14 @@ const CollectionListItem = React.memo(
               title="Toggle group"
             />
             <div className="collectionInfo">
-              {!isEditable && name}
+              {!isEditable && <span className="collectionName">{name}</span>}
               {isEditable && (
                 <div onClick={withPreventDefault(() => {})}>
-                  <ContentEditable
-                    innerRef={nameRef}
-                    html={name}
-                    onBlur={handleCollectionNameChange}
+                  <input
+                    ref={nameRef}
+                    value={collectionName}
+                    onChange={handleCollectionNameChange}
+                    onBlur={resetCollectionName}
                     onKeyDown={handleKeyDown}
                   />
                 </div>
@@ -135,6 +144,10 @@ const CollectionListItem = React.memo(
             padding-left: 5px;
             padding-right: 75px;
             width: 100%;
+          }
+          .collectionName {
+            border-top: 2px solid transparent;
+            border-bottom: 2px solid transparent;
           }
           .controls {
             position: absolute;
