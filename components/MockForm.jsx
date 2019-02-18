@@ -184,30 +184,16 @@ class MockForm extends React.PureComponent {
       return
     }
     const mock = this.state.mock
-    const hasId = typeof mock.id !== 'undefined'
     const delay = mock.delay ? parseInt(mock.delay) : 0
     const status = parseInt(mock.status)
     const data = this.state.dataJson ? JSON.parse(this.state.dataJson) : null
-    fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
+    fetch(`/collections/${this.props.collectionId}/mocks/${mock.id}`, {
       body: JSON.stringify({ ...mock, delay, status, data }),
       headers: {
         'content-type': 'application/json',
       },
-      method: hasId ? 'PUT' : 'POST',
-    })
-      .then(response => {
-        if (hasId) {
-          return
-        }
-
-        this.setState(state => ({
-          mock: {
-            ...state.mock,
-            id: response.headers.get('Location'),
-          },
-        }))
-      })
-      .then(() => this.props.onChange())
+      method: 'PUT',
+    }).then(() => this.props.onChange())
   }
 
   render() {

@@ -98,9 +98,11 @@ module.exports = () => {
     }
   })
 
-  router.put('/:mockId', jsonParser, async (req, res) => {
+  router.put('/:collectionId/mocks/:mockId', jsonParser, async (req, res) => {
     try {
-      const wasUpdated = await mockService.update(req.body)
+      const mockId = req.params.mockId
+      const collectionId = req.params.collectionId
+      const wasUpdated = await mockService.update(collectionId, mockId, req.body)
       if (wasUpdated) {
         res.status(204).end()
         return

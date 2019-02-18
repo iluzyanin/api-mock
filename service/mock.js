@@ -161,19 +161,25 @@ const remove = async (collectionId, mockId) => {
   return wasDeleted
 }
 
-const update = async updatedMock => {
-  const mocks = await getAll()
-  let wasUpdated = false
+const update = async (collectionId, mockId, updatedMock) => {
+  const collections = await getAll()
+  const collection = collections.find(collection => collection.id === collectionId)
+  if (!collection) {
+    return false
+  }
 
-  const newMocks = mocks.map(mock => {
-    if (mock.id === updatedMock.id) {
+  collection.mocks = collection.mocks.map(mock => {
+    if (mock.id === mockId) {
       wasUpdated = true
-      return updatedMock
+      return {
+        ...mock,
+        ...updatedMock,
+      }
     }
     return mock
   })
   if (wasUpdated) {
-    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(newMocks, null, 2))
+    await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
   }
   return wasUpdated
 }
