@@ -184,6 +184,18 @@ const update = async (collectionId, mockId, updatedMock) => {
   return wasUpdated
 }
 
+const move = async (mockId, oldCollectionId, newCollectionId) => {
+  const collections = await getAll()
+  const oldCollection = collections.find(collection => collection.id === oldCollectionId)
+  const newCollection = collections.find(collection => collection.id === newCollectionId)
+
+  const mock = oldCollection.mocks.find(mock => mock.id === mockId)
+  oldCollection.mocks.splice(oldCollection.mocks.indexOf(mock), 1)
+  newCollection.mocks = [...newCollection.mocks, mock]
+
+  await writeFile(COLLECTIONS_FILE_NAME, JSON.stringify(collections, null, 2))
+}
+
 module.exports = {
   initializeMocks,
   getAll,
@@ -194,4 +206,5 @@ module.exports = {
   clone,
   remove,
   update,
+  move,
 }

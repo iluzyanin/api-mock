@@ -59,6 +59,19 @@ module.exports = () => {
     }
   })
 
+  router.patch('/:collectionId/mocks/:mockId', jsonParser, async (req, res) => {
+    try {
+      const mockId = req.params.mockId
+      const oldCollectionId = req.params.collectionId
+      const newCollectionId = req.body.newCollectionId
+      await mockService.move(mockId, oldCollectionId, newCollectionId)
+      res.status(204).end()
+    } catch (err) {
+      console.error(err)
+      res.status(500).end()
+    }
+  })
+
   router.post('/:collectionId/mocks/', async (req, res) => {
     try {
       const collectionId = req.params.collectionId

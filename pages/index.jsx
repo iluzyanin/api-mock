@@ -44,9 +44,7 @@ class Index extends React.PureComponent {
     this.setState({ collections })
   }
 
-  onMocksChange = async () => {
-    await this.fetchCollections()
-
+  showSaveStatus = () => {
     this.setState({
       saveStatusVisible: true,
     })
@@ -55,6 +53,11 @@ class Index extends React.PureComponent {
         saveStatusVisible: false,
       })
     }, 500)
+  }
+
+  onMocksChange = async () => {
+    await this.fetchCollections()
+    this.showSaveStatus()
   }
 
   handleOnCollectionCreate = async () => {
@@ -135,10 +138,30 @@ class Index extends React.PureComponent {
     this.setState({ selectedMockId: mockId, selectedCollectionId: collectionId })
   }
 
+  handleOnMockMove = async (mockId, oldCollectionId, newCollectionId) => {
+    await fetch(`/collections/${oldCollectionId}/mocks/${mockId}`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ newCollectionId }),
+    })
+
+    this.showSaveStatus()
+    await this.fetchCollections()
+    this.setState({ selectedCollectionId: newCollectionId })
+  }
+
   getSelectedMock = () =>
     [].concat
       .apply([], this.state.collections.map(c => c.mocks))
       .find(mock => mock.id === this.state.selectedMockId)
+
+  getCollections = () =>
+    this.state.collections.map(({ id, name }) => ({
+      id,
+      name,
+    }))
 
   render() {
     return (
@@ -174,8 +197,16 @@ class Index extends React.PureComponent {
               <MockForm
                 key={this.state.selectedMockId}
                 collectionId={this.state.selectedCollectionId}
+                collections={this.getCollections()}
                 mock={this.getSelectedMock()}
                 onChange={this.onMocksChange}
+                onMockMove={newCollectionId =>
+                  this.handleOnMockMove(
+                    this.state.selectedMockId,
+                    this.state.selectedCollectionId,
+                    newCollectionId
+                  )
+                }
               />
             )}
           </Pane>

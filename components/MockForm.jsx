@@ -58,17 +58,8 @@ class MockForm extends React.PureComponent {
     )
   }
 
-  handleGroupChange = event => {
-    const group = event.target.value
-    this.setState(
-      prevState => ({
-        mock: {
-          ...prevState.mock,
-          group,
-        },
-      }),
-      this.saveChangesDebounced
-    )
+  handleGroupChange = async event => {
+    await this.props.onMockMove(event.target.value)
   }
 
   handleMethodChange = event => {
@@ -228,12 +219,17 @@ class MockForm extends React.PureComponent {
               <div className="input-group-prepend">
                 <span className="input-group-text">Group</span>
               </div>
-              <input
+              <select
                 className="form-control"
-                type="text"
-                value={this.state.mock.group}
+                value={this.props.collectionId}
                 onChange={this.handleGroupChange}
-              />
+              >
+                {this.props.collections.map(collection => (
+                  <option key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="input-group input-group-sm">
               <div className="input-group-prepend">
