@@ -46,6 +46,12 @@ const CollectionListItem = React.memo(
           )}
         </li>
         <style jsx>{`
+          .collectionListItem {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+          }
+          .collectionListItem:last-of-type {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          }
           .mockList {
             padding-left: 0;
             box-shadow: inset 0 20px 10px -20px rgba(0, 0, 0, 0.17);

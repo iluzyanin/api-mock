@@ -96,12 +96,6 @@ const CollectionTitle = React.memo(
           </span>
         </div>
         <style jsx>{`
-          .collectionListItem {
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-          }
-          .collectionListItem:last-of-type {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-          }
           .collectionTitle {
             cursor: pointer;
             width: 100%;

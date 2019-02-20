@@ -163,7 +163,7 @@ class MockForm extends React.PureComponent {
 
   renderBodyTitle() {
     if (this.state.mock.data !== null) {
-      return `Body <span style="color: mediumseagreen; font-size: 10px; padding-left: 1px;">●</span>`
+      return `Body <i style="color: mediumseagreen; padding-left: 2px; font-size: 9px" class="fas fa-circle" /i>`
     }
 
     return 'Body'
