@@ -4,7 +4,7 @@ const next = require('next')
 const url = require('url')
 const _ = require('lodash')
 
-const mockService = require('./service/mock')
+const collectionsService = require('./service/collections')
 const uiRoute = require('./routes/ui')
 const collectionsRoute = require('./routes/collections')
 
@@ -17,7 +17,7 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 app
   .prepare()
-  .then(mockService.initializeMocks)
+  .then(collectionsService.initializeCollections)
   .then(() => {
     const server = express()
 
@@ -30,7 +30,7 @@ app
     })
 
     server.use('*', async (req, res, next) => {
-      const mocks = await mockService.getAll()
+      const mocks = await collectionsService.getAll()
       console.log(req.baseUrl)
       const foundMock = mocks
         .map(mock => ({

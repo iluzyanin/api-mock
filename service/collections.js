@@ -7,7 +7,7 @@ const writeFile = promisify(fs.writeFile)
 
 const COLLECTIONS_FILE_NAME = 'collections.json'
 
-const initializeMocks = async () => {
+const initializeCollections = async () => {
   if (!fs.existsSync(COLLECTIONS_FILE_NAME)) {
     await writeFile(
       COLLECTIONS_FILE_NAME,
@@ -197,7 +197,7 @@ const move = async (mockId, oldCollectionId, newCollectionId) => {
 }
 
 module.exports = {
-  initializeMocks,
+  initializeCollections,
   getAll,
   addCollection,
   updateCollection,

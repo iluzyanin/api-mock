@@ -1,13 +1,13 @@
 const router = require('express').Router()
 const bodyParser = require('body-parser')
-const mockService = require('../service/mock')
+const collectionsService = require('../service/collections')
 
 const jsonParser = bodyParser.json()
 
 module.exports = () => {
   router.get('/', async (req, res) => {
     try {
-      const mocks = await mockService.getAll()
+      const mocks = await collectionsService.getAll()
       res.json(mocks)
     } catch (err) {
       console.error(err)
@@ -17,7 +17,7 @@ module.exports = () => {
 
   router.post('/', async (req, res) => {
     try {
-      const id = await mockService.addCollection()
+      const id = await collectionsService.addCollection()
       res
         .status(201)
         .set('Location', id)
@@ -32,7 +32,7 @@ module.exports = () => {
     try {
       const collectionId = req.params.collectionId
       const newName = req.body.name || 'test!'
-      const wasUpdated = await mockService.updateCollection(collectionId, newName)
+      const wasUpdated = await collectionsService.updateCollection(collectionId, newName)
       if (wasUpdated) {
         res.status(204).end()
         return
@@ -47,7 +47,7 @@ module.exports = () => {
   router.delete('/:collectionId', async (req, res) => {
     try {
       const collectionId = req.params.collectionId
-      const wasDeleted = await mockService.removeCollection(collectionId)
+      const wasDeleted = await collectionsService.removeCollection(collectionId)
       if (wasDeleted) {
         res.status(204).end()
         return
@@ -64,7 +64,7 @@ module.exports = () => {
       const mockId = req.params.mockId
       const oldCollectionId = req.params.collectionId
       const newCollectionId = req.body.newCollectionId
-      await mockService.move(mockId, oldCollectionId, newCollectionId)
+      await collectionsService.move(mockId, oldCollectionId, newCollectionId)
       res.status(204).end()
     } catch (err) {
       console.error(err)
@@ -75,7 +75,7 @@ module.exports = () => {
   router.post('/:collectionId/mocks/', async (req, res) => {
     try {
       const collectionId = req.params.collectionId
-      const id = await mockService.add(collectionId)
+      const id = await collectionsService.add(collectionId)
       if (id) {
         res
           .status(201)
@@ -94,7 +94,7 @@ module.exports = () => {
     try {
       const mockId = req.params.mockId
       const collectionId = req.params.collectionId
-      const id = await mockService.clone(collectionId, mockId)
+      const id = await collectionsService.clone(collectionId, mockId)
       if (id) {
         res
           .status(201)
@@ -115,7 +115,7 @@ module.exports = () => {
     try {
       const mockId = req.params.mockId
       const collectionId = req.params.collectionId
-      const wasUpdated = await mockService.update(collectionId, mockId, req.body)
+      const wasUpdated = await collectionsService.update(collectionId, mockId, req.body)
       if (wasUpdated) {
         res.status(204).end()
         return
@@ -131,7 +131,7 @@ module.exports = () => {
     try {
       const mockId = req.params.mockId
       const collectionId = req.params.collectionId
-      const wasDeleted = await mockService.remove(collectionId, mockId)
+      const wasDeleted = await collectionsService.remove(collectionId, mockId)
       if (wasDeleted) {
         res.status(204).end()
         return
