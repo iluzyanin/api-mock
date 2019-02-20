@@ -131,7 +131,7 @@ module.exports = () => {
     try {
       const mockId = req.params.mockId
       const collectionId = req.params.collectionId
-      const wasDeleted = mockService.remove(collectionId, mockId)
+      const wasDeleted = await mockService.remove(collectionId, mockId)
       if (wasDeleted) {
         res.status(204).end()
         return
