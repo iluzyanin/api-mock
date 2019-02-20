@@ -1,5 +1,4 @@
 import React from 'react'
-import fetch from 'isomorphic-unfetch'
 import dynamic from 'next/dynamic'
 
 import Tabs from './Tabs'
@@ -170,7 +169,7 @@ class MockForm extends React.PureComponent {
     return 'Body'
   }
 
-  saveChanges() {
+  async saveChanges() {
     if (!this.state.isJsonValid) {
       return
     }
@@ -178,13 +177,7 @@ class MockForm extends React.PureComponent {
     const delay = mock.delay ? parseInt(mock.delay) : 0
     const status = parseInt(mock.status)
     const data = this.state.dataJson ? JSON.parse(this.state.dataJson) : null
-    fetch(`/collections/${this.props.collectionId}/mocks/${mock.id}`, {
-      body: JSON.stringify({ ...mock, delay, status, data }),
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: 'PUT',
-    }).then(() => this.props.onChange())
+    await this.props.onChange({ ...mock, delay, status, data })
   }
 
   render() {
@@ -347,6 +340,7 @@ class MockForm extends React.PureComponent {
           }
           .copyUrlButton {
             margin-left: 8px;
+            font-size: 20px;
             cursor: pointer;
           }
         `}</style>

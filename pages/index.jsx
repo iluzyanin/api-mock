@@ -55,7 +55,14 @@ class Index extends React.PureComponent {
     }, 500)
   }
 
-  onMocksChange = async () => {
+  onMocksChange = async (collectionId, mock) => {
+    await fetch(`/collections/${collectionId}/mocks/${mock.id}`, {
+      body: JSON.stringify(mock),
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'PUT',
+    })
     await this.fetchCollections()
     this.showSaveStatus()
   }
@@ -199,7 +206,7 @@ class Index extends React.PureComponent {
                 collectionId={this.state.selectedCollectionId}
                 collections={this.getCollections()}
                 mock={this.getSelectedMock()}
-                onChange={this.onMocksChange}
+                onChange={mock => this.onMocksChange(this.state.selectedCollectionId, mock)}
                 onMockMove={newCollectionId =>
                   this.handleOnMockMove(
                     this.state.selectedMockId,
