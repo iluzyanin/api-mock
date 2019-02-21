@@ -1,5 +1,4 @@
 import React from 'react'
-import fetch from 'isomorphic-unfetch'
 import dynamic from 'next/dynamic'
 
 import Tabs from './Tabs'
@@ -56,6 +55,10 @@ class MockForm extends React.PureComponent {
       }),
       this.saveChangesDebounced
     )
+  }
+
+  handleGroupChange = async event => {
+    await this.props.onMockMove(event.target.value)
   }
 
   handleMethodChange = event => {
@@ -145,6 +148,10 @@ class MockForm extends React.PureComponent {
     }))
   }
 
+  copyUrl = async () => {
+    await navigator.clipboard.writeText(`http://localhost:3030${this.state.mock.url}`)
+  }
+
   renderHeadersTitle() {
     const count = Object.keys(this.state.mock.headers).length
     if (count > 0) {
@@ -156,58 +163,27 @@ class MockForm extends React.PureComponent {
 
   renderBodyTitle() {
     if (this.state.mock.data !== null) {
-      return `Body <span style="color: mediumseagreen; font-size: 10px; padding-left: 1px;">●</span>`
+      return `Body <i style="color: mediumseagreen; padding-left: 2px; font-size: 9px" class="fas fa-circle" /i>`
     }
 
     return 'Body'
   }
 
-  saveChanges() {
+  async saveChanges() {
     if (!this.state.isJsonValid) {
       return
     }
     const mock = this.state.mock
-    const hasId = typeof mock.id !== 'undefined'
     const delay = mock.delay ? parseInt(mock.delay) : 0
     const status = parseInt(mock.status)
     const data = this.state.dataJson ? JSON.parse(this.state.dataJson) : null
-    fetch(`/mocks${hasId ? `/${mock.id}` : ''}`, {
-      body: JSON.stringify({ ...mock, delay, status, data }),
-      headers: {
-        'content-type': 'application/json',
-      },
-      method: hasId ? 'PUT' : 'POST',
-    })
-      .then(response => {
-        if (hasId) {
-          return
-        }
-
-        this.setState(state => ({
-          mock: {
-            ...state.mock,
-            id: response.headers.get('Location'),
-          },
-        }))
-      })
-      .then(() => this.props.onChange())
+    await this.props.onChange({ ...mock, delay, status, data })
   }
 
   render() {
     return (
       <React.Fragment>
         <form className="form-horizontal mockForm">
-          <div className="input-group input-group-sm">
-            <div className="input-group-prepend">
-              <span className="input-group-text">Description</span>
-            </div>
-            <input
-              className="form-control"
-              type="text"
-              value={this.state.mock.description}
-              onChange={this.handleDescriptionChange}
-            />
-          </div>
           <div className="input-group input-group-sm">
             <div className="input-group-prepend">
               <select
@@ -229,6 +205,36 @@ class MockForm extends React.PureComponent {
               value={this.state.mock.url}
               onChange={this.handleUrlChange}
             />
+            <i className="far fa-clipboard copyUrlButton" title="Copy Url" onClick={this.copyUrl} />
+          </div>
+          <div className="input-group-container">
+            <div className="input-group input-group-sm">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Group</span>
+              </div>
+              <select
+                className="form-control"
+                value={this.props.collectionId}
+                onChange={this.handleGroupChange}
+              >
+                {this.props.collections.map(collection => (
+                  <option key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="input-group input-group-sm">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Description</span>
+              </div>
+              <input
+                className="form-control"
+                type="text"
+                value={this.state.mock.description}
+                onChange={this.handleDescriptionChange}
+              />
+            </div>
           </div>
           <div className="input-group-container">
             <div className="input-group input-group-sm">
@@ -307,6 +313,8 @@ class MockForm extends React.PureComponent {
           }
           .input-group {
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
           }
           .urlInput {
             text-overflow: ellipsis;
@@ -329,6 +337,11 @@ class MockForm extends React.PureComponent {
           .input-group-container {
             display: flex;
             justify-content: space-between;
+          }
+          .copyUrlButton {
+            margin-left: 8px;
+            font-size: 20px;
+            cursor: pointer;
           }
         `}</style>
       </React.Fragment>

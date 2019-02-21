@@ -95,9 +95,11 @@ class HeadersTable extends React.PureComponent {
                     html={header.value}
                     onChange={e => this.handleChange(e, header.id, 'value')}
                   />
-                  <span className="deleteButton" onClick={() => this.handleDeleteHeader(header.id)}>
-                    x
-                  </span>
+                  <i
+                    className="fas fa-times deleteButton"
+                    title="Remove header"
+                    onClick={() => this.handleDeleteHeader(header.id)}
+                  />
                 </td>
               </tr>
             ))}
@@ -144,13 +146,12 @@ class HeadersTable extends React.PureComponent {
           }
           .deleteButton {
             position: absolute;
-            font-family: 'Lucida console', monospace, 'Courier new';
             background-color: whitesmoke;
             border-radius: 3px;
             padding: 5px 10px;
             font-size: 14px;
             right: 0;
-            top: 0;
+            top: 3px;
             cursor: pointer;
             visibility: hidden;
             z-index: 1;

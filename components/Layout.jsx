@@ -13,14 +13,8 @@ const Layout = React.memo(props => (
       />
       <link
         rel="stylesheet"
-        href="https://use.fontawesome.com/releases/v5.6.3/css/regular.css"
-        integrity="sha384-aubIA90W7NxJ+Ly4QHAqo1JBSwQ0jejV75iHhj59KRwVjLVHjuhS3LkDAoa/ltO4"
-        crossOrigin="anonymous"
-      />
-      <link
-        rel="stylesheet"
-        href="https://use.fontawesome.com/releases/v5.6.3/css/fontawesome.css"
-        integrity="sha384-jLuaxTTBR42U2qJ/pm4JRouHkEDHkVqH0T1nyQXn1mZ7Snycpf6Rl25VBNthU4z0"
+        href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
         crossOrigin="anonymous"
       />
       <style type="text/css">{`

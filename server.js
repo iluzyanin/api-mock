@@ -4,9 +4,9 @@ const next = require('next')
 const url = require('url')
 const _ = require('lodash')
 
-const mockService = require('./service/mock')
+const collectionsService = require('./service/collections')
 const uiRoute = require('./routes/ui')
-const mocksConfigurationRoute = require('./routes/mocksConfiguration')
+const collectionsRoute = require('./routes/collections')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || '3030'
@@ -17,20 +17,21 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 app
   .prepare()
-  .then(mockService.initializeMocks)
+  .then(collectionsService.initializeCollections)
   .then(() => {
     const server = express()
 
     server.use('/ui', uiRoute(app))
 
-    server.use('/mocks', mocksConfigurationRoute())
+    server.use('/collections', collectionsRoute())
 
     server.get('/_next*', (req, res) => {
       return handle(req, res)
     })
 
     server.use('*', async (req, res, next) => {
-      const mocks = await mockService.getAll()
+      const mocks = await collectionsService.getAll()
+      console.log(req.baseUrl)
       const foundMock = mocks
         .map(mock => ({
           ...mock,
@@ -44,12 +45,12 @@ app
         )
 
       if (foundMock) {
-        if (foundMock.proxyEnabled && foundMock.proxyUrl) {
-          return proxy(foundMock.proxyUrl)(req, res, next)
-        }
-
         if (foundMock.delay > 0) {
           await delay(foundMock.delay)
+        }
+
+        if (foundMock.proxyEnabled && foundMock.proxyUrl) {
+          return proxy(foundMock.proxyUrl)(req, res, next)
         }
 
         res

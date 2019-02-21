@@ -10,10 +10,5 @@ module.exports = app => {
     res.status(200).sendFile(path.join(__dirname, '..', 'favicon.ico'))
   })
 
-  router.get('/:pageName', (req, res) => {
-    const actualPage = `/${req.params.pageName}`
-    app.render(req, res, actualPage, req.query)
-  })
-
   return router
 }
