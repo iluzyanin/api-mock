@@ -7,12 +7,19 @@ const CollectionTitle = React.memo(
     const [nameRef] = useState(React.createRef())
     const [isEditable, setIsEditable] = useState(false)
     const [collectionName, setCollectionName] = useState(name)
+
+    const saveCollectionName = () => {
+      if (!collectionName) {
+        resetCollectionName()
+        return
+      }
+      onEdit(collectionName)
+      setTimeout(() => setIsEditable(false), 100)
+    }
     const onEditCollectionClick = () => {
-      setIsEditable(!isEditable)
+      setIsEditable(true)
       setTimeout(() => {
-        if (!isEditable) {
-          nameRef.current.focus()
-        }
+        nameRef.current.focus()
       })
     }
 
@@ -22,12 +29,7 @@ const CollectionTitle = React.memo(
 
     const handleKeyDown = e => {
       if (e.key === 'Enter') {
-        if (!collectionName) {
-          resetCollectionName()
-          return
-        }
-        onEdit(collectionName)
-        setTimeout(() => setIsEditable(false), 100)
+        saveCollectionName()
       }
       if (e.key === 'Escape') {
         setIsEditable(false)
@@ -78,11 +80,13 @@ const CollectionTitle = React.memo(
             <div className="mocksCount">{renderMocksCount()}</div>
           </div>
           <span className="controls">
-            <i
-              className="far fa-edit controlButton"
-              title="Edit collection name"
-              onClick={withPreventDefault(onEditCollectionClick)}
-            />
+            {!isEditable && (
+              <i
+                className="far fa-edit controlButton"
+                title="Edit collection name"
+                onClick={withPreventDefault(onEditCollectionClick)}
+              />
+            )}
             <i
               className="far fa-file controlButton"
               title="Add mock"
