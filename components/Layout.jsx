@@ -29,6 +29,7 @@ const Layout = React.memo(props => (
         margin: 0 auto;
         max-width: 1600px;
         padding: 20px;
+        display: flex;
       }
     `}</style>
   </React.Fragment>

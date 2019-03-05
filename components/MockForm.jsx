@@ -310,6 +310,7 @@ class MockForm extends React.PureComponent {
         <style jsx>{`
           .mockForm {
             margin: 10px;
+            flex: 1;
           }
           .input-group {
             margin-bottom: 10px;

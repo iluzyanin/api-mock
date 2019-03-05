@@ -1,6 +1,4 @@
 import fetch from 'isomorphic-unfetch'
-import SplitPane from 'react-split-pane'
-import Pane from 'react-split-pane/lib/Pane'
 
 import Layout from '../components/Layout'
 import CollectionListItem from '../components/CollectionListItem'
@@ -173,53 +171,52 @@ class Index extends React.PureComponent {
   render() {
     return (
       <Layout>
-        <SplitPane split="vertical">
-          <Pane maxSize="300px">
-            <div className="newMock" onClick={this.handleOnCollectionCreate}>
-              <i className="fas fa-folder-plus" /> New collection
-            </div>
-            {this.state.collections && this.state.collections.length > 0 && (
-              <ul className="collections">
-                {this.state.collections.map(collection => (
-                  <CollectionListItem
-                    key={collection.id}
-                    name={collection.name}
-                    mocks={collection.mocks}
-                    selectedMockId={this.state.selectedMockId}
-                    onMockClick={mockId => this.handleOnMockClick(collection.id, mockId)}
-                    onMockCreate={() => this.handleOnMockCreate(collection.id)}
-                    onMockClone={mockId => this.handleOnMockClone(collection.id, mockId)}
-                    onMockDelete={mockId => this.handleOnMockDelete(collection.id, mockId)}
-                    onCollectionEdit={newName =>
-                      this.handleOnCollectionEdit(collection.id, newName)
-                    }
-                    onCollectionDelete={() => this.handleOnCollectionDelete(collection.id)}
-                  />
-                ))}
-              </ul>
-            )}
-          </Pane>
-          <Pane>
-            {this.state.selectedMockId && (
-              <MockForm
-                key={this.state.selectedMockId}
-                collectionId={this.state.selectedCollectionId}
-                collections={this.getCollections()}
-                mock={this.getSelectedMock()}
-                onChange={mock => this.onMocksChange(this.state.selectedCollectionId, mock)}
-                onMockMove={newCollectionId =>
-                  this.handleOnMockMove(
-                    this.state.selectedMockId,
-                    this.state.selectedCollectionId,
-                    newCollectionId
-                  )
-                }
-              />
-            )}
-          </Pane>
-        </SplitPane>
+        <div className="navigation">
+          <div className="newMock" onClick={this.handleOnCollectionCreate}>
+            <i className="fas fa-folder-plus" /> New collection
+          </div>
+          {this.state.collections && this.state.collections.length > 0 && (
+            <ul className="collections">
+              {this.state.collections.map(collection => (
+                <CollectionListItem
+                  key={collection.id}
+                  name={collection.name}
+                  mocks={collection.mocks}
+                  selectedMockId={this.state.selectedMockId}
+                  onMockClick={mockId => this.handleOnMockClick(collection.id, mockId)}
+                  onMockCreate={() => this.handleOnMockCreate(collection.id)}
+                  onMockClone={mockId => this.handleOnMockClone(collection.id, mockId)}
+                  onMockDelete={mockId => this.handleOnMockDelete(collection.id, mockId)}
+                  onCollectionEdit={newName => this.handleOnCollectionEdit(collection.id, newName)}
+                  onCollectionDelete={() => this.handleOnCollectionDelete(collection.id)}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+        {this.state.selectedMockId && (
+          <MockForm
+            key={this.state.selectedMockId}
+            collectionId={this.state.selectedCollectionId}
+            collections={this.getCollections()}
+            mock={this.getSelectedMock()}
+            onChange={mock => this.onMocksChange(this.state.selectedCollectionId, mock)}
+            onMockMove={newCollectionId =>
+              this.handleOnMockMove(
+                this.state.selectedMockId,
+                this.state.selectedCollectionId,
+                newCollectionId
+              )
+            }
+          />
+        )}
         <SaveNotification visible={this.state.saveStatusVisible} />
         <style jsx>{`
+          .navigation {
+            width: 300px;
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            display: inline-block;
+          }
           .newMock {
             color: cornflowerblue;
             margin-left: 10px;
@@ -232,7 +229,6 @@ class Index extends React.PureComponent {
             list-style-type: none;
             padding-left: 0;
             font-size: 15px;
-            border-left: 1px solid whitesmoke;
           }
         `}</style>
       </Layout>
