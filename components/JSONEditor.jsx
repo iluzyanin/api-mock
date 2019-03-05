@@ -22,9 +22,8 @@ const JSONEditor = React.memo(props => (
       tabSize: 2,
     }}
     value={props.value}
-    minLines={20}
-    maxLines={60}
     width="100%"
+    height="calc(100vh - 280px)"
   />
 ))
 
