@@ -31,7 +31,7 @@ And it will return you the result
 * [x] Add support for query string parameters
 * [x] Fix example in readme
 * [x] Add support for response headers
-* [ ] Add grouping of mocks
+* [x] Add grouping of mocks
 * [ ] Split MockForm on sub-components
 * [ ] Add drag'n'drop for mocks to move between groups
 * [ ] Add Storybook (just for fun?)
