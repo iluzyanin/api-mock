@@ -30,8 +30,8 @@ app
     })
 
     server.use('*', async (req, res, next) => {
-      const mocks = await collectionsService.getAll()
-      console.log(req.baseUrl)
+      const collections = await collectionsService.getAll()
+      const mocks = [].concat.apply([], collections.map(c => c.mocks))
       const foundMock = mocks
         .map(mock => ({
           ...mock,
